@@ -2,12 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
   return (
     <div className="page">
       <header className="site-header site-header--home">
         <div className="brand">
           <Image
-            src="/logo.jpg"
+            src={`${basePath}/logo.jpg`}
             alt="Logo del Centro Cultural Saravá"
             width={80}
             height={80}
@@ -39,7 +41,7 @@ export default function Home() {
             <article className="post-card">
               <div className="post-header">
                 <Image
-                  src="/foto-1.jpg"
+                  src={`${basePath}/foto-1.jpg`}
                   alt="Foto de Mariana Sosa"
                   width={56}
                   height={56}
@@ -62,7 +64,7 @@ export default function Home() {
             <article className="post-card">
               <div className="post-header">
                 <Image
-                  src="/foto-2.jpg"
+                  src={`${basePath}/foto-2.jpg`}
                   alt="Foto de Lucía Pérez"
                   width={56}
                   height={56}

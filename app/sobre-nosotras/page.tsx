@@ -2,12 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function SobreNosotrasPage() {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
   return (
     <div className="page">
       <header className="site-header">
         <div className="brand">
           <Image
-            src="/logo.jpg"
+            src={`${basePath}/logo.jpg`}
             alt="Logo del Centro Cultural Saravá"
             width={64}
             height={64}
@@ -106,7 +108,7 @@ export default function SobreNosotrasPage() {
           <div className="team-grid">
             <article className="team-card">
               <Image
-                src="/foto-1.jpg"
+                src={`${basePath}/foto-1.jpg`}
                 alt="Foto de Mariana Sosa"
                 width={180}
                 height={180}
@@ -122,7 +124,7 @@ export default function SobreNosotrasPage() {
             </article>
             <article className="team-card">
               <Image
-                src="/foto-2.jpg"
+                src={`${basePath}/foto-2.jpg`}
                 alt="Foto de Lucía Pérez"
                 width={180}
                 height={180}

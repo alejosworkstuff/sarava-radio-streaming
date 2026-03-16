@@ -2,12 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function ClubLecturaPage() {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
   return (
     <div className="page">
       <header className="site-header">
         <div className="brand">
           <Image
-            src="/logo.jpg"
+            src={`${basePath}/logo.jpg`}
             alt="Logo del Centro Cultural Saravá"
             width={64}
             height={64}
