@@ -1,0 +1,79 @@
+import Image from "next/image";
+import Link from "next/link";
+
+const navItems = [
+  { href: "/radio-streaming", label: "Saravá radio streaming" },
+  { href: "/podcast", label: "Saravá Podcast" },
+  { href: "/sobre-nosotras", label: "Sobre nosotrxs" },
+  { href: "/club-lectura", label: "Club de lectura Saravá" },
+  { href: "/espacio-cultural", label: "Saravá Espacio Cultural" },
+] as const;
+
+type SiteHeaderProps = {
+  pill: string;
+  title: string;
+  home?: boolean;
+};
+
+export function SiteHeader({ pill, title, home = false }: SiteHeaderProps) {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+  return (
+    <header className={`site-header${home ? " site-header--home" : ""}`}>
+      <div className="brand">
+        <Image
+          src={`${basePath}/logo.jpg`}
+          alt="Logo del Centro Cultural Saravá"
+          width={home ? 80 : 64}
+          height={home ? 80 : 64}
+          className="brand-logo"
+          priority={home}
+        />
+        <div>
+          <p className="pill">{pill}</p>
+          <h1 className="brand-name">{title}</h1>
+        </div>
+      </div>
+      <nav className="nav-links" aria-label="Navegación principal">
+        {!home && <Link href="/">Inicio</Link>}
+        {navItems.map((item) => (
+          <Link href={item.href} key={item.href}>
+            {item.label}
+          </Link>
+        ))}
+      </nav>
+    </header>
+  );
+}
+
+export function SiteFooter({ home = false }: { home?: boolean }) {
+  return (
+    <footer className="footer">
+      <div className="social-links" aria-label="Redes sociales">
+        <a
+          href="https://www.instagram.com/saravagente?igsh=MWU5M2dyNDBpcjh4cg=="
+          target="_blank"
+          rel="noreferrer"
+          className="pill social-pill social-instagram"
+        >
+          Instagram
+        </a>
+        <a
+          href="https://www.facebook.com/profile.php?id=100072438457481"
+          target="_blank"
+          rel="noreferrer"
+          className="pill social-pill social-facebook"
+        >
+          Facebook
+        </a>
+      </div>
+      {home ? (
+        <p>San Carlos de Bolívar - Buenos Aires</p>
+      ) : (
+        <Link href="/" className="pill">
+          Volver al inicio
+        </Link>
+      )}
+    </footer>
+  );
+}

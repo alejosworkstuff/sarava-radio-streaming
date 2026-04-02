@@ -1,33 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SiteFooter, SiteHeader } from "../components/site-shell";
 
 export default function SobreNosotrasPage() {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   return (
     <div className="page">
-      <header className="site-header">
-        <div className="brand">
-          <Image
-            src={`${basePath}/logo.jpg`}
-            alt="Logo del Centro Cultural Saravá"
-            width={64}
-            height={64}
-            className="brand-logo"
-          />
-          <div>
-            <p className="pill">Sobre nosotras</p>
-            <h1 className="brand-name">Centro Cultural Saravá</h1>
-          </div>
-        </div>
-        <nav className="nav-links" aria-label="Navegación principal">
-          <Link href="/">Inicio</Link>
-          <Link href="/radio-streaming">Saravá radio streaming</Link>
-          <Link href="/podcast">Saravá Podcast</Link>
-          <Link href="/club-lectura">Club de lectura Saravá</Link>
-          <Link href="/espacio-cultural">Saravá Espacio Cultural</Link>
-        </nav>
-      </header>
+      <SiteHeader pill="Sobre nosotrxs" title="Centro Cultural Saravá" />
 
       <main>
         <section className="hero">
@@ -50,7 +30,7 @@ export default function SobreNosotrasPage() {
               Taller abierto de expresión oral - Jueves 18:00 - Cupos limitados.
             </p>
             <p className="hero-subtitle">
-              Episodio nuevo: "Historias que nos sostienen".
+              Episodio nuevo: &quot;Historias que nos sostienen&quot;.
             </p>
           </div>
         </section>
@@ -90,15 +70,53 @@ export default function SobreNosotrasPage() {
           </div>
         </section>
 
-        <section className="about-strip" aria-labelledby="sobre-nosotras">
-          <h2 className="section-title" id="sobre-nosotras">
-            Sobre nosotras
+        <section className="about-strip" aria-labelledby="sobre-nosotrxs">
+          <h2 className="section-title" id="sobre-nosotrxs">
+            Sobre nosotrxs
           </h2>
-          <p className="hero-subtitle">
-            Somos un grupo de mujeres que crea espacios de diálogo, acompañamiento
-            y aprendizaje. Queremos que esta página sea un lugar simple y
-            accesible para compartir todo lo que hacemos.
-          </p>
+          <div className="hero-subtitle">
+            <p>
+              ¡Saravá! Una palabra de la tradición afro brasileña que significa
+              bienvenida, buena suerte y que estés a salvo. Vinicius de Moraes
+              la utilizó en muchas de sus composiciones para saludar o bendecir
+              a sus amigos.
+            </p>
+            <p>
+              Además de una hermosa palabra, Saravá es un proyecto cultural que
+              pretende generar un abanico de propuestas, en torno a distintos
+              lenguajes artísticos como la música, la literatura, el cine, el
+              teatro, pero también a través de disciplinas que permiten difundir
+              contenidos y reflexionar sobre diversas temáticas contemporáneas
+              que nos movilizan.
+            </p>
+            <p>
+              Sus inicios en la ciudad de Bolívar, provincia de Buenos Aires, se
+              sitúan en el año 2021, en el contexto de la pandemia y durante el
+              período de mayores restricciones a las actividades presenciales. En
+              ese escenario, el proyecto surgió como un programa de
+              radio-streaming con el propósito de sostener y enriquecer la oferta
+              cultural local, frente a las limitaciones que las circunstancias
+              imponían a los formatos tradicionales.
+            </p>
+            <p>
+              Con el tiempo, advertimos que existía un potencial más allá del
+              programa de radio y nos propusimos adentrarnos en propuestas que
+              combinan lo presencial y lo virtual con el mismo sentido inicial:
+              compartir lo que nos moviliza, lo que permite tejer redes, ampliar
+              miradas, desafiar lugares comunes pivotando entre lo local y lo
+              global gracias a las tecnologías digitales que nos invitan a ese
+              juego, aunque con un fuerte acento en el latir de la Patria Grande.
+            </p>
+            <p>
+              Saravá se define a partir de una mirada de género, de derechos
+              humanos, decolonial y socioambiental, nutrida por el encuentro con
+              las experiencias y las voces de personas y colectivos diversos.
+            </p>
+            <p>
+              Les invitamos a conocer nuestro proyecto navegando por este sitio y
+              siguiéndonos en nuestras redes sociales. ¡Saravá gente!
+            </p>
+          </div>
         </section>
 
         <section className="section" aria-labelledby="equipo">
@@ -117,8 +135,9 @@ export default function SobreNosotrasPage() {
               <div>
                 <h3 className="post-title">Mariana Sosa</h3>
                 <p className="hero-subtitle">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Comunicadora y gestora cultural. Acompaña la producción de
+                  contenidos, la agenda de actividades y los espacios de
+                  encuentro del proyecto.
                 </p>
               </div>
             </article>
@@ -133,8 +152,9 @@ export default function SobreNosotrasPage() {
               <div>
                 <h3 className="post-title">Lucía Pérez</h3>
                 <p className="hero-subtitle">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco.
+                  Coordinación editorial y acompañamiento de la comunidad.
+                  Participa en la curaduría de temas, entrevistas y propuestas
+                  para el club de lectura y el espacio cultural.
                 </p>
               </div>
             </article>
@@ -147,35 +167,32 @@ export default function SobreNosotrasPage() {
               Sumate a la comunidad
             </h2>
             <p className="hero-subtitle">
-              Recibí noticias, agenda y novedades del programa de radio.
+              Seguinos en redes para enterarte de la agenda, las novedades del
+              programa y las próximas actividades.
             </p>
           </div>
-          <form className="cta-form" aria-label="Formulario de novedades">
-            <label className="sr-only" htmlFor="email">
-              Email
-            </label>
-            <input
-              className="input"
-              id="email"
-              name="email"
-              type="email"
-              placeholder="tuemail@correo.com"
-              required
-            />
-            <button className="cta" type="submit">
-              Quiero recibir novedades
-            </button>
-          </form>
+          <div className="cta-actions" aria-label="Redes de Saravá">
+            <a
+              className="pill social-pill social-instagram"
+              href="https://www.instagram.com/saravagente?igsh=MWU5M2dyNDBpcjh4cg=="
+              target="_blank"
+              rel="noreferrer"
+            >
+              Instagram
+            </a>
+            <a
+              className="pill social-pill social-facebook"
+              href="https://www.facebook.com/profile.php?id=100072438457481"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Facebook
+            </a>
+          </div>
         </section>
       </main>
 
-      <footer className="footer">
-        <p>
-          ¿Querés sumarte o enviar información? Escribinos a{" "}
-          <strong>sarava@ejemplo.com</strong>
-        </p>
-        <p>San Carlos de Bolívar - Buenos Aires</p>
-      </footer>
+      <SiteFooter home />
     </div>
   );
 }

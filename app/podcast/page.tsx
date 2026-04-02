@@ -1,63 +1,33 @@
-import Image from "next/image";
-import Link from "next/link";
+import { SiteFooter, SiteHeader } from "../components/site-shell";
 
 export default function PodcastPage() {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-
   return (
     <div className="page">
-      <header className="site-header">
-        <div className="brand">
-          <Image
-            src={`${basePath}/logo.jpg`}
-            alt="Logo del Centro Cultural Saravá"
-            width={64}
-            height={64}
-            className="brand-logo"
-          />
-          <div>
-            <p className="pill">Saravá Podcast</p>
-            <h1 className="brand-name">Centro Cultural Saravá</h1>
-          </div>
-        </div>
-        <nav className="nav-links" aria-label="Navegación principal">
-          <Link href="/">Inicio</Link>
-          <Link href="/radio-streaming">Saravá radio streaming</Link>
-          <Link href="/sobre-nosotras">Sobre nosotras</Link>
-          <Link href="/club-lectura">Club de lectura Saravá</Link>
-          <Link href="/espacio-cultural">Saravá Espacio Cultural</Link>
-        </nav>
-      </header>
+      <SiteHeader pill="Saravá Podcast" title="Centro Cultural Saravá" />
 
       <main>
-        <section className="section">
-          <h2 className="section-title">Episodios</h2>
-          <p className="hero-subtitle">
-            Archivo de entrevistas y relatos compartidos por la comunidad.
-          </p>
-          <div className="list">
-            <article className="list-item">
-              <h3>2025</h3>
-              <p className="hero-subtitle">
-                Temporada con historias de barrio, memoria local y encuentros.
-              </p>
-            </article>
-            <article className="list-item">
-              <h3>2026</h3>
-              <p className="hero-subtitle">
-                Nuevos ciclos con entrevistas y temas actuales.
-              </p>
-            </article>
+        <section className="hero" style={{ textAlign: "center" }}>
+          <div>
+            <p className="pill">Saravá Podcast</p>
+            <h2 className="hero-title">Nuestro canal en YouTube</h2>
+            <p className="hero-subtitle">
+              Escuchá todos los episodios y novedades directamente en nuestro
+              canal.
+            </p>
+            <a
+              className="cta"
+              href="https://www.youtube.com/@SaravaGente/videos"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Abrir el canal de Saravá en YouTube"
+            >
+              Ir al canal de YouTube
+            </a>
           </div>
         </section>
       </main>
 
-      <footer className="footer">
-        <p>Querés compartir un episodio: sarava@ejemplo.com</p>
-        <Link href="/" className="pill">
-          Volver al inicio
-        </Link>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

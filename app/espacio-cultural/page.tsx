@@ -1,68 +1,52 @@
 import Image from "next/image";
-import Link from "next/link";
+import { SiteFooter, SiteHeader } from "../components/site-shell";
+import { culturalPosts } from "../content";
 
 export default function EspacioCulturalPage() {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   return (
     <div className="page">
-      <header className="site-header">
-        <div className="brand">
-          <Image
-            src={`${basePath}/logo.jpg`}
-            alt="Logo del Centro Cultural Saravá"
-            width={64}
-            height={64}
-            className="brand-logo"
-          />
-          <div>
-            <p className="pill">Saravá Espacio Cultural</p>
-            <h1 className="brand-name">Centro Cultural Saravá</h1>
-          </div>
-        </div>
-        <nav className="nav-links" aria-label="Navegación principal">
-          <Link href="/">Inicio</Link>
-          <Link href="/radio-streaming">Saravá radio streaming</Link>
-          <Link href="/podcast">Saravá Podcast</Link>
-          <Link href="/sobre-nosotras">Sobre nosotras</Link>
-          <Link href="/club-lectura">Club de lectura Saravá</Link>
-        </nav>
-      </header>
+      <SiteHeader pill="Saravá Espacio Cultural" title="Centro Cultural Saravá" />
 
       <main>
         <section className="section">
-          <h2 className="section-title">Espacio Cultural</h2>
+          <h2 className="section-title">Espacio cultural</h2>
           <p className="hero-subtitle">
-            Un lugar para talleres, encuentros, ferias y actividades abiertas a
-            la comunidad.
+            Aquí reunimos noticias, talleres y novedades del proyecto. La
+            portada destaca una selección de estas publicaciones.
           </p>
-          <div className="list">
-            <article className="list-item">
-              <h3>Salón principal</h3>
-              <p className="hero-subtitle">
-                Capacidad para encuentros, charlas y presentaciones.
-              </p>
-            </article>
-            <article className="list-item">
-              <h3>Espacios abiertos</h3>
-              <p className="hero-subtitle">
-                Patio y zonas comunes para actividades culturales.
-              </p>
-            </article>
-            <article className="list-item">
-              <h3>Reservas</h3>
-              <p className="hero-subtitle">Contacto: sarava@ejemplo.com</p>
-            </article>
+          <div className="post-list">
+            {culturalPosts.map((post) => (
+              <article className="post-card" key={`${post.title}-${post.date}`}>
+                <div className="post-header">
+                  <Image
+                    src={`${basePath}${post.image}`}
+                    alt={`Foto de ${post.author}`}
+                    width={56}
+                    height={56}
+                    className="avatar"
+                  />
+                  <div>
+                    <p className="post-meta">{`${post.author} · ${post.date}`}</p>
+                    <h3 className="post-title">{post.title}</h3>
+                  </div>
+                </div>
+                <p className="hero-subtitle">{post.excerpt}</p>
+                <div className="post-tags">
+                  {post.tags.map((tag) => (
+                    <span className="pill" key={tag}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            ))}
           </div>
         </section>
       </main>
 
-      <footer className="footer">
-        <p>Querés usar el espacio: sarava@ejemplo.com</p>
-        <Link href="/" className="pill">
-          Volver al inicio
-        </Link>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
