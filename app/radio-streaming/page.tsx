@@ -1,6 +1,9 @@
 import { SiteFooter, SiteHeader } from "../components/site-shell";
+import { getFeaturedEvent } from "../../lib/content";
 
-export default function RadioStreamingPage() {
+export default async function RadioStreamingPage() {
+  const event = await getFeaturedEvent("radio");
+
   return (
     <div className="page">
       <SiteHeader
@@ -20,16 +23,19 @@ export default function RadioStreamingPage() {
               <div className="cta-stack">
                 <a
                   className="cta cta-large"
-                  href="https://www.youtube.com/watch?v=QPpt4QqgXBQ"
+                  href={event?.ctaHref ?? "https://www.youtube.com/watch?v=QPpt4QqgXBQ"}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Abrir transmisión en vivo en YouTube"
                 >
-                  Miranos en directo
+                  {event?.ctaLabel ?? "Miranos en directo"}
                 </a>
                 <p className="hero-subtitle">
-                  Horario habitual: jueves 19:00 a 21:00.
+                  {event?.schedule ?? "Horario habitual: jueves 19:00 a 21:00."}
                 </p>
+                {event?.summary ? (
+                  <p className="hero-subtitle">{event.summary}</p>
+                ) : null}
               </div>
             </article>
           </div>

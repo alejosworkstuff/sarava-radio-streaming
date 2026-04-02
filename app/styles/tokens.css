@@ -1,0 +1,31 @@
+:root {
+  --bg: #fbf6f1;
+  --bg-strong: #f3e6d8;
+  --text: #241c1a;
+  --muted: #5b4d46;
+  --accent: #b66b4e;
+  --accent-strong: #8e4d36;
+  --card: #fffaf4;
+  --border: #ead8c9;
+  --shadow: 0 24px 60px rgba(36, 28, 26, 0.12);
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4rem;
+  --space-8: 6rem;
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --font-body: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-body);
+}

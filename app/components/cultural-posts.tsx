@@ -1,20 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
-import { culturalPosts } from "../content";
+import { PostEntry } from "../../lib/content";
 
 type CulturalPostsListProps = {
+  posts: PostEntry[];
   variant?: "list" | "showcase";
 };
 
 export function CulturalPostsList({
+  posts,
   variant = "list",
 }: CulturalPostsListProps) {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   const postsMarkup = (
     <div className="post-list">
-      {culturalPosts.map((post) => (
-        <article className="post-card" key={`${post.title}-${post.date}`}>
+      {posts.map((post) => (
+        <article className="post-card" key={post.slug}>
           <div className="post-header">
             <Image
               src={`${basePath}${post.image}`}
@@ -24,7 +26,7 @@ export function CulturalPostsList({
               className="avatar"
             />
             <div>
-              <p className="post-meta">{`${post.author} · ${post.date}`}</p>
+              <p className="post-meta">{`${post.author} · ${post.displayDate}`}</p>
               <h3 className="post-title">{post.title}</h3>
             </div>
           </div>

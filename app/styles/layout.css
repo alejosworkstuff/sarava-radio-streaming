@@ -1,0 +1,137 @@
+.page {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  padding: var(--space-7) 0 var(--space-8);
+}
+
+.site-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-4) 0;
+}
+
+.site-header:not(.site-header--home) {
+  grid-template-columns: 1fr;
+  justify-items: start;
+  gap: var(--space-4);
+}
+
+.site-header--home {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+}
+
+.site-header--home .brand {
+  flex-direction: column;
+}
+
+.site-header--home .brand-logo {
+  width: 220px;
+  height: 220px;
+  border-width: 4px;
+}
+
+.site-header--home .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  white-space: normal;
+  overflow: visible;
+  width: auto;
+  justify-content: center;
+  justify-self: center;
+  padding: 0;
+  row-gap: var(--space-2);
+}
+
+.site-header:not(.site-header--home) .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  white-space: normal;
+  overflow: visible;
+  width: auto;
+  column-gap: var(--space-2);
+  row-gap: var(--space-2);
+  justify-self: start;
+  padding: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  justify-self: start;
+}
+
+.brand > div {
+  display: grid;
+  justify-items: start;
+  text-align: left;
+}
+
+.section {
+  margin-top: var(--space-7);
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-4);
+}
+
+.footer {
+  margin-top: var(--space-7);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: space-between;
+  align-items: center;
+}
+
+.social-links {
+  display: inline-flex;
+  gap: 1px;
+  flex-wrap: wrap;
+}
+
+.list {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  list-style: none;
+  padding-left: 0;
+}
+
+.post-list {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.team-grid {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+}
+
+@media (max-width: 720px) {
+  .site-header {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+
+  .site-header:not(.site-header--home) {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

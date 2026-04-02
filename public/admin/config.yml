@@ -1,0 +1,63 @@
+# Para produccion, este panel asume despliegue en Netlify con Identity activado
+# e invitaciones limitadas solo a las tres personas editoras.
+local_backend: true
+publish_mode: editorial_workflow
+backend:
+  name: git-gateway
+  branch: master
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "posts"
+    label: "Publicaciones"
+    folder: "content/posts"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    summary: "{{title}} - {{displayDate}}"
+    fields:
+      - { label: "Titulo", name: "title", widget: "string" }
+      - { label: "Autor", name: "author", widget: "string" }
+      - { label: "Fecha ISO", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Fecha visible", name: "displayDate", widget: "string" }
+      - { label: "Extracto", name: "excerpt", widget: "text" }
+      - label: "Etiquetas"
+        name: "tags"
+        widget: "list"
+      - { label: "Imagen", name: "image", widget: "image" }
+
+  - name: "novels"
+    label: "Novela del mes"
+    folder: "content/novels"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    summary: "{{title}}"
+    fields:
+      - { label: "Titulo", name: "title", widget: "string" }
+      - { label: "Portada", name: "coverImage", widget: "image" }
+      - { label: "Descripcion", name: "description", widget: "text" }
+      - { label: "Activa", name: "active", widget: "boolean", default: true }
+
+  - name: "events"
+    label: "Eventos"
+    folder: "content/events"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    summary: "{{title}} - {{displayDate}}"
+    fields:
+      - { label: "Titulo", name: "title", widget: "string" }
+      - { label: "Categoria", name: "category", widget: "select", options: ["radio", "encuentro", "taller"] }
+      - { label: "Fecha ISO", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Fecha visible", name: "displayDate", widget: "string" }
+      - { label: "Resumen", name: "summary", widget: "text" }
+      - { label: "Horario", name: "schedule", widget: "string" }
+      - { label: "Texto del boton", name: "ctaLabel", widget: "string" }
+      - { label: "Link del boton", name: "ctaHref", widget: "string" }
+      - { label: "Destacado", name: "featured", widget: "boolean", default: false }
