@@ -74,7 +74,11 @@ export async function getFeaturedEvent(category?: string) {
   );
 }
 
+export async function getNovels() {
+  return readCollection<Omit<NovelEntry, "slug">>("novels");
+}
+
 export async function getNovelOfTheMonth() {
-  const novels = await readCollection<Omit<NovelEntry, "slug">>("novels");
+  const novels = await getNovels();
   return novels.find((novel) => novel.active) ?? novels[0];
 }

@@ -20,28 +20,40 @@ export function SiteHeader({ pill, title, home = false }: SiteHeaderProps) {
 
   return (
     <header className={`site-header${home ? " site-header--home" : ""}`}>
-      <div className="brand">
-        <Image
-          src={`${basePath}/logo.jpg`}
-          alt="Logo del Centro Cultural Saravá"
-          width={home ? 80 : 64}
-          height={home ? 80 : 64}
-          className="brand-logo"
-          priority={home}
-        />
-        <div>
-          <p className="pill">{pill}</p>
-          <h1 className="brand-name">{title}</h1>
+      <div className="brand-nav">
+        <div className="brand">
+          <Image
+            src={`${basePath}/logo.jpg`}
+            alt="Logo del Centro Cultural Saravá"
+            width={home ? 80 : 64}
+            height={home ? 80 : 64}
+            className="brand-logo"
+            priority={home}
+          />
+          <div>
+            {/* <p className="pill">{pill}</p> - Commented out to remove pill from SiteHeader */}
+            <h1 className="brand-name">{title}</h1>
+          </div>
         </div>
+        {/* Original nav position - commented for revert:
+        <nav className="nav-links" aria-label="Navegación principal">
+          {!home && <Link href="/">Inicio</Link>}
+          {navItems.map((item) => (
+            <Link href={item.href} key={item.href}>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        */}
+        <nav className="nav-links compact-nav" aria-label="Navegación principal">
+          {!home && <Link href="/">Inicio</Link>}
+          {navItems.map((item) => (
+            <Link href={item.href} key={item.href}>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
       </div>
-      <nav className="nav-links" aria-label="Navegación principal">
-        {!home && <Link href="/">Inicio</Link>}
-        {navItems.map((item) => (
-          <Link href={item.href} key={item.href}>
-            {item.label}
-          </Link>
-        ))}
-      </nav>
     </header>
   );
 }

@@ -18,10 +18,10 @@ export default function SobreNosotrasPage() {
         <section className="hero">
           <div>
             <h2 className="hero-title">
-              Tu espacio comunitario para estar al día y acompañadas.
+              Tu espacio comunitario para estar al día y acompañadx.
             </h2>
             <p className="hero-subtitle">
-              Somos un colectivo de mujeres que comparte noticias, encuentros y
+              Somos un colectivo de personas que comparte noticias, encuentros y
               un programa de radio con historias reales y cercanas.
             </p>
             <Link href="/radio-streaming" className="cta">
