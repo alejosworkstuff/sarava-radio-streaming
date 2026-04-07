@@ -12,7 +12,7 @@ export default function SobreNosotrasPage() {
 
   return (
     <div className="page">
-      <SiteHeader pill="Sobre nosotrxs" title="Centro Cultural Saravá" />
+      <SiteHeader pill="Sobre nosotrxs" title="Espacio Cultural Saravá" />
 
       <main>
         <section className="hero">
@@ -35,7 +35,7 @@ export default function SobreNosotrasPage() {
               Taller abierto de expresión oral - Jueves 18:00 - Cupos limitados.
             </p>
             <p className="hero-subtitle">
-              Episodio nuevo: &quot;Historias que nos sostienen&quot;.
+              Episodio nuevo: "Historias que nos sostienen".
             </p>
           </div>
         </section>
@@ -122,7 +122,7 @@ export default function SobreNosotrasPage() {
         </section>
       </main>
 
-      <SiteFooter home />
+      <SiteFooter home hideSocial />
     </div>
   );
 }

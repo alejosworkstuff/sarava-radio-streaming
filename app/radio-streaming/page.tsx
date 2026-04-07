@@ -8,7 +8,7 @@ export default async function RadioStreamingPage() {
     <div className="page">
       <SiteHeader
         pill="Saravá radio streaming"
-        title="Centro Cultural Saravá"
+        title="Espacio Cultural Sarava"
       />
 
       <main>
@@ -46,3 +46,4 @@ export default async function RadioStreamingPage() {
     </div>
   );
 }
+

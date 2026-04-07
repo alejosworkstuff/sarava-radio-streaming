@@ -3,7 +3,7 @@ import { SiteFooter, SiteHeader } from "../components/site-shell";
 export default function PodcastPage() {
   return (
     <div className="page">
-      <SiteHeader pill="Saravá Podcast" title="Centro Cultural Saravá" />
+      <SiteHeader pill="Saravá Podcast" title="Espacio Cultural Sarava" />
 
       <main>
         <section className="hero" style={{ textAlign: "center" }}>

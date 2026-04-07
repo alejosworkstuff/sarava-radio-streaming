@@ -30,15 +30,33 @@ export const aboutParagraphs = [
 
 export const teamMembers = [
   {
-    name: "Mariana Sosa",
+    name: "Silvana Rena",
     image: "/foto-1.jpg",
-    alt: "Foto de Mariana Sosa",
-    bio: "Comunicadora y gestora cultural. Acompaña la producción de contenidos, la agenda de actividades y los espacios de encuentro del proyecto.",
+    alt: "Foto de Silvana Rena",
+    bio: "Conductora y productora.",
   },
   {
-    name: "Lucía Pérez",
+    name: "Mónica González",
+    image: "/foto-3.jpeg",
+    alt: "Foto de Mónica González",
+    bio: "Conductora y productora.",
+  },
+  {
+    name: "Silvana Alcaraz",
+    image: "/foto-6.jpeg",
+    alt: "Foto de Silvana Alcaraz",
+    bio: "Conductora y productora.",
+  },
+  {
+    name: "Santiago Santos",
     image: "/foto-2.jpg",
-    alt: "Foto de Lucía Pérez",
-    bio: "Coordinación editorial y acompañamiento de la comunidad. Participa en la curaduría de temas, entrevistas y propuestas para el club de lectura y el espacio cultural.",
+    alt: "Foto de Santiago Santos",
+    bio: "Operador técnico y algo más...",
+  },
+  {
+    name: "Candela Castillo González",
+    image: "/foto-5.jpg.jpeg",
+    alt: "Foto de Candela González",
+    bio: "Co-coordinadora del Club de Lectura Saravá.",
   },
 ] as const;

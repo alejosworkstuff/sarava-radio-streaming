@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Centro Cultural Saravá",
+  title: "Espacio Cultural Sarava",
   description:
     "Noticias, radio y actividades del Centro Cultural Saravá. Un espacio comunitario para compartir voces y encuentros.",
 };
