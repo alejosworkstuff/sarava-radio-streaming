@@ -35,7 +35,7 @@ export default function SobreNosotrasPage() {
               Taller abierto de expresión oral - Jueves 18:00 - Cupos limitados.
             </p>
             <p className="hero-subtitle">
-              Episodio nuevo: "Historias que nos sostienen".
+              Episodio nuevo: &quot;Historias que nos sostienen&quot;.
             </p>
           </div>
         </section>
