@@ -1,157 +1,117 @@
-# 📁 Content Directory / Directorio de Contenido
+# Content directory — Espacio Cultural Saravá
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-blue?style=flat&logo=next.js)](https://nextjs.org)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com)
-[![Decap CMS](https://img.shields.io/badge/Decap%20CMS-2.x-orange?style=flat&logo=decapcms)](https://decapcms.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?style=flat&logo=typescript)](https://www.typescriptlang.org)
-[![JSON](https://img.shields.io/badge/Format-JSON-yellow?style=flat&logo=json)](https://json.org)
+JSON files in this folder power the site. Loaders live in `lib/content.ts` at the project root.
 
-## 🌟 Overview / Resumen
-
-This directory serves as the **central hub for editable content** powering the Sarava project - a cultural platform featuring Espacio Cultural posts, Club de Lectura novels, and featured events/transmisiones.
-
-Content is stored in **JSON files with frontmatter**, making it:
-- ✅ **Headless CMS-ready** (edited via Decap CMS at `/admin`)
-- ✅ **Version-controlled** (Git-friendly)
-- ✅ **Type-safe** (via `lib/content.ts`)
-- ✅ **Dynamic** (fetched server-side/client-side)
-
-Current content (as of last scan):
-- **2 Posts** (Espacio Cultural)
-- **1 Novel** (Club de Lectura)
-- **1 Event** (Transmisiones)
-
-## 📂 Structure / Estructura
-
-| Folder / Carpeta | Purpose / Propósito | Current Files / Archivos Actuales | Used In / Usado En |
-|------------------|---------------------|-----------------------------------|--------------------|
-| `posts/` | Espacio Cultural publications: talleres, encuentros, articles. | `encuentro-cultural-fin-de-semana.json`<br>`taller-abierto-expresion-oral.json` | `/espacio-cultural`, home grid |
-| `novels/` | Novela del mes for Club de Lectura. | `las-indignas.json` | `/club-lectura`, hero featured |
-| `events/` | Events y transmisiones destacadas (streaming, podcasts). | `streaming-jueves.json` | `/events`, `/radio-streaming`, home |
-
-**Expansion:** Add subfolders or new types as needed (e.g., `podcasts/`, `podcasts/`).
-
-## 📋 File Schema / Esquema de Archivos
-
-All JSON files follow this **standardized frontmatter schema**:
-
-```json
-{
-  "title": "Título atractivo y SEO-friendly",
-  "slug": "encuentro-cultural-fin-de-semana",
-  "date": "2024-10-12",
-  "excerpt": "Breve descripción (160 chars)",
-  "image": "/uploads/evento-fin-semana.jpg",
-  "tags": ["espacio-cultural", "encuentro", "presencial"],
-  "author": "Nombre Autor",
-  "body": "## Markdown content\\n\\nContenido completo con headings, lists, images..."
-}
-```
-
-**Fields explained:**
-- `slug`: URL-friendly (kebab-case, no spaces)
-- `date`: ISO format (YYYY-MM-DD)
-- `body`: Full **Markdown** content (headings, lists, images, links)
-- `image`: Relative to `/public/uploads/` (admin uploads)
-
-## ✏️ Adding & Editing Content / Agregar y Editar
-
-### 1. **Via Decap CMS (Recommended)**
-```
-1. Run dev server: npm run dev
-2. Go to http://localhost:3000/admin
-3. Login (configured collections map to these folders)
-4. Create/Edit → Auto-saves JSON
-5. Preview changes live!
-```
-
-### 2. **Manual Editing**
-```
-1. Create new file: posts/mi-evento.json
-2. Copy schema above
-3. Add to /public/uploads/ for images
-4. Restart dev or hot-reload
-```
-
-### 3. **Validation**
-Run `npm run lint` or check TypeScript errors in `lib/content.ts`.
-
-## 🔗 Integration / Integración
-
-Content loaded via `@/lib/content.ts`:
-
-```typescript
-// Example usage in page.tsx
-const posts = await getContent('posts');
-const novel = await getContent('novels')[0]; // Featured
-```
-
-- **Server Components**: `getStaticProps` style, cached.
-- **Dynamic**: Revalidates on edit (Next.js ISR).
-- **TypeScript**: Inferred from schema.
-
-## 🏗️ Examples / Ejemplos
-
-**Sample Post (posts/encuentro-cultural-fin-de-semana.json excerpt):**
-```json
-{
-  "title": "Encuentro Cultural: Fin de Semana",
-  "body": "## ¡No te lo pierdas!\\n\\nEste sábado..."
-}
-```
-
-**Full files in repo for reference.**
-
-## 💡 Best Practices / Mejores Prácticas
-
-✅ **Do:**
-- Use Spanish titles/descriptions (site locale)
-- Optimize images (<500KB, WebP)
-- SEO: Keywords in title/excerpt
-- Accessibility: Alt text, semantic Markdown
-- Consistent slugs/dates
-
-❌ **Avoid:**
-- Large images (use /public/uploads/)
-- Raw HTML in body (use Markdown)
-- Special chars in slugs
-
-## 🧪 Development & Testing
-
-1. **Local Setup:**
-   ```
-   cd sarava/sarava-project
-   npm install
-   npm run dev
-   ```
-
-2. **Content Preview:**
-   - Edit JSON → Hot reload in pages
-   - Admin: localhost:3000/admin
-
-3. **Build Test:**
-   ```
-   npm run build
-   npm run start
-   ```
-
-## 🔧 Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Content not updating | Clear cache: `rm .next/cache`, restart |
-| Decap CMS 404 | Check `config.yml` collections |
-| Invalid JSON | Validate with jsonlint.com |
-| Images broken | Place in `/public/uploads/` |
-
-## 🚀 Next Steps
-- Add more sample content
-- Podcast episodes folder
-- Multi-language support (en/es)
-- Content search/index page
-
-**Contribute:** Edit JSON files or propose schema changes!
+**Live site:** [alejosworkstuff.github.io/sarava-radio-streaming](https://alejosworkstuff.github.io/sarava-radio-streaming/)  
+**CMS admin (local):** `/admin` after `npm run dev`
 
 ---
 
-*Last updated: $(date)* | [Edit on GitHub](https://github.com/user/sarava-project/edit/main/content/README.md)
+## Overview
+
+| Folder | Used on | Loader |
+|--------|---------|--------|
+| `posts/` | `/espacio-cultural`, home grid | `getPosts()` |
+| `novels/` | `/club-lectura`, home hero | `getNovelOfTheMonth()`, `getNovels()` |
+| `events/` | `/radio-streaming`, featured blocks | `getEvents()`, `getFeaturedEvent(category?)` |
+
+Content is:
+
+- Version-controlled in Git
+- Editable via **Decap CMS** (`public/admin/config.yml`)
+- Loaded at build time through typed functions in `lib/content.ts`
+
+---
+
+## Current files
+
+| Collection | File | Notes |
+|------------|------|--------|
+| **posts** | `posts/encuentro-cultural-fin-de-semana.json` | Espacio Cultural |
+| **posts** | `posts/taller-abierto-expresion-oral.json` | Espacio Cultural |
+| **novels** | `novels/las-indignas.json` | `active: true` — novel of the month |
+| **events** | `events/streaming-jueves.json` | Featured streaming / transmisión |
+
+---
+
+## Schemas
+
+### Post (`content/posts/*.json`)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string | Title |
+| `author` | string | Author name |
+| `date` | string | ISO date (`YYYY-MM-DD`) for sorting |
+| `displayDate` | string | Human-readable date |
+| `excerpt` | string | Short summary |
+| `tags` | string[] | Tags |
+| `image` | string | Image path or URL |
+
+Slug = filename without `.json`.
+
+### Novel (`content/novels/*.json`)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string | Title |
+| `coverImage` | string | Cover image path |
+| `description` | string | Description (Markdown allowed in UI) |
+| `active` | boolean | `true` = current “novel of the month” |
+
+### Event (`content/events/*.json`)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string | Title |
+| `date` | string | ISO date for sorting |
+| `displayDate` | string | Visible date |
+| `summary` | string | Short summary |
+| `schedule` | string | Schedule text |
+| `ctaLabel` | string | Button label |
+| `ctaHref` | string | Button URL |
+| `category` | string | e.g. streaming category filter |
+| `featured` | boolean | Show in featured slots when true |
+
+---
+
+## Editing content
+
+### Option 1 — Decap CMS (recommended for editors)
+
+1. Run `npm run dev`
+2. Open `http://localhost:3000/admin`
+3. Use collections **Publicaciones**, **Novela del mes**, **Eventos**
+4. Commit JSON changes to branch **`master`**
+
+`public/admin/config.yml` uses `local_backend: true` for local editing. Production notes in that file describe Netlify Identity + git-gateway.
+
+### Option 2 — Edit JSON directly
+
+1. Add or edit files under `posts/`, `novels/`, or `events/`
+2. Match the schemas above
+3. Run `npm run build` and update `docs/` for GitHub Pages (see root `README.md`)
+
+---
+
+## After content changes
+
+```bash
+npm run lint
+npm run build
+# Copy out/ → docs/ and commit for GitHub Pages
+```
+
+If TypeScript fails, check field names against `PostEntry`, `NovelEntry`, and `EventEntry` in `lib/content.ts`.
+
+---
+
+## Troubleshooting
+
+| Issue | Check |
+|-------|--------|
+| Post not on site | Valid JSON, correct folder, rebuild + redeploy `docs/` |
+| Wrong novel on club page | Only one novel should have `active: true` |
+| Featured event missing | `featured: true` and optional `category` match in `getFeaturedEvent` |
+| CMS cannot save | Branch `master`, git-gateway / local_backend config |
+| Broken images on GitHub Pages | Paths respect `basePath` `/sarava-radio-streaming` in production |
