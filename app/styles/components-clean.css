@@ -1074,3 +1074,126 @@
   }
 }
 
+/* Espacio Cultural + Club de lectura */
+.live-post-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.live-post-body {
+  white-space: pre-wrap;
+}
+
+.live-post-images {
+  display: grid;
+  gap: 2px;
+  margin-top: var(--space-3);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.live-post-images.single {
+  grid-template-columns: 1fr;
+}
+
+.live-post-images.double {
+  grid-template-columns: 1fr 1fr;
+}
+
+.live-post-images.triple {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+}
+
+.live-post-images.triple img:first-child {
+  grid-row: span 2;
+}
+
+.live-post-images img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  display: block;
+  background: var(--bg-strong);
+}
+
+.archive-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--space-4);
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--card);
+  color: var(--accent-strong);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.archive-toggle-btn:hover {
+  background: var(--bg-strong);
+  border-color: var(--accent-strong);
+  transform: translateY(-1px);
+}
+
+.archive-toggle-btn[aria-expanded="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.archive-reveal {
+  margin-top: var(--space-2);
+}
+
+.archive-empty {
+  margin: 0;
+  padding: var(--space-4);
+  color: var(--muted);
+  font-size: 0.95rem;
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+
+.archive-list-item .book-cover {
+  max-width: 140px;
+}
+
+.archive-list {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px dashed var(--border);
+}
+
+.archive-list .post-card {
+  opacity: 0.95;
+}
+
+.content-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: var(--space-2);
+  background: var(--bg-strong);
+  border: 1px dashed var(--border);
+}
+

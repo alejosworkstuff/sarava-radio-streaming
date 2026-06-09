@@ -23,7 +23,7 @@ export default async function RadioStreamingPage() {
               <div className="cta-stack">
                 <a
                   className="cta cta-large"
-                  href={event?.ctaHref ?? "https://www.youtube.com/watch?v=QPpt4QqgXBQ"}
+                  href={event?.ctaHref ?? "https://www.youtube.com/@medium995"}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Abrir transmisión en vivo en YouTube"

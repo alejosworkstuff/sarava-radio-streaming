@@ -1,7 +1,12 @@
-import { SiteFooter, SiteHeader } from "./components/site-shell";
 import HeroBanner from "./components/hero-banner";
+import { SiteFooter, SiteHeader } from "./components/site-shell";
+import { getNovelOfTheMonth, getPosts } from "@/lib/content";
+import { buildHeroSlides } from "@/lib/hero-slides";
 
 export default async function Home() {
+  const [posts, novel] = await Promise.all([getPosts(), getNovelOfTheMonth()]);
+  const slides = buildHeroSlides(posts, novel);
+
   return (
     <div className="page">
       <SiteHeader
@@ -11,7 +16,7 @@ export default async function Home() {
       />
 
       <main>
-        <HeroBanner />
+        <HeroBanner slides={slides} />
       </main>
 
       <SiteFooter home />

@@ -1,81 +1,138 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { resolvePublicAssetSrc, type HeroSlide } from "@/lib/hero-slides";
 
-const SLIDES = [
-  {
-    id: 'novel',
-    title: 'Las indignas',
-    subtitle: 'Novela del Mes',
-    description:
-      'En un mundo arrasado por catástrofes y contaminación, un grupo de mujeres habita la Casa de la Hermandad Sagrada, aislada del resto de la humanidad.',
-    image: '/club-lectura-las-indignas.png',
-    link: '/club-lectura',
-    width: 442,
-    height: 442,
-  },
-  {
-    id: 'podcast',
-    title: 'Podcast Saravá',
-    subtitle: 'Sintoniza nuestras historias.',
-    description:
-      'Nuevos episodios todos los martes sobre arte, política y cultura local.',
-    image: '/foto-1.jpg',
-    link: '/podcast',
-    width: 800,
-    height: 1000,
-  },
-  {
-    id: 'streaming',
-    title: 'Streaming en Vivo',
-    subtitle: 'Participa de nuestros encuentros.',
-    description:
-      'Talleres y debates en vivo desde nuestro centro cultural.',
-    image: '/foto-2.jpg',
-    link: '/radio-streaming',
-    width: 800,
-    height: 1000,
-  },
-] as const;
+type HeroBannerProps = {
+  slides: HeroSlide[];
+};
 
-export default function HeroBanner() {
+function HeroSlideImage({
+  src,
+  alt,
+  fill,
+  priority,
+  sizes,
+  className,
+  width,
+  height,
+}: {
+  src: string;
+  alt: string;
+  fill?: boolean;
+  priority?: boolean;
+  sizes?: string;
+  className?: string;
+  width?: number;
+  height?: number;
+}) {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const resolved = resolvePublicAssetSrc(src, basePath);
+
+  if (resolved.startsWith("data:")) {
+    if (fill) {
+      return (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={resolved}
+          alt={alt}
+          className={className}
+          style={{ objectFit: "cover", width: "100%", height: "100%" }}
+        />
+      );
+    }
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={resolved}
+        alt={alt}
+        width={width ?? 640}
+        height={height ?? 800}
+        className={className}
+      />
+    );
+  }
+
+  if (fill) {
+    return (
+      <Image
+        src={resolved}
+        alt={alt}
+        fill
+        sizes={sizes}
+        className={className}
+        priority={priority}
+      />
+    );
+  }
+
+  return (
+    <Image
+      src={resolved}
+      alt={alt}
+      width={width ?? 640}
+      height={height ?? 800}
+      sizes={sizes}
+      className={className}
+    />
+  );
+}
+
+export default function HeroBanner({ slides }: HeroBannerProps) {
   const [current, setCurrent] = React.useState(0);
   const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(
-    null
+    null,
   );
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-  const n = SLIDES.length;
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
+  const n = slides.length;
 
-  const nextSlide = () => setCurrent((prev) => (prev + 1) % n);
+  const nextSlide = React.useCallback(
+    () => setCurrent((prev) => (prev + 1) % n),
+    [n],
+  );
   const prevSlide = () => setCurrent((prev) => (prev - 1 + n) % n);
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
 
   React.useEffect(() => {
+    setCurrent((prev) => (prev >= n ? 0 : prev));
+  }, [n]);
+
+  React.useEffect(() => {
+    if (n <= 1) {
+      return;
+    }
+
+    const timer = window.setInterval(nextSlide, 2000);
+    return () => window.clearInterval(timer);
+  }, [n, nextSlide]);
+
+  React.useEffect(() => {
     setLightboxIndex(null);
   }, [current]);
 
   React.useEffect(() => {
-    if (lightboxIndex === null) return;
+    if (lightboxIndex === null) {
+      return;
+    }
 
     const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     closeButtonRef.current?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         closeLightbox();
       }
     };
 
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener("keydown", onKeyDown);
     };
   }, [lightboxIndex]);
 
@@ -84,15 +141,14 @@ export default function HeroBanner() {
     transform: `translateX(-${(current * 100) / n}%)`,
   };
 
-  const lightboxSlide =
-    lightboxIndex !== null ? SLIDES[lightboxIndex] : null;
+  const lightboxSlide = lightboxIndex !== null ? slides[lightboxIndex] : null;
 
   return (
     <section className="hero-promo" aria-label="Destacados">
       <div className="hero-promo__shell">
         <div className="hero-promo__viewport">
           <div className="hero-promo__track" style={trackStyle}>
-            {SLIDES.map((item, idx) => {
+            {slides.map((item, idx) => {
               const active = current === idx;
               return (
                 <article
@@ -110,8 +166,8 @@ export default function HeroBanner() {
                       aria-label={`Ver imagen completa: ${item.title}`}
                       tabIndex={active ? undefined : -1}
                     >
-                      <Image
-                        src={`${basePath}${item.image}`}
+                      <HeroSlideImage
+                        src={item.image}
                         alt=""
                         fill
                         sizes="(max-width: 768px) 92vw, 320px"
@@ -165,17 +221,17 @@ export default function HeroBanner() {
             ← Anterior
           </button>
           <div className="slider-dots">
-            {SLIDES.map((item, dotIdx) => (
+            {slides.map((item, dotIdx) => (
               <button
                 key={item.id}
                 type="button"
                 onClick={() => setCurrent(dotIdx)}
                 aria-label={`Slide ${dotIdx + 1}: ${item.title}`}
-                aria-current={current === dotIdx ? 'true' : undefined}
+                aria-current={current === dotIdx ? "true" : undefined}
                 className={
                   current === dotIdx
-                    ? 'hero-slider-dot hero-slider-dot--active'
-                    : 'hero-slider-dot'
+                    ? "hero-slider-dot hero-slider-dot--active"
+                    : "hero-slider-dot"
                 }
               />
             ))}
@@ -216,11 +272,11 @@ export default function HeroBanner() {
             </button>
             <p className="hero-promo-lightbox__title">{lightboxSlide.title}</p>
             <div className="hero-promo-lightbox__frame">
-              <Image
-                src={`${basePath}${lightboxSlide.image}`}
+              <HeroSlideImage
+                src={lightboxSlide.image}
                 alt={lightboxSlide.title}
-                width={lightboxSlide.width}
-                height={lightboxSlide.height}
+                width={640}
+                height={800}
                 sizes="(max-width: 768px) 96vw, 640px"
                 className="hero-promo-lightbox__image"
               />

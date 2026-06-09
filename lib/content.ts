@@ -2,21 +2,14 @@ import "server-only";
 
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import type { PostEntry } from "./post-types";
+
+export type { PostEntry } from "./post-types";
 
 const contentRoot = path.join(process.cwd(), "content");
 
 type BaseEntry = {
   slug: string;
-};
-
-export type PostEntry = BaseEntry & {
-  title: string;
-  author: string;
-  date: string;
-  displayDate: string;
-  excerpt: string;
-  tags: string[];
-  image: string;
 };
 
 export type NovelEntry = BaseEntry & {

@@ -1,6 +1,6 @@
 import { CulturalPostsList } from "../components/cultural-posts";
 import { SiteFooter, SiteHeader } from "../components/site-shell";
-import { getPosts } from "../../lib/content";
+import { getPosts } from "@/lib/content";
 
 export default async function EspacioCulturalPage() {
   const posts = await getPosts();
@@ -16,7 +16,13 @@ export default async function EspacioCulturalPage() {
             Aquí reunimos noticias, talleres y novedades del proyecto. La
             portada destaca una selección de estas publicaciones.
           </p>
-          <CulturalPostsList posts={posts} />
+          {posts.length === 0 ? (
+            <p className="hero-subtitle">
+              Todavía no hay publicaciones en el Espacio Cultural.
+            </p>
+          ) : (
+            <CulturalPostsList posts={posts} />
+          )}
         </section>
       </main>
 
