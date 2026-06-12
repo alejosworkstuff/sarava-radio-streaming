@@ -5,6 +5,12 @@ A Next.js site for **Espacio Cultural Saravá**, a community cultural space in S
 **Live:** [alejosworkstuff.github.io/sarava-radio-streaming](https://alejosworkstuff.github.io/sarava-radio-streaming/)  
 **Repo:** [github.com/alejosworkstuff/sarava-radio-streaming](https://github.com/alejosworkstuff/sarava-radio-streaming)
 
+## Screenshots
+
+| Home | Radio | Club de lectura | Espacio cultural |
+|:---:|:---:|:---:|:---:|
+| ![Home](./assets/screenshots/main.png) | ![Radio](./assets/screenshots/radio.png) | ![Club de lectura](./assets/screenshots/club-de-lectura.png) | ![Espacio cultural](./assets/screenshots/espacio-cultural.png) |
+
 ---
 
 ## Problem and Context
