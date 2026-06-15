@@ -2,6 +2,15 @@
   "name": "sarava-project",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://alejosworkstuff.github.io/sarava-radio-streaming/",
+  "keywords": [
+    "portfolio",
+    "javascript",
+    "typescript",
+    "nextjs",
+    "react",
+    "github-pages"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
