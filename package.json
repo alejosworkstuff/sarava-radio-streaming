@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:pages": "next build && node scripts/copy-out-to-docs.mjs",
     "export": "next build",
     "start": "next start",
     "lint": "eslint"
