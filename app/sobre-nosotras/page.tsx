@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -6,6 +7,16 @@ import {
   teamMembers,
 } from "../about-content";
 import { SiteFooter, SiteHeader } from "../components/site-shell";
+import { buildPageMetadata } from "@/lib/site-metadata";
+
+export function generateMetadata(): Metadata {
+  return buildPageMetadata({
+    title: "Sobre nosotrxs",
+    description:
+      "Conocé al colectivo Saravá: un espacio cultural de Bolívar con mirada de género, derechos humanos y enfoque decolonial. Radio, podcast y actividades comunitarias.",
+    path: "/sobre-nosotras",
+  });
+}
 
 export default function SobreNosotrasPage() {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";

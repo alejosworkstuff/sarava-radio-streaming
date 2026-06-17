@@ -1,6 +1,17 @@
+import type { Metadata } from "next";
 import { ClubLecturaSection } from "../components/club-lectura-section";
 import { SiteFooter, SiteHeader } from "../components/site-shell";
 import { getNovelOfTheMonth, getNovels } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/site-metadata";
+
+export function generateMetadata(): Metadata {
+  return buildPageMetadata({
+    title: "Club de lectura",
+    description:
+      "Novela del mes, poesía y encuentros compartidos del club de lectura Saravá. Lecturas comunitarias y archivo de novelas anteriores.",
+    path: "/club-lectura",
+  });
+}
 
 export default async function ClubLecturaPage() {
   const novels = await getNovels();

@@ -1,6 +1,17 @@
+import type { Metadata } from "next";
 import { CulturalPostsList } from "../components/cultural-posts";
 import { SiteFooter, SiteHeader } from "../components/site-shell";
 import { getPosts } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/site-metadata";
+
+export function generateMetadata(): Metadata {
+  return buildPageMetadata({
+    title: "Espacio cultural",
+    description:
+      "Noticias, talleres y novedades del proyecto Saravá. Publicaciones sobre cultura, encuentros y actividades comunitarias.",
+    path: "/espacio-cultural",
+  });
+}
 
 export default async function EspacioCulturalPage() {
   const posts = await getPosts();

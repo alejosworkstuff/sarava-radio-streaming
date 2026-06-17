@@ -1,16 +1,12 @@
-import type { Metadata } from "next";
 import "./globals.css";
+import { rootMetadata } from "@/lib/site-metadata";
 
 export const viewport = {
   width: "device-width",
   initialScale: 1,
 };
 
-export const metadata: Metadata = {
-  title: "Espacio Cultural Sarava",
-  description:
-    "Noticias, radio y actividades del Centro Cultural Saravá. Un espacio comunitario para compartir voces y encuentros.",
-};
+export const metadata = rootMetadata;
 
 export default function RootLayout({
   children,

@@ -1,4 +1,15 @@
+import type { Metadata } from "next";
 import { SiteFooter, SiteHeader } from "../components/site-shell";
+import { buildPageMetadata } from "@/lib/site-metadata";
+
+export function generateMetadata(): Metadata {
+  return buildPageMetadata({
+    title: "Saravá Podcast",
+    description:
+      "Episodios con entrevistas, historias y voces locales en el canal de YouTube de Saravá. Escuchá todos los programas del podcast comunitario.",
+    path: "/podcast",
+  });
+}
 
 export default function PodcastPage() {
   return (

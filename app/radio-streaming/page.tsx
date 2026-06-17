@@ -1,5 +1,16 @@
+import type { Metadata } from "next";
 import { SiteFooter, SiteHeader } from "../components/site-shell";
 import { getFeaturedEvent } from "../../lib/content";
+import { buildPageMetadata } from "@/lib/site-metadata";
+
+export function generateMetadata(): Metadata {
+  return buildPageMetadata({
+    title: "Radio streaming",
+    description:
+      "Escuchá la transmisión en vivo de Saravá y enterate de próximos horarios. Programa de radio comunitaria con historias reales y cercanas.",
+    path: "/radio-streaming",
+  });
+}
 
 export default async function RadioStreamingPage() {
   const event = await getFeaturedEvent("radio");
