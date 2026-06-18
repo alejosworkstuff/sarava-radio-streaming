@@ -1,6 +1,6 @@
 # Saravá — Espacio Cultural Saravá
 
-A Next.js site for **Espacio Cultural Saravá**, a community cultural space in San Carlos de Bolívar, Buenos Aires, Argentina. The site covers radio streaming, podcast, book club, cultural posts, and team information. Content is managed via JSON files and **Decap CMS**.
+A Next.js site for **Espacio Cultural Saravá**, a community cultural space in San Carlos de Bolívar, Buenos Aires, Argentina. The site covers radio streaming, podcast, book club, cultural posts, and team information. Content is managed via versioned JSON files under `content/`.
 
 **Live:** [alejosworkstuff.github.io/sarava-radio-streaming](https://alejosworkstuff.github.io/sarava-radio-streaming/)  
 **Repo:** [github.com/alejosworkstuff/sarava-radio-streaming](https://github.com/alejosworkstuff/sarava-radio-streaming)
@@ -15,14 +15,14 @@ A Next.js site for **Espacio Cultural Saravá**, a community cultural space in S
 
 ## Problem and Context
 
-The project needed a clear, maintainable web presence for a cultural community: multiple sections (radio, podcast, reading club, events), editable content for non-developers, and static hosting without a Node server in production.
+The project needed a clear, maintainable web presence for a cultural community: multiple sections (radio, podcast, reading club, events), editable JSON content in Git, and static hosting without a Node server in production.
 
 ## My Role
 
 - Built the Next.js App Router site with static export for GitHub Pages
 - Implemented file-based content loading with TypeScript types
 - Designed layout, hero carousel, and section pages
-- Configured Decap CMS for editorial workflows
+- Documented JSON content schemas and editing workflow in `content/README.md`
 - Set up CI for lint and production build
 
 ---
@@ -33,7 +33,6 @@ The project needed a clear, maintainable web presence for a cultural community: 
 - **React 18**, **TypeScript 5.6**
 - **Tailwind CSS 4** (+ custom CSS in `app/styles/`)
 - **Static export** (`output: "export"` in `next.config.ts`)
-- **Decap CMS** (`public/admin/`) — git-gateway, branch `master`
 - **GitHub Pages** — site served from the `docs/` folder on branch `master`
 
 ---
@@ -65,8 +64,7 @@ sarava-project/
 │   └── README.md           # Content editor guide
 ├── lib/content.ts          # Type-safe loaders (server-only)
 ├── public/
-│   ├── admin/              # Decap CMS (config.yml, index.html)
-│   ├── uploads/            # CMS media
+│   ├── uploads/            # Site media
 │   └── logo.jpg
 ├── docs/                   # Committed static export (GitHub Pages root)
 ├── next.config.ts          # basePath, static export, image settings
@@ -87,8 +85,7 @@ Content types: `PostEntry`, `EventEntry`, `NovelEntry`.
 
 - Static export with production `basePath` `/sarava-radio-streaming` for GitHub Pages
 - Hero banner carousel on the home page
-- File-based JSON content versioned in Git
-- Decap CMS at `/admin` for editors (local backend in dev; git-gateway for production)
+- File-based JSON content versioned in Git (see `content/README.md`)
 - Responsive layout and custom design tokens
 - Spanish UI copy throughout
 
@@ -109,6 +106,7 @@ Open [http://localhost:3000](http://localhost:3000) (no `basePath` in developmen
 |--------|---------|
 | `npm run dev` | Next.js dev server (Turbopack) |
 | `npm run build` | Production static export to `out/` |
+| `npm run build:pages` | Build and copy `out/` → `docs/` for GitHub Pages |
 | `npm run lint` | ESLint |
 | `npm run start` | Serve production build (if not using static export only) |
 
@@ -121,9 +119,8 @@ Production uses the **`docs/`** directory on branch **`master`** (not the defaul
 Typical workflow after changes:
 
 ```bash
-npm run build
-# Copy contents of out/ into docs/ (preserve docs/.nojekyll if needed)
-# Commit docs/ and push to master
+npm run build:pages
+# Commit content/ and docs/, then push to master
 ```
 
 `next.config.ts` sets:
@@ -137,15 +134,11 @@ Site URL: `https://alejosworkstuff.github.io/sarava-radio-streaming/`
 
 ---
 
-## Decap CMS
+## Content editing
 
-- Admin UI: `/admin` (see `public/admin/config.yml`)
-- Collections: **posts**, **novels**, **events**
-- Media: `public/uploads/`
-- Backend branch: `master`
-- For production editing, Netlify Identity + git-gateway is documented in `config.yml` comments; current hosting is GitHub Pages with content committed via Git or local CMS.
+Content lives in `content/posts/`, `content/novels/`, and `content/events/` as JSON files. Edit directly in Git, run `npm run build:pages` (or `npm run build` plus copy to `docs/`), and push to `master` for GitHub Pages.
 
-See **`content/README.md`** for JSON schemas and editing workflows.
+See **`content/README.md`** for schemas, field reference, and troubleshooting.
 
 ---
 
@@ -173,7 +166,7 @@ Update this table when adding JSON files under `content/`.
 ## Case Study Highlights (Portfolio Use)
 
 - **Challenge:** Multi-section cultural site with editor-friendly content and static hosting.
-- **Approach:** Next.js static export + typed JSON loaders + Decap CMS; GitHub Pages via committed `docs/`.
+- **Approach:** Next.js static export + typed JSON loaders; GitHub Pages via committed `docs/`.
 - **Result:** Live community hub with clear navigation and maintainable content workflow.
 
 ## What I Would Improve Next

@@ -2,8 +2,7 @@
 
 JSON files in this folder power the site. Loaders live in `lib/content.ts` at the project root.
 
-**Live site:** [alejosworkstuff.github.io/sarava-radio-streaming](https://alejosworkstuff.github.io/sarava-radio-streaming/)  
-**CMS admin (local):** `/admin` after `npm run dev`
+**Live site:** [alejosworkstuff.github.io/sarava-radio-streaming](https://alejosworkstuff.github.io/sarava-radio-streaming/)
 
 ---
 
@@ -18,7 +17,6 @@ JSON files in this folder power the site. Loaders live in `lib/content.ts` at th
 Content is:
 
 - Version-controlled in Git
-- Editable via **Decap CMS** (`public/admin/config.yml`)
 - Loaded at build time through typed functions in `lib/content.ts`
 
 ---
@@ -77,20 +75,10 @@ Slug = filename without `.json`.
 
 ## Editing content
 
-### Option 1 — Decap CMS (recommended for editors)
-
-1. Run `npm run dev`
-2. Open `http://localhost:3000/admin`
-3. Use collections **Publicaciones**, **Novela del mes**, **Eventos**
-4. Commit JSON changes to branch **`master`**
-
-`public/admin/config.yml` uses `local_backend: true` for local editing. Production notes in that file describe Netlify Identity + git-gateway.
-
-### Option 2 — Edit JSON directly
-
 1. Add or edit files under `posts/`, `novels/`, or `events/`
 2. Match the schemas above
-3. Run `npm run build` and update `docs/` for GitHub Pages (see root `README.md`)
+3. Run `npm run lint` and `npm run build:pages` (see root `README.md`)
+4. Commit JSON changes and updated `docs/` to branch **`master`**
 
 ---
 
@@ -98,8 +86,8 @@ Slug = filename without `.json`.
 
 ```bash
 npm run lint
-npm run build
-# Copy out/ → docs/ and commit for GitHub Pages
+npm run build:pages
+# Commit content/ and docs/, then push to master
 ```
 
 If TypeScript fails, check field names against `PostEntry`, `NovelEntry`, and `EventEntry` in `lib/content.ts`.
@@ -113,5 +101,4 @@ If TypeScript fails, check field names against `PostEntry`, `NovelEntry`, and `E
 | Post not on site | Valid JSON, correct folder, rebuild + redeploy `docs/` |
 | Wrong novel on club page | Only one novel should have `active: true` |
 | Featured event missing | `featured: true` and optional `category` match in `getFeaturedEvent` |
-| CMS cannot save | Branch `master`, git-gateway / local_backend config |
 | Broken images on GitHub Pages | Paths respect `basePath` `/sarava-radio-streaming` in production |
