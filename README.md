@@ -9,7 +9,7 @@ A Next.js site for **Espacio Cultural Saravá**, a community cultural space in S
 
 | Home | Radio | Club de lectura | Espacio cultural |
 |:---:|:---:|:---:|:---:|
-| ![Home](./assets/screenshots/main.png) | ![Radio](./assets/screenshots/radio.png) | ![Club de lectura](./assets/screenshots/club-de-lectura.png) | ![Espacio cultural](./assets/screenshots/espacio-cultural.png) |
+| ![Home](./assets/screenshots/main.webp) | ![Radio](./assets/screenshots/radio.webp) | ![Club de lectura](./assets/screenshots/club-de-lectura.webp) | ![Espacio cultural](./assets/screenshots/espacio-cultural.webp) |
 
 ---
 
