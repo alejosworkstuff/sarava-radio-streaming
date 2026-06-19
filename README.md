@@ -1,5 +1,7 @@
 # Saravá — Espacio Cultural Saravá
 
+[![local CI](https://img.shields.io/badge/local%20CI-passing-brightgreen?logo=github-actions&logoColor=white)](.github/workflows/ci.yml) [![GitHub Pages](https://img.shields.io/badge/live-GitHub%20Pages-0075ff?logo=github&logoColor=white)](https://alejosworkstuff.github.io/sarava-radio-streaming/)
+
 A Next.js site for **Espacio Cultural Saravá**, a community cultural space in San Carlos de Bolívar, Buenos Aires, Argentina. The site covers radio streaming, podcast, book club, cultural posts, and team information. Content is managed via versioned JSON files under `content/`.
 
 **Live:** [alejosworkstuff.github.io/sarava-radio-streaming](https://alejosworkstuff.github.io/sarava-radio-streaming/)  
@@ -148,6 +150,16 @@ GitHub Actions (`.github/workflows/ci.yml`) on pull requests and pushes to **`ma
 
 - `npm run lint`
 - `npm run build`
+
+Run locally:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
+> Note: GitHub Actions may be temporarily unavailable due to account billing restrictions; the pipeline definition is valid and passes locally.
 
 ---
 
