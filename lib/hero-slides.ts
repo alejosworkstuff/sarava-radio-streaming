@@ -72,7 +72,7 @@ export function buildHeroSlides(
       subtitle: `${post.author} · Espacio Cultural`,
       description: excerpt(post.excerpt),
       image: post.image || "/foto-1.jpg",
-      link: "/espacio-cultural",
+      link: `/espacio-cultural/${post.slug}`,
     });
   }
 

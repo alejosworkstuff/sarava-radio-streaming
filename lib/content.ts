@@ -55,6 +55,11 @@ export async function getPosts() {
   return posts.sort((a, b) => b.date.localeCompare(a.date));
 }
 
+export async function getPostBySlug(slug: string) {
+  const posts = await getPosts();
+  return posts.find((post) => post.slug === slug);
+}
+
 export async function getEvents() {
   const events = await readCollection<Omit<EventEntry, "slug">>("events");
   return events.sort((a, b) => a.date.localeCompare(b.date));

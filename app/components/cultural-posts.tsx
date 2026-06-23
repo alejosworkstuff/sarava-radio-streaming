@@ -16,7 +16,11 @@ export function CulturalPostsList({
   const postsMarkup = (
     <div className="post-list">
       {posts.map((post) => (
-        <article className="post-card" key={post.slug}>
+        <Link
+          href={`/espacio-cultural/${post.slug}`}
+          className="post-card post-card-link"
+          key={post.slug}
+        >
           <div className="post-header">
             <Image
               src={`${basePath}${post.image}`}
@@ -38,7 +42,7 @@ export function CulturalPostsList({
               </span>
             ))}
           </div>
-        </article>
+        </Link>
       ))}
     </div>
   );
