@@ -159,7 +159,7 @@ npm run lint
 npm run build
 ```
 
-> Note: GitHub Actions may be temporarily unavailable due to account billing restrictions; the pipeline definition is valid and passes locally.
+> The pipeline runs on GitHub Actions on every push and pull request, and passes locally with the commands above.
 
 ---
 
