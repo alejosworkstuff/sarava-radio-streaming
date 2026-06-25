@@ -16,7 +16,7 @@ const FALLBACK_SLIDES: HeroSlide[] = [
     subtitle: "Novela del mes",
     description:
       "Descubrí la lectura destacada del mes en nuestro club de lectura.",
-    image: "/club-lectura-las-indignas.png",
+    image: "/club-lectura-las-indignas.webp",
     link: "/club-lectura",
   },
   {
@@ -60,7 +60,7 @@ export function buildHeroSlides(
       description: excerpt(
         novel.description.split("\n\n")[0] ?? novel.description,
       ),
-      image: novel.coverImage || "/club-lectura-las-indignas.png",
+      image: novel.coverImage || "/club-lectura-las-indignas.webp",
       link: "/club-lectura",
     });
   }
