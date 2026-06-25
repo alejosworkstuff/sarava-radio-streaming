@@ -49,4 +49,30 @@ export const podcastEpisodeSchema = z.object({
   youtubeUrl: z.string().url("youtubeUrl must be a valid URL"),
 });
 
+export const aboutSchema = z.object({
+  highlights: z
+    .array(
+      z.object({
+        title: z.string().min(1, "title is required"),
+        description: z.string().min(1, "description is required"),
+        href: z.string().min(1, "href is required"),
+        cta: z.string().min(1, "cta is required"),
+      }),
+    )
+    .min(1, "highlights must have at least one entry"),
+  paragraphs: z
+    .array(z.string().min(1))
+    .min(1, "paragraphs must have at least one entry"),
+  team: z
+    .array(
+      z.object({
+        name: z.string().min(1, "name is required"),
+        image: z.string().min(1, "image is required"),
+        alt: z.string().min(1, "alt is required"),
+        bio: z.string().min(1, "bio is required"),
+      }),
+    )
+    .min(1, "team must have at least one entry"),
+});
+
 export { slug };

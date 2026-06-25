@@ -31,6 +31,22 @@ export type EventEntry = BaseEntry & {
   featured: boolean;
 };
 
+export type AboutContent = {
+  highlights: {
+    title: string;
+    description: string;
+    href: string;
+    cta: string;
+  }[];
+  paragraphs: string[];
+  team: {
+    name: string;
+    image: string;
+    alt: string;
+    bio: string;
+  }[];
+};
+
 async function readCollection<T>(collection: string): Promise<(T & BaseEntry)[]> {
   const folder = path.join(contentRoot, collection);
   const files = (await fs.readdir(folder)).filter((file) => file.endsWith(".json"));
@@ -79,4 +95,10 @@ export async function getNovels() {
 export async function getNovelOfTheMonth() {
   const novels = await getNovels();
   return novels.find((novel) => novel.active) ?? novels[0];
+}
+
+export async function getAbout(): Promise<AboutContent> {
+  const filePath = path.join(contentRoot, "about.json");
+  const raw = await fs.readFile(filePath, "utf-8");
+  return JSON.parse(raw) as AboutContent;
 }

@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  aboutHighlights,
-  aboutParagraphs,
-  teamMembers,
-} from "../about-content";
 import { SiteFooter, SiteHeader } from "../components/site-shell";
+import { getAbout } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/site-metadata";
 
 export function generateMetadata(): Metadata {
@@ -18,8 +14,10 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default function SobreNosotrasPage() {
+export default async function SobreNosotrasPage() {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const { highlights: aboutHighlights, paragraphs: aboutParagraphs, team: teamMembers } =
+    await getAbout();
 
   return (
     <div className="page">

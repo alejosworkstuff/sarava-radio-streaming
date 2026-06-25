@@ -2,6 +2,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { ZodType } from "zod";
 import {
+  aboutSchema,
   eventSchema,
   novelSchema,
   podcastEpisodeSchema,
@@ -96,12 +97,56 @@ async function validateCollection({
   return errors;
 }
 
+async function validateAbout(): Promise<string[]> {
+  const label = "about.json";
+  const filePath = path.join(contentRoot, "about.json");
+
+  if (!(await pathExists(filePath))) {
+    return [`${label}: file not found`];
+  }
+
+  let raw: unknown;
+
+  try {
+    raw = JSON.parse(await fs.readFile(filePath, "utf-8"));
+  } catch {
+    return [`${label}: invalid JSON`];
+  }
+
+  const result = aboutSchema.safeParse(raw);
+
+  if (!result.success) {
+    return result.error.issues.map((issue) => {
+      const field = issue.path.length > 0 ? issue.path.join(".") : "root";
+      return `${label}: ${field}: ${issue.message}`;
+    });
+  }
+
+  const errors: string[] = [];
+
+  for (const [index, member] of result.data.team.entries()) {
+    if (!member.image.startsWith("/")) {
+      continue;
+    }
+
+    const assetPath = path.join(publicRoot, member.image.slice(1));
+
+    if (!(await pathExists(assetPath))) {
+      errors.push(`${label}: team.${index}.image "${member.image}" not found in public/`);
+    }
+  }
+
+  return errors;
+}
+
 async function main() {
   const errors: string[] = [];
 
   for (const collection of collections) {
     errors.push(...(await validateCollection(collection)));
   }
+
+  errors.push(...(await validateAbout()));
 
   const podcastsDir = path.join(contentRoot, "podcasts");
 
@@ -132,7 +177,7 @@ async function main() {
     }),
   );
 
-  console.log(`Content validation passed (${counts.join(", ")}).`);
+  console.log(`Content validation passed (${counts.join(", ")}, 1 about).`);
 }
 
 main().catch((error: unknown) => {
