@@ -86,6 +86,7 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
     null,
   );
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
+  const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
   const n = slides.length;
 
   const nextSlide = React.useCallback(
@@ -102,13 +103,23 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
   }, [n]);
 
   React.useEffect(() => {
-    if (n <= 1) {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(query.matches);
+
+    const onChange = (event: MediaQueryListEvent) =>
+      setPrefersReducedMotion(event.matches);
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
+
+  React.useEffect(() => {
+    if (n <= 1 || prefersReducedMotion) {
       return;
     }
 
     const timer = window.setInterval(nextSlide, 2000);
     return () => window.clearInterval(timer);
-  }, [n, nextSlide]);
+  }, [n, nextSlide, prefersReducedMotion]);
 
   React.useEffect(() => {
     setLightboxIndex(null);
