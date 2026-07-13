@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useReducedMotion } from "motion/react";
 import { resolvePublicAssetSrc, type HeroSlide } from "@/lib/hero-slides";
 
 type HeroBannerProps = {
@@ -87,6 +88,7 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
   );
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
+  const reduceMotion = useReducedMotion();
   const n = slides.length;
 
   const nextSlide = React.useCallback(
@@ -155,7 +157,15 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
   const lightboxSlide = lightboxIndex !== null ? slides[lightboxIndex] : null;
 
   return (
-    <section className="hero-promo" aria-label="Destacados">
+    <motion.section
+      className="hero-promo"
+      aria-label="Destacados"
+      initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={
+        reduceMotion ? { duration: 0 } : { duration: 0.5, ease: "easeOut" }
+      }
+    >
       <div className="hero-promo__shell">
         <div className="hero-promo__viewport">
           <div className="hero-promo__track" style={trackStyle}>
@@ -191,7 +201,23 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
                       </span>
                     </button>
 
-                    <div className="hero-promo__body">
+                    <motion.div
+                      className="hero-promo__body"
+                      key={item.id}
+                      initial={
+                        reduceMotion || !active
+                          ? false
+                          : { opacity: 0, y: 12 }
+                      }
+                      animate={
+                        active ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }
+                      }
+                      transition={
+                        reduceMotion
+                          ? { duration: 0 }
+                          : { duration: 0.4, ease: "easeOut" }
+                      }
+                    >
                       <div className="hero-promo__text">
                         <h1 className="section-title hero-promo__title">
                           {item.title}
@@ -211,7 +237,7 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
                       >
                         Llevame ahí
                       </Link>
-                    </div>
+                    </motion.div>
                   </div>
                 </article>
               );
@@ -295,6 +321,6 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
           </div>
         </div>
       ) : null}
-    </section>
+    </motion.section>
   );
 }

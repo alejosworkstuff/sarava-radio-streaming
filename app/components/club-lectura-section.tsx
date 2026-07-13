@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { motion, useReducedMotion } from "motion/react";
 import { ArchiveReveal } from "./archive-reveal";
 import type { NovelEntry } from "@/lib/content";
 
@@ -11,9 +12,23 @@ type ClubLecturaSectionProps = {
 
 function NovelBlock({ novel }: { novel: NovelEntry }) {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const reduceMotion = useReducedMotion();
 
   return (
-    <article className="post-card">
+    <motion.article
+      className="post-card"
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={
+        reduceMotion ? { duration: 0 } : { duration: 0.4, ease: "easeOut" }
+      }
+      whileHover={
+        reduceMotion
+          ? undefined
+          : { y: -4, boxShadow: "0 20px 40px rgba(36, 28, 26, 0.12)" }
+      }
+    >
       <div className="book-feature">
         {novel.coverImage ? (
           <Image
@@ -35,7 +50,7 @@ function NovelBlock({ novel }: { novel: NovelEntry }) {
           </div>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }
 

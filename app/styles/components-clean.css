@@ -367,8 +367,14 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.post-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
 .feature-card:hover,
-.feature-card:focus-within {
+.feature-card:focus-within,
+.post-card:hover,
+.post-card:focus-within {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px rgba(36, 28, 26, 0.12);
 }
