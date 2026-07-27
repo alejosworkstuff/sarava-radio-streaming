@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { ArchiveReveal } from "./archive-reveal";
+import { NovelArchiveGallery } from "./novel-archive-gallery";
 import type { NovelEntry } from "@/lib/content";
 
 type ClubLecturaSectionProps = {
@@ -37,9 +38,11 @@ function NovelBlock({ novel }: { novel: NovelEntry }) {
           <Image
             src={coverSrc}
             alt={`Portada de ${novel.title}`}
-            width={200}
-            height={300}
+            width={240}
+            height={360}
             className="book-cover"
+            sizes="(max-width: 768px) 60vw, 240px"
+            priority
           />
         ) : (
           <div className="book-cover content-placeholder">Sin portada</div>
@@ -93,8 +96,7 @@ export function ClubLecturaSection({ novel, archive }: ClubLecturaSectionProps) 
         emptyMessage="Todavía no hay novelas anteriores en el archivo."
         ariaLabel="Novelas anteriores"
         items={archive}
-        getKey={(entry) => entry.slug}
-        renderItem={(entry) => <NovelBlock novel={entry} />}
+        renderContent={(items) => <NovelArchiveGallery novels={items} />}
       />
     </section>
   );

@@ -8,8 +8,11 @@ type ArchiveRevealProps<T> = {
   emptyMessage: string;
   ariaLabel: string;
   items: T[];
-  renderItem: (item: T) => React.ReactNode;
-  getKey: (item: T) => string;
+  /** Per-item list (default). Ignored when `renderContent` is set. */
+  renderItem?: (item: T) => React.ReactNode;
+  getKey?: (item: T) => string;
+  /** Custom body when open (e.g. cover gallery). */
+  renderContent?: (items: T[]) => React.ReactNode;
 };
 
 export function ArchiveReveal<T>({
@@ -20,8 +23,10 @@ export function ArchiveReveal<T>({
   items,
   renderItem,
   getKey,
+  renderContent,
 }: ArchiveRevealProps<T>) {
   const [open, setOpen] = useState(false);
+  const listId = `${ariaLabel.replace(/\s+/g, "-")}-list`;
 
   return (
     <div className="archive-reveal">
@@ -29,7 +34,7 @@ export function ArchiveReveal<T>({
         type="button"
         className="archive-toggle-btn"
         aria-expanded={open}
-        aria-controls={`${ariaLabel.replace(/\s+/g, "-")}-list`}
+        aria-controls={listId}
         onClick={() => setOpen((value) => !value)}
       >
         {open ? hideLabel : buttonLabel}
@@ -37,17 +42,18 @@ export function ArchiveReveal<T>({
       </button>
 
       {open && (
-        <div
-          id={`${ariaLabel.replace(/\s+/g, "-")}-list`}
-          className="archive-list"
-          aria-label={ariaLabel}
-        >
+        <div id={listId} className="archive-list" aria-label={ariaLabel}>
           {items.length === 0 ? (
             <p className="archive-empty">{emptyMessage}</p>
+          ) : renderContent ? (
+            renderContent(items)
           ) : (
             items.map((item) => (
-              <div className="archive-list-item" key={getKey(item)}>
-                {renderItem(item)}
+              <div
+                className="archive-list-item"
+                key={getKey ? getKey(item) : String(item)}
+              >
+                {renderItem?.(item)}
               </div>
             ))
           )}
