@@ -13,6 +13,9 @@ type ClubLecturaSectionProps = {
 function NovelBlock({ novel }: { novel: NovelEntry }) {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
   const reduceMotion = useReducedMotion();
+  const coverSrc = novel.coverImage.startsWith("http")
+    ? novel.coverImage
+    : `${basePath}${novel.coverImage}`;
 
   return (
     <motion.article
@@ -32,7 +35,7 @@ function NovelBlock({ novel }: { novel: NovelEntry }) {
       <div className="book-feature">
         {novel.coverImage ? (
           <Image
-            src={`${basePath}${novel.coverImage}`}
+            src={coverSrc}
             alt={`Portada de ${novel.title}`}
             width={200}
             height={300}
@@ -48,6 +51,19 @@ function NovelBlock({ novel }: { novel: NovelEntry }) {
               <p key={idx}>{paragraph}</p>
             ))}
           </div>
+          {novel.pdfUrl ? (
+            <p className="mt-4">
+              <a
+                className="pill nav-btn"
+                href={novel.pdfUrl}
+                target="_blank"
+                rel="noreferrer"
+                download
+              >
+                Descargar PDF
+              </a>
+            </p>
+          ) : null}
         </div>
       </div>
     </motion.article>

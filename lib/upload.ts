@@ -51,6 +51,47 @@ export async function uploadPublicImage(
   return { ok: true, url: blob.url };
 }
 
+const PDF_MAX_BYTES = 7 * 1024 * 1024;
+
+export async function uploadPublicPdf(
+  file: File | null | undefined,
+  folder: string,
+): Promise<UploadResult | { ok: true; url: null }> {
+  if (!file || file.size === 0) {
+    return { ok: true, url: null };
+  }
+
+  const isPdf =
+    file.type === "application/pdf" ||
+    file.name.toLowerCase().endsWith(".pdf");
+
+  if (!isPdf) {
+    return { ok: false, error: "El archivo debe ser un PDF." };
+  }
+
+  if (file.size > PDF_MAX_BYTES) {
+    return { ok: false, error: "El PDF supera 7 MB." };
+  }
+
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return {
+      ok: false,
+      error: "Falta BLOB_READ_WRITE_TOKEN. Configurá Vercel Blob.",
+    };
+  }
+
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-").toLowerCase();
+  const pathname = `${folder}/${Date.now()}-${safeName}`;
+
+  const blob = await put(pathname, file, {
+    access: "public",
+    addRandomSuffix: true,
+    contentType: "application/pdf",
+  });
+
+  return { ok: true, url: blob.url };
+}
+
 export function slugify(input: string): string {
   return input
     .normalize("NFD")

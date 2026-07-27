@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Novel" ADD COLUMN IF NOT EXISTS "pdfUrl" TEXT;

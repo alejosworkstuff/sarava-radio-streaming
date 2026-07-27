@@ -52,6 +52,7 @@ model Novel {
   title       String
   coverImage  String
   description String
+  pdfUrl      String?
   active      Boolean  @default(false)
   published   Boolean  @default(true)
   createdAt   DateTime @default(now())

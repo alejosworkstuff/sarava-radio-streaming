@@ -10,6 +10,7 @@ export type NovelEntry = {
   title: string;
   coverImage: string;
   description: string;
+  pdfUrl: string | null;
   active: boolean;
 };
 
@@ -140,6 +141,7 @@ export async function getNovels(): Promise<NovelEntry[]> {
     title: novel.title,
     coverImage: novel.coverImage,
     description: novel.description,
+    pdfUrl: novel.pdfUrl,
     active: novel.active,
   }));
 }
@@ -155,6 +157,7 @@ export async function getNovelOfTheMonth() {
       title: active.title,
       coverImage: active.coverImage,
       description: active.description,
+      pdfUrl: active.pdfUrl,
       active: active.active,
     } satisfies NovelEntry;
   }

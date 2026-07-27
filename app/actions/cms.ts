@@ -4,7 +4,12 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
-import { displayDateFromIso, slugify, uploadPublicImage } from "@/lib/upload";
+import {
+  displayDateFromIso,
+  slugify,
+  uploadPublicImage,
+  uploadPublicPdf,
+} from "@/lib/upload";
 import { eventSchema, novelSchema, postSchema } from "@/lib/content-schemas";
 
 export type ActionResult =
@@ -321,6 +326,12 @@ export async function createNovelAction(formData: FormData): Promise<ActionResul
     return { ok: false, error: "La tapa es obligatoria para una novela nueva." };
   }
 
+  const pdfUpload = await uploadPublicPdf(
+    formData.get("pdf") as File | null,
+    "novels/pdf",
+  );
+  if (!pdfUpload.ok) return pdfUpload;
+
   const parsed = novelSchema.safeParse({
     title,
     coverImage: upload.url,
@@ -346,6 +357,7 @@ export async function createNovelAction(formData: FormData): Promise<ActionResul
       title,
       coverImage: upload.url,
       description,
+      pdfUrl: pdfUpload.url,
       active,
       published,
     },
@@ -367,6 +379,7 @@ export async function updateNovelAction(formData: FormData): Promise<ActionResul
   const description = formString(formData, "description");
   const active = formBool(formData, "active");
   const published = formBool(formData, "published");
+  const removePdf = formBool(formData, "removePdf");
 
   const upload = await uploadPublicImage(
     formData.get("coverImage") as File | null,
@@ -374,6 +387,16 @@ export async function updateNovelAction(formData: FormData): Promise<ActionResul
   );
   if (!upload.ok) return upload;
   const coverImage = upload.url ?? existing.coverImage;
+
+  const pdfUpload = await uploadPublicPdf(
+    formData.get("pdf") as File | null,
+    "novels/pdf",
+  );
+  if (!pdfUpload.ok) return pdfUpload;
+
+  let pdfUrl = existing.pdfUrl;
+  if (removePdf) pdfUrl = null;
+  if (pdfUpload.url) pdfUrl = pdfUpload.url;
 
   const parsed = novelSchema.safeParse({
     title,
@@ -394,7 +417,7 @@ export async function updateNovelAction(formData: FormData): Promise<ActionResul
 
   await prisma.novel.update({
     where: { id },
-    data: { title, coverImage, description, active, published },
+    data: { title, coverImage, description, pdfUrl, active, published },
   });
 
   revalidatePublic();
