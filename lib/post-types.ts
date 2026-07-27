@@ -1,4 +1,5 @@
 export type PostEntry = {
+  id: string;
   slug: string;
   title: string;
   author: string;

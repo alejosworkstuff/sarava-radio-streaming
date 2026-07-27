@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import HeroBanner from "./components/hero-banner";
 import { SiteFooter, SiteHeader } from "./components/site-shell";
-import { getEvents, getNovelOfTheMonth, getPosts } from "@/lib/content";
+import { getEvents, getLogoUrl, getNovelOfTheMonth, getPosts } from "@/lib/content";
 import { buildHeroSlides } from "@/lib/hero-slides";
 import { buildPageMetadata } from "@/lib/site-metadata";
 
@@ -15,12 +15,13 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function Home() {
-  const [posts, events, novel] = await Promise.all([
+  const [posts, events, novel, logoUrl] = await Promise.all([
     getPosts(),
     getEvents(),
     getNovelOfTheMonth(),
+    getLogoUrl(),
   ]);
-  const slides = buildHeroSlides(posts, events, novel);
+  const slides = buildHeroSlides(posts, events, novel, logoUrl);
 
   return (
     <div className="page">

@@ -4,56 +4,42 @@ import type { PostEntry } from "./post-types";
 export type HeroSlide = {
   id: string;
   title: string;
+  /** Publisher / byline shown especially on text-only slides. */
+  author: string;
   subtitle: string;
   description: string;
-  image: string;
+  image: string | null;
+  hasImage: boolean;
   link: string;
 };
 
-const FALLBACK_SLIDES: HeroSlide[] = [
-  {
-    id: "fallback-novel",
-    title: "Club de lectura Saravá",
-    subtitle: "Novela del mes",
-    description:
-      "Descubrí la lectura destacada del mes en nuestro club de lectura.",
-    image: "/club-lectura-las-indignas.webp",
-    link: "/club-lectura",
-  },
-  {
-    id: "fallback-cultural-1",
-    title: "Espacio Cultural",
-    subtitle: "Noticias y novedades",
-    description:
-      "Talleres, encuentros y actividades del proyecto Saravá.",
-    image: "/foto-1.jpg",
-    link: "/espacio-cultural",
-  },
-  {
-    id: "fallback-cultural-2",
-    title: "Comunidad Saravá",
-    subtitle: "Espacio Cultural",
-    description: "Seguí las publicaciones y eventos de nuestra comunidad.",
-    image: "/foto-2.jpg",
-    link: "/espacio-cultural",
-  },
-];
+/** Soft cap so the carousel stays usable if many items are featured. */
+const MAX_SLIDES = 8;
 
-const MAX_SLIDES = 3;
+const PREVIEW_THRESHOLD = 100;
+const PREVIEW_MAX = 180;
 
-function excerpt(text: string, max = 180): string {
-  const trimmed = text.trim();
-  if (trimmed.length <= max) {
-    return trimmed;
-  }
-  return `${trimmed.slice(0, max).trim()}…`;
+function hasRealImage(value: string | null | undefined): boolean {
+  const trimmed = value?.trim() ?? "";
+  if (!trimmed) return false;
+  // Ignore legacy stock fillers sometimes used as placeholders.
+  if (trimmed === "/foto-1.jpg" || trimmed === "/foto-2.jpg") return false;
+  return true;
 }
 
-function eventImage(category: string): string {
-  if (category === "radio") {
-    return "/logo.jpg";
+/**
+ * < 100 chars → show full text.
+ * ≥ 100 chars → truncated preview.
+ */
+export function heroBodyText(text: string): string {
+  const trimmed = text.trim();
+  if (trimmed.length < PREVIEW_THRESHOLD) {
+    return trimmed;
   }
-  return "/foto-2.jpg";
+  if (trimmed.length <= PREVIEW_MAX) {
+    return trimmed;
+  }
+  return `${trimmed.slice(0, PREVIEW_MAX).trim()}…`;
 }
 
 function eventLink(event: EventEntry): string {
@@ -71,36 +57,46 @@ function eventSubtitle(event: EventEntry): string {
 }
 
 function postToSlide(post: PostEntry): HeroSlide {
+  const image = hasRealImage(post.image) ? post.image.trim() : null;
   return {
     id: `post-${post.slug}`,
     title: post.title,
-    subtitle: `${post.author} · Espacio Cultural`,
-    description: excerpt(post.excerpt),
-    image: post.image || "/foto-1.jpg",
+    author: post.author,
+    subtitle: "Espacio Cultural",
+    description: heroBodyText(post.excerpt),
+    image,
+    hasImage: Boolean(image),
     link: `/espacio-cultural/${post.slug}`,
   };
 }
 
-function eventToSlide(event: EventEntry): HeroSlide {
+function eventToSlide(event: EventEntry, logoUrl = "/logo.jpg"): HeroSlide {
+  const image =
+    event.category === "radio" && hasRealImage(logoUrl) ? logoUrl : null;
   return {
     id: `event-${event.slug}`,
     title: event.title,
+    author: "Saravá",
     subtitle: eventSubtitle(event),
-    description: excerpt(event.summary),
-    image: eventImage(event.category),
+    description: heroBodyText(event.summary),
+    image,
+    hasImage: Boolean(image),
     link: eventLink(event),
   };
 }
 
 function novelToSlide(novel: NovelEntry): HeroSlide {
+  const image = hasRealImage(novel.coverImage) ? novel.coverImage.trim() : null;
   return {
     id: `novel-${novel.slug}`,
     title: novel.title,
+    author: "Club de lectura",
     subtitle: "Novela del mes",
-    description: excerpt(
+    description: heroBodyText(
       novel.description.split("\n\n")[0] ?? novel.description,
     ),
-    image: novel.coverImage || "/club-lectura-las-indignas.webp",
+    image,
+    hasImage: Boolean(image),
     link: "/club-lectura",
   };
 }
@@ -111,16 +107,18 @@ type DatedCandidate = {
 };
 
 /**
- * Hero priority:
- * 1. Featured posts + featured events (newest first)
- * 2. Novela del mes (if room)
- * 3. Latest non-featured posts
- * 4. Static fallbacks
+ * Hero shows ONLY admin-spotlighted content (no fillers, no auto novel):
+ * - Posts with `featured`
+ * - Events with `featured`
+ * - Novel only when marked active (novela del mes = su “destacada”)
+ *
+ * Dot count follows this list dynamically.
  */
 export function buildHeroSlides(
   posts: PostEntry[],
   events: EventEntry[] = [],
   novel?: NovelEntry | null,
+  logoUrl = "/logo.jpg",
 ): HeroSlide[] {
   const slides: HeroSlide[] = [];
   const usedIds = new Set<string>();
@@ -139,26 +137,22 @@ export function buildHeroSlides(
       .map((post) => ({ date: post.date, slide: postToSlide(post) })),
     ...events
       .filter((event) => event.featured)
-      .map((event) => ({ date: event.date, slide: eventToSlide(event) })),
+      .map((event) => ({
+        date: event.date,
+        slide: eventToSlide(event, logoUrl),
+      })),
   ].sort((a, b) => b.date.localeCompare(a.date));
 
   for (const item of featured) {
     push(item.slide);
   }
 
-  if (novel?.title) {
+  // Novel only if explicitly marked active (destacada / novela del mes).
+  if (novel?.active && novel.title) {
     push(novelToSlide(novel));
   }
 
-  for (const post of posts.filter((p) => !p.featured)) {
-    push(postToSlide(post));
-  }
-
-  for (const fallback of FALLBACK_SLIDES) {
-    push(fallback);
-  }
-
-  return slides.slice(0, MAX_SLIDES);
+  return slides;
 }
 
 export function resolvePublicAssetSrc(value: string, basePath = ""): string {

@@ -1,4 +1,5 @@
 export type NovelEntry = {
+  id: string;
   slug: string;
   title: string;
   coverImage: string;

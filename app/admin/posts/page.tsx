@@ -53,8 +53,8 @@ export default async function AdminPostsPage() {
             <input name="tags" placeholder="Cultura, Historias" required />
           </label>
           <label>
-            Imagen
-            <input name="image" type="file" accept="image/*" required />
+            Imagen (opcional — sin imagen el hero usa layout de texto)
+            <input name="image" type="file" accept="image/*" />
           </label>
           <label className="admin-check">
             <input name="featured" type="checkbox" />
@@ -111,7 +111,9 @@ export default async function AdminPostsPage() {
                   Tags
                   <input name="tags" defaultValue={post.tags.join(", ")} required />
                 </label>
-                <p className="admin-item-meta">Imagen actual: {post.image}</p>
+                <p className="admin-item-meta">
+                  Imagen actual: {post.image ? post.image : "sin imagen (layout texto)"}
+                </p>
                 <label>
                   Reemplazar imagen
                   <input name="image" type="file" accept="image/*" />

@@ -6,13 +6,14 @@
 
 body {
   background:
-    radial-gradient(1200px 500px at 10% -10%, rgba(182, 107, 78, 0.18), transparent 60%),
-    radial-gradient(900px 500px at 90% 0%, rgba(233, 196, 168, 0.35), transparent 55%),
-    linear-gradient(180deg, var(--bg) 0%, #fffaf4 60%, #f6ece2 100%);
+    radial-gradient(1200px 500px at 10% -10%, var(--glow-a), transparent 60%),
+    radial-gradient(900px 500px at 90% 0%, var(--glow-b), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--wash-mid) 60%, var(--wash-end) 100%);
   color: var(--text);
   font-family: var(--font-body), system-ui, sans-serif;
   min-height: 100vh;
   line-height: 1.6;
+  transition: background 0.35s ease, color 0.25s ease;
 }
 
 img {

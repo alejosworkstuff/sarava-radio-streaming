@@ -1,5 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { currentUser } from "@clerk/nextjs/server";
+import { HeaderAuth } from "./header-auth";
+import { PaletteToggle } from "./palette-toggle";
+import { isAllowedAdminEmail } from "@/lib/admin-auth";
+import { getLogoUrl } from "@/lib/content";
+import { resolvePublicAssetSrc } from "@/lib/hero-slides";
 
 const navItems = [
   { href: "/radio-streaming", label: "Radio streaming" },
@@ -14,49 +20,65 @@ type SiteHeaderProps = {
   home?: boolean;
 };
 
-export function SiteHeader({ title, home = false }: SiteHeaderProps) {
+export async function SiteHeader({ title, home = false }: SiteHeaderProps) {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const logoUrl = await getLogoUrl();
+  const logoSrc = resolvePublicAssetSrc(logoUrl, basePath);
+  const user = await currentUser();
+  const email = user?.emailAddresses[0]?.emailAddress;
+  const canTogglePalette = isAllowedAdminEmail(email);
 
   return (
-    <header className={`site-header${home ? " site-header--home" : ""}`} style={{ borderBottom: 'none' }}>
-      <div className="brand-nav">
-        <div className="brand">
-          <Image
-            src={`${basePath}/logo.jpg`}
-alt="Logo del Espacio Cultural Sarava"
-            width={home ? 80 : 64}
-            height={home ? 80 : 64}
-            className="brand-logo"
-            priority={home}
-          />
-          <div>
-            <h1 className="brand-name">{title}</h1>
-          </div>
+    <header
+      className={`site-header${home ? " site-header--home" : ""}`}
+      style={{ borderBottom: "none" }}
+    >
+      <div className="header-top">
+        <div className="brand-nav">
+          <Link
+            href="/"
+            className="brand"
+            aria-label="Inicio — Espacio Cultural Saravá"
+          >
+            <Image
+              src={logoSrc}
+              alt="Logo del Espacio Cultural Sarava"
+              width={96}
+              height={96}
+              className="brand-logo"
+              priority={home}
+            />
+          </Link>
+          <nav className="nav-links compact-nav" aria-label="Navegación principal">
+            {!home && <Link href="/">Inicio</Link>}
+            {navItems.map((item) =>
+              item.href === "/espacio-cultural" ? (
+                <span key={item.href} className="nav-item-with-toggle">
+                  <Link href={item.href}>{item.label}</Link>
+                  <PaletteToggle enabled={canTogglePalette} />
+                </span>
+              ) : (
+                <Link href={item.href} key={item.href}>
+                  {item.label}
+                </Link>
+              ),
+            )}
+          </nav>
         </div>
-        {/* Original nav position - commented for revert:
-        <nav className="nav-links" aria-label="Navegación principal">
-          {!home && <Link href="/">Inicio</Link>}
-          {navItems.map((item) => (
-            <Link href={item.href} key={item.href}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        */}
-        <nav className="nav-links compact-nav" aria-label="Navegación principal">
-          {!home && <Link href="/">Inicio</Link>}
-          {navItems.map((item) => (
-            <Link href={item.href} key={item.href}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <HeaderAuth />
       </div>
+      <h1 className="brand-name">{title}</h1>
     </header>
   );
 }
 
-export function SiteFooter({ home = false, hideSocial = false }: { home?: boolean; hideSocial?: boolean }) {
+export function SiteFooter({
+  home = false,
+  hideSocial = false,
+}: {
+  home?: boolean;
+  hideSocial?: boolean;
+}) {
   return (
     <footer className="footer">
       {!hideSocial && (

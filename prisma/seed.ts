@@ -149,8 +149,14 @@ async function main() {
     },
   });
 
+  await prisma.siteSettings.upsert({
+    where: { id: "site" },
+    create: { id: "site", logoUrl: null },
+    update: {},
+  });
+
   console.log(
-    `Seeded ${posts.length} posts, ${events.length} events, ${novels.length} novels, about=1`,
+    `Seeded ${posts.length} posts, ${events.length} events, ${novels.length} novels, about=1, siteSettings=1`,
   );
 }
 

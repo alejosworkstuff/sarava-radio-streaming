@@ -19,7 +19,7 @@ export const postSchema = z.object({
   displayDate: z.string().min(1, "displayDate is required"),
   excerpt: z.string().min(1, "excerpt is required"),
   tags: z.array(z.string().min(1)).min(1, "tags must have at least one entry"),
-  image: z.string().min(1, "image is required"),
+  image: z.string(),
   featured: z.boolean().default(false),
 });
 

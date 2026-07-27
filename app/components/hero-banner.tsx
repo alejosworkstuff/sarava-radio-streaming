@@ -77,7 +77,54 @@ function HeroSlideImage({
       height={height ?? 800}
       sizes={sizes}
       className={className}
+      priority={priority}
     />
+  );
+}
+
+function SlideBody({
+  item,
+  active,
+  reduceMotion,
+}: {
+  item: HeroSlide;
+  active: boolean;
+  reduceMotion: boolean | null;
+}) {
+  return (
+    <motion.div
+      className="hero-promo__body"
+      key={item.id}
+      initial={reduceMotion || !active ? false : { opacity: 0, y: 12 }}
+      animate={active ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+      transition={
+        reduceMotion ? { duration: 0 } : { duration: 0.4, ease: "easeOut" }
+      }
+    >
+      <div className="hero-promo__text">
+        {item.author ? (
+          <p className="hero-promo__author">{item.author}</p>
+        ) : null}
+        <h1 className="section-title hero-promo__title">{item.title}</h1>
+        {item.subtitle ? (
+          <p className="hero-subtitle hero-promo__subtitle">{item.subtitle}</p>
+        ) : null}
+        {item.description ? (
+          <p className="hero-promo__description">{item.description}</p>
+        ) : null}
+      </div>
+
+      <Link
+        href={item.link}
+        className="hero-promo__cta cta"
+        tabIndex={active ? undefined : -1}
+        {...(item.link.startsWith("http")
+          ? { target: "_blank", rel: "noreferrer" }
+          : {})}
+      >
+        Llevame ahí
+      </Link>
+    </motion.div>
   );
 }
 
@@ -145,12 +192,28 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
     };
   }, [lightboxIndex]);
 
+  if (n === 0) {
+    return (
+      <section className="hero-promo" aria-label="Destacados">
+        <div className="hero-promo__shell">
+          <p className="hero-subtitle" style={{ padding: "1.5rem" }}>
+            Todavía no hay destacados. Marcá posts, eventos o la novela del mes
+            como destacados desde el admin para que aparezcan acá.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
   const trackStyle: React.CSSProperties = {
     width: `${n * 100}%`,
     transform: `translateX(-${(current * 100) / n}%)`,
   };
 
-  const lightboxSlide = lightboxIndex !== null ? slides[lightboxIndex] : null;
+  const lightboxSlide =
+    lightboxIndex !== null && slides[lightboxIndex]?.hasImage
+      ? slides[lightboxIndex]
+      : null;
 
   return (
     <motion.section
@@ -167,6 +230,8 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
           <div className="hero-promo__track" style={trackStyle}>
             {slides.map((item, idx) => {
               const active = current === idx;
+              const textOnly = !item.hasImage || !item.image;
+
               return (
                 <article
                   key={item.id}
@@ -175,68 +240,44 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
                   aria-hidden={!active}
                   {...(!active ? { inert: true } : {})}
                 >
-                  <div className="hero-promo__content">
-                    <button
-                      type="button"
-                      className="hero-promo__media"
-                      onClick={() => openLightbox(idx)}
-                      aria-label={`Ver imagen completa: ${item.title}`}
-                      tabIndex={active ? undefined : -1}
-                    >
-                      <HeroSlideImage
-                        src={item.image}
-                        alt=""
-                        fill
-                        sizes="(max-width: 768px) 92vw, 320px"
-                        className="hero-promo__image"
-                        priority={idx === 0}
-                      />
-                      <span className="hero-promo__media-hint" aria-hidden="true">
-                        <span className="hero-promo__media-hint-icon">⤢</span>
-                        Ver completa
-                      </span>
-                    </button>
-
-                    <motion.div
-                      className="hero-promo__body"
-                      key={item.id}
-                      initial={
-                        reduceMotion || !active
-                          ? false
-                          : { opacity: 0, y: 12 }
-                      }
-                      animate={
-                        active ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }
-                      }
-                      transition={
-                        reduceMotion
-                          ? { duration: 0 }
-                          : { duration: 0.4, ease: "easeOut" }
-                      }
-                    >
-                      <div className="hero-promo__text">
-                        <h1 className="section-title hero-promo__title">
-                          {item.title}
-                        </h1>
-                        <p className="hero-subtitle hero-promo__subtitle">
-                          {item.subtitle}
-                        </p>
-                        <p className="hero-promo__description">
-                          {item.description}
-                        </p>
-                      </div>
-
-                      <Link
-                        href={item.link}
-                        className="hero-promo__cta cta"
+                  <div
+                    className={
+                      textOnly
+                        ? "hero-promo__content hero-promo__content--text-only"
+                        : "hero-promo__content"
+                    }
+                  >
+                    {!textOnly ? (
+                      <button
+                        type="button"
+                        className="hero-promo__media"
+                        onClick={() => openLightbox(idx)}
+                        aria-label={`Ver imagen completa: ${item.title}`}
                         tabIndex={active ? undefined : -1}
-                        {...(item.link.startsWith("http")
-                          ? { target: "_blank", rel: "noreferrer" }
-                          : {})}
                       >
-                        Llevame ahí
-                      </Link>
-                    </motion.div>
+                        <HeroSlideImage
+                          src={item.image!}
+                          alt=""
+                          fill
+                          sizes="(max-width: 768px) 92vw, 320px"
+                          className="hero-promo__image"
+                          priority={idx === 0}
+                        />
+                        <span
+                          className="hero-promo__media-hint"
+                          aria-hidden="true"
+                        >
+                          <span className="hero-promo__media-hint-icon">⤢</span>
+                          Ver completa
+                        </span>
+                      </button>
+                    ) : null}
+
+                    <SlideBody
+                      item={item}
+                      active={active}
+                      reduceMotion={reduceMotion}
+                    />
                   </div>
                 </article>
               );
@@ -244,46 +285,48 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
           </div>
         </div>
 
-        <nav
-          className="hero-promo__pager slider-controls"
-          aria-label="Carrusel principal"
-        >
-          <button
-            type="button"
-            onClick={prevSlide}
-            className="pill nav-btn"
-            aria-label="Anterior"
+        {n > 1 ? (
+          <nav
+            className="hero-promo__pager slider-controls"
+            aria-label="Carrusel principal"
           >
-            ← Anterior
-          </button>
-          <div className="slider-dots">
-            {slides.map((item, dotIdx) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setCurrent(dotIdx)}
-                aria-label={`Slide ${dotIdx + 1}: ${item.title}`}
-                aria-current={current === dotIdx ? "true" : undefined}
-                className={
-                  current === dotIdx
-                    ? "hero-slider-dot hero-slider-dot--active"
-                    : "hero-slider-dot"
-                }
-              />
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={nextSlide}
-            className="pill nav-btn"
-            aria-label="Siguiente"
-          >
-            Siguiente →
-          </button>
-        </nav>
+            <button
+              type="button"
+              onClick={prevSlide}
+              className="pill nav-btn"
+              aria-label="Anterior"
+            >
+              ← Anterior
+            </button>
+            <div className="slider-dots">
+              {slides.map((item, dotIdx) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setCurrent(dotIdx)}
+                  aria-label={`Slide ${dotIdx + 1}: ${item.title}`}
+                  aria-current={current === dotIdx ? "true" : undefined}
+                  className={
+                    current === dotIdx
+                      ? "hero-slider-dot hero-slider-dot--active"
+                      : "hero-slider-dot"
+                  }
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={nextSlide}
+              className="pill nav-btn"
+              aria-label="Siguiente"
+            >
+              Siguiente →
+            </button>
+          </nav>
+        ) : null}
       </div>
 
-      {lightboxSlide ? (
+      {lightboxSlide?.image ? (
         <div
           className="hero-promo-lightbox"
           role="dialog"

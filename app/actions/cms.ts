@@ -27,6 +27,8 @@ function revalidatePublic() {
   revalidatePath("/admin/events");
   revalidatePath("/admin/novels");
   revalidatePath("/admin/about");
+  revalidatePath("/admin/settings");
+  revalidatePath("/admin/comments");
 }
 
 function formString(formData: FormData, key: string) {
@@ -86,9 +88,6 @@ export async function createPostAction(formData: FormData): Promise<ActionResult
     "posts",
   );
   if (!upload.ok) return upload;
-  if (!upload.url) {
-    return { ok: false, error: "La imagen es obligatoria para un post nuevo." };
-  }
 
   const slug = await uniqueSlug(title, async (candidate) => {
     const found = await prisma.post.findUnique({ where: { slug: candidate } });
@@ -104,7 +103,7 @@ export async function createPostAction(formData: FormData): Promise<ActionResult
       displayDate,
       excerpt,
       tags,
-      image: upload.url,
+      image: upload.url ?? "",
       featured,
       published,
     },
@@ -523,4 +522,50 @@ export async function updateAboutAction(formData: FormData): Promise<ActionResul
 
   revalidatePublic();
   return { ok: true, message: "Sobre nosotras actualizado" };
+}
+
+export async function updateSiteLogoAction(
+  formData: FormData,
+): Promise<ActionResult> {
+  const admin = await requireAdmin();
+  if (!admin.ok) return { ok: false, error: admin.error };
+
+  const upload = await uploadPublicImage(
+    formData.get("logo") as File | null,
+    "branding",
+  );
+  if (!upload.ok) return upload;
+  if (!upload.url) {
+    return { ok: false, error: "Elegí una imagen de logo para subir." };
+  }
+
+  await prisma.siteSettings.upsert({
+    where: { id: "site" },
+    create: {
+      id: "site",
+      logoUrl: upload.url,
+    },
+    update: {
+      logoUrl: upload.url,
+    },
+  });
+
+  revalidatePath("/", "layout");
+  revalidatePublic();
+  return { ok: true, message: "Logo actualizado en todo el sitio" };
+}
+
+export async function resetSiteLogoAction(): Promise<ActionResult> {
+  const admin = await requireAdmin();
+  if (!admin.ok) return { ok: false, error: admin.error };
+
+  await prisma.siteSettings.upsert({
+    where: { id: "site" },
+    create: { id: "site", logoUrl: null },
+    update: { logoUrl: null },
+  });
+
+  revalidatePath("/", "layout");
+  revalidatePublic();
+  return { ok: true, message: "Logo restaurado al predeterminado" };
 }

@@ -10,6 +10,8 @@ const nav = [
   { href: "/admin/events", label: "Eventos" },
   { href: "/admin/novels", label: "Novelas" },
   { href: "/admin/about", label: "Sobre nosotras" },
+  { href: "/admin/comments", label: "Comentarios" },
+  { href: "/admin/settings", label: "Logo" },
 ] as const;
 
 export default async function AdminLayout({

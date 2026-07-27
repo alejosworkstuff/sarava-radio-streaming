@@ -7,8 +7,19 @@ import { prisma } from "./db";
 export type { PostEntry } from "./post-types";
 export type { AboutContent, EventEntry, NovelEntry } from "./content-types";
 
+const DEFAULT_LOGO = "/logo.jpg";
+
 function toIsoDate(value: Date): string {
   return value.toISOString().slice(0, 10);
+}
+
+export async function getSiteSettings() {
+  return prisma.siteSettings.findUnique({ where: { id: "site" } });
+}
+
+export async function getLogoUrl(): Promise<string> {
+  const settings = await getSiteSettings();
+  return settings?.logoUrl?.trim() || DEFAULT_LOGO;
 }
 
 export async function getPosts(): Promise<PostEntry[]> {
@@ -18,6 +29,7 @@ export async function getPosts(): Promise<PostEntry[]> {
   });
 
   return posts.map((post) => ({
+    id: post.id,
     slug: post.slug,
     title: post.title,
     author: post.author,
@@ -38,6 +50,7 @@ export async function getPostBySlug(slug: string) {
   if (!post) return undefined;
 
   return {
+    id: post.id,
     slug: post.slug,
     title: post.title,
     author: post.author,
@@ -103,6 +116,7 @@ export async function getNovels(): Promise<NovelEntry[]> {
   });
 
   return novels.map((novel) => ({
+    id: novel.id,
     slug: novel.slug,
     title: novel.title,
     coverImage: novel.coverImage,
@@ -119,6 +133,7 @@ export async function getNovelOfTheMonth() {
 
   if (active) {
     return {
+      id: active.id,
       slug: active.slug,
       title: active.title,
       coverImage: active.coverImage,

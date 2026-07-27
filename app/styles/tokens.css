@@ -5,10 +5,20 @@
   --muted: #5b4d46;
   --accent: #b66b4e;
   --accent-strong: #8e4d36;
---card: #fefbf3;
+  --card: #fefbf3;
   --border: #ead8c9;
   --shadow: 0 24px 60px rgba(36, 28, 26, 0.12);
---radius-lg: 32px;
+  --glow-a: rgba(182, 107, 78, 0.18);
+  --glow-b: rgba(233, 196, 168, 0.35);
+  --wash-mid: #fffaf4;
+  --wash-end: #f6ece2;
+  --nav-pill-bg: rgba(182, 107, 78, 0.08);
+  --nav-pill-border: rgba(182, 107, 78, 0.18);
+  --nav-pill-hover-bg: rgba(182, 107, 78, 0.16);
+  --nav-pill-hover-border: rgba(182, 107, 78, 0.28);
+  --nav-pill-shadow: rgba(182, 107, 78, 0.08);
+  --nav-pill-shadow-hover: rgba(182, 107, 78, 0.14);
+  --radius-lg: 32px;
   --radius-md: 16px;
   --radius-sm: 12px;
   --space-1: 0.5rem;
@@ -21,6 +31,37 @@
   --space-8: 6rem;
   --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
   --font-body: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+/**
+ * Preview palette: pastel versions of the Saravá logo colors
+ * (naranja, magenta, turquesa, azul, verde sobre crema suave).
+ */
+html[data-theme="logo-pastel"] {
+  --bg: #eef7f4;
+  --bg-strong: #d9eee6;
+  --text: #2c3348;
+  --muted: #5d6b7a;
+  --accent: #e8a0b8;
+  --accent-strong: #6eb8c9;
+  --card: #fff7fb;
+  --border: #c9e4dc;
+  --shadow: 0 24px 60px rgba(80, 120, 130, 0.14);
+  --glow-a: rgba(110, 184, 201, 0.28);
+  --glow-b: rgba(232, 160, 184, 0.28);
+  --wash-mid: #f3faf7;
+  --wash-end: #e8f0fb;
+  --nav-pill-bg: rgba(110, 184, 201, 0.14);
+  --nav-pill-border: rgba(110, 184, 201, 0.28);
+  --nav-pill-hover-bg: rgba(232, 160, 184, 0.2);
+  --nav-pill-hover-border: rgba(232, 160, 184, 0.4);
+  --nav-pill-shadow: rgba(110, 184, 201, 0.12);
+  --nav-pill-shadow-hover: rgba(232, 160, 184, 0.2);
+  --logo-orange: #f0c39a;
+  --logo-magenta: #e8a0b8;
+  --logo-turquoise: #8fd4c8;
+  --logo-blue: #9bb8e8;
+  --logo-green: #b7e0c6;
 }
 
 @theme inline {

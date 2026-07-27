@@ -5,16 +5,16 @@ export default function SignInPage() {
     <main className="admin-auth">
       <div className="admin-auth-card">
         <p className="pill">Espacio Cultural Saravá</p>
-        <h1 className="admin-auth-title">Panel de gestión</h1>
+        <h1 className="admin-auth-title">Ingresar</h1>
         <p className="admin-auth-copy">
-          Ingresá con la cuenta compartida del espacio para publicar y editar
-          contenido.
+          Iniciá sesión para comentar publicaciones y la novela del mes. El
+          equipo de gestión usa la misma puerta para entrar al panel admin.
         </p>
         <SignIn
           routing="path"
           path="/sign-in"
-          fallbackRedirectUrl="/admin"
-          signUpUrl="/sign-in"
+          fallbackRedirectUrl="/"
+          signUpUrl="/sign-up"
         />
       </div>
     </main>
