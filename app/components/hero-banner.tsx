@@ -115,17 +115,13 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
   }, []);
 
   React.useEffect(() => {
-    if (n <= 1 || prefersReducedMotion) {
+    if (n <= 1 || prefersReducedMotion || lightboxIndex !== null) {
       return;
     }
 
-    const timer = window.setInterval(nextSlide, 2000);
+    const timer = window.setInterval(nextSlide, 4000);
     return () => window.clearInterval(timer);
-  }, [n, nextSlide, prefersReducedMotion]);
-
-  React.useEffect(() => {
-    setLightboxIndex(null);
-  }, [current]);
+  }, [n, nextSlide, prefersReducedMotion, lightboxIndex]);
 
   React.useEffect(() => {
     if (lightboxIndex === null) {
