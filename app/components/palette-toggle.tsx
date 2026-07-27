@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import {
   THEME_LOGO_PASTEL,
   THEME_STORAGE_KEY,
@@ -11,24 +11,54 @@ type PaletteToggleProps = {
   enabled: boolean;
 };
 
-function applyTheme(theme: string) {
+const listeners = new Set<() => void>();
+
+function subscribe(onStoreChange: () => void) {
+  listeners.add(onStoreChange);
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === THEME_STORAGE_KEY || event.key === null) {
+      onStoreChange();
+    }
+  };
+  window.addEventListener("storage", onStorage);
+  return () => {
+    listeners.delete(onStoreChange);
+    window.removeEventListener("storage", onStorage);
+  };
+}
+
+function getThemeSnapshot() {
+  return window.localStorage.getItem(THEME_STORAGE_KEY) === THEME_LOGO_PASTEL;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
+function applyTheme(isPastel: boolean) {
   if (typeof document === "undefined") return;
-  if (theme === THEME_LOGO_PASTEL) {
+  if (isPastel) {
     document.documentElement.setAttribute("data-theme", THEME_LOGO_PASTEL);
   } else {
     document.documentElement.removeAttribute("data-theme");
   }
 }
 
-export function PaletteToggle({ enabled }: PaletteToggleProps) {
-  const [active, setActive] = useState(false);
+function setPastelTheme(isPastel: boolean) {
+  window.localStorage.setItem(
+    THEME_STORAGE_KEY,
+    isPastel ? THEME_LOGO_PASTEL : "default",
+  );
+  applyTheme(isPastel);
+  listeners.forEach((listener) => listener());
+}
 
-  useEffect(() => {
-    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-    const isPastel = stored === THEME_LOGO_PASTEL;
-    setActive(isPastel);
-    applyTheme(isPastel ? THEME_LOGO_PASTEL : "default");
-  }, []);
+export function PaletteToggle({ enabled }: PaletteToggleProps) {
+  const active = useSyncExternalStore(
+    subscribe,
+    getThemeSnapshot,
+    getServerSnapshot,
+  );
 
   if (!enabled) {
     return null;
@@ -49,15 +79,7 @@ export function PaletteToggle({ enabled }: PaletteToggleProps) {
           ? "Paleta pastel activa — clic para volver"
           : "Probar reversión pastel del logo"
       }
-      onClick={() => {
-        const next = !active;
-        setActive(next);
-        window.localStorage.setItem(
-          THEME_STORAGE_KEY,
-          next ? THEME_LOGO_PASTEL : "default",
-        );
-        applyTheme(next ? THEME_LOGO_PASTEL : "default");
-      }}
+      onClick={() => setPastelTheme(!active)}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
