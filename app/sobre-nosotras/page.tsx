@@ -21,7 +21,7 @@ export default async function SobreNosotrasPage() {
 
   return (
     <div className="page">
-      <SiteHeader pill="Sobre nosotrxs" title="Espacio Cultural Saravá" />
+      <SiteHeader title="Espacio Cultural Saravá" />
 
       <main>
         <section className="hero">

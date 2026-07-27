@@ -21,7 +21,6 @@ export default async function Home() {
   return (
     <div className="page">
       <SiteHeader
-        pill="Espacio Cultural Sarava"
         title="Un lugar para compartir voces"
         home
       />

@@ -10,12 +10,11 @@ const navItems = [
 ] as const;
 
 type SiteHeaderProps = {
-  pill: string;
   title: string;
   home?: boolean;
 };
 
-export function SiteHeader({ pill, title, home = false }: SiteHeaderProps) {
+export function SiteHeader({ title, home = false }: SiteHeaderProps) {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   return (
@@ -31,7 +30,6 @@ alt="Logo del Espacio Cultural Sarava"
             priority={home}
           />
           <div>
-            <p className="pill">{pill}</p>
             <h1 className="brand-name">{title}</h1>
           </div>
         </div>

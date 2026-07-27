@@ -14,7 +14,7 @@ export function generateMetadata(): Metadata {
 export default function PodcastPage() {
   return (
     <div className="page">
-      <SiteHeader pill="Saravá Podcast" title="Espacio Cultural Sarava" />
+      <SiteHeader title="Espacio Cultural Sarava" />
 
       <main>
         <section className="hero" style={{ textAlign: "center" }}>

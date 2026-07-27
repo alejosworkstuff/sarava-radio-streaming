@@ -17,10 +17,7 @@ export default async function RadioStreamingPage() {
 
   return (
     <div className="page">
-      <SiteHeader
-        pill="Saravá radio streaming"
-        title="Espacio Cultural Sarava"
-      />
+      <SiteHeader title="Espacio Cultural Sarava" />
 
       <main>
         <section className="section">
