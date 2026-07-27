@@ -61,15 +61,19 @@ export function NovelEditor({ mode, initial }: NovelEditorProps) {
   const [published, setPublished] = useState(initial.published);
 
   useEffect(() => {
-    const draft = readDraft(key);
-    // Restore draft only when working on unpublished content (or new form).
-    if (draft && (!initial.published || mode === "create")) {
-      setTitle(draft.title);
-      setDescription(draft.description);
-      setActive(draft.active);
-      setPublished(draft.published);
-    }
-    setReady(true);
+    // Defer so draft hydration is not a sync setState-in-effect (React Compiler lint).
+    const id = window.setTimeout(() => {
+      const draft = readDraft(key);
+      // Restore draft only when working on unpublished content (or new form).
+      if (draft && (!initial.published || mode === "create")) {
+        setTitle(draft.title);
+        setDescription(draft.description);
+        setActive(draft.active);
+        setPublished(draft.published);
+      }
+      setReady(true);
+    }, 0);
+    return () => window.clearTimeout(id);
   }, [key, initial.published, mode]);
 
   useEffect(() => {
