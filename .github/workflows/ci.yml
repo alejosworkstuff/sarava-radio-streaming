@@ -24,5 +24,10 @@ jobs:
 
       - name: Run CI
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          # Placeholders allow prisma generate + next build without live secrets.
+          # Pages are force-dynamic so they do not query DB at build time.
+          DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://ci:ci@127.0.0.1:5432/ci' }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_ci_placeholder' }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY || 'sk_test_ci_placeholder' }}
+          NEXT_PUBLIC_SITE_URL: https://sarava-radio-streaming.vercel.app
         run: npm run ci

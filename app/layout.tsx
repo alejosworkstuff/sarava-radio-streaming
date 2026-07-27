@@ -2,6 +2,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { rootMetadata } from "@/lib/site-metadata";
 
+/** CMS content is DB-backed; always render on demand. */
+export const dynamic = "force-dynamic";
+
 export const viewport = {
   width: "device-width",
   initialScale: 1,

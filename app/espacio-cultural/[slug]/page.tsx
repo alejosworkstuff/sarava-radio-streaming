@@ -3,17 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteFooter, SiteHeader } from "../../components/site-shell";
-import { getPostBySlug, getPosts } from "@/lib/content";
+import { getPostBySlug } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/site-metadata";
+
+export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
-
-export async function generateStaticParams() {
-  const posts = await getPosts();
-  return posts.map((post) => ({ slug: post.slug }));
-}
 
 export async function generateMetadata({
   params,

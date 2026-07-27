@@ -37,7 +37,7 @@ async function uniqueSlug(
   base: string,
   exists: (slug: string) => Promise<boolean>,
 ) {
-  let slug = slugify(base) || `item-${Date.now()}`;
+  const slug = slugify(base) || `item-${Date.now()}`;
   if (!(await exists(slug))) return slug;
   let i = 2;
   while (await exists(`${slug}-${i}`)) i += 1;
