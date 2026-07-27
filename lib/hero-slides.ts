@@ -1,4 +1,5 @@
-import type { NovelEntry, PostEntry } from "./content";
+import type { NovelEntry, EventEntry } from "./content-types";
+import type { PostEntry } from "./post-types";
 
 export type HeroSlide = {
   id: string;
@@ -38,6 +39,8 @@ const FALLBACK_SLIDES: HeroSlide[] = [
   },
 ];
 
+const MAX_SLIDES = 3;
+
 function excerpt(text: string, max = 180): string {
   const trimmed = text.trim();
   if (trimmed.length <= max) {
@@ -46,51 +49,116 @@ function excerpt(text: string, max = 180): string {
   return `${trimmed.slice(0, max).trim()}…`;
 }
 
+function eventImage(category: string): string {
+  if (category === "radio") {
+    return "/logo.jpg";
+  }
+  return "/foto-2.jpg";
+}
+
+function eventLink(event: EventEntry): string {
+  if (event.category === "radio") {
+    return "/radio-streaming";
+  }
+  return event.ctaHref;
+}
+
+function eventSubtitle(event: EventEntry): string {
+  if (event.category === "radio") {
+    return "Radio streaming";
+  }
+  return event.displayDate || "Evento";
+}
+
+function postToSlide(post: PostEntry): HeroSlide {
+  return {
+    id: `post-${post.slug}`,
+    title: post.title,
+    subtitle: `${post.author} · Espacio Cultural`,
+    description: excerpt(post.excerpt),
+    image: post.image || "/foto-1.jpg",
+    link: `/espacio-cultural/${post.slug}`,
+  };
+}
+
+function eventToSlide(event: EventEntry): HeroSlide {
+  return {
+    id: `event-${event.slug}`,
+    title: event.title,
+    subtitle: eventSubtitle(event),
+    description: excerpt(event.summary),
+    image: eventImage(event.category),
+    link: eventLink(event),
+  };
+}
+
+function novelToSlide(novel: NovelEntry): HeroSlide {
+  return {
+    id: `novel-${novel.slug}`,
+    title: novel.title,
+    subtitle: "Novela del mes",
+    description: excerpt(
+      novel.description.split("\n\n")[0] ?? novel.description,
+    ),
+    image: novel.coverImage || "/club-lectura-las-indignas.webp",
+    link: "/club-lectura",
+  };
+}
+
+type DatedCandidate = {
+  date: string;
+  slide: HeroSlide;
+};
+
+/**
+ * Hero priority:
+ * 1. Featured posts + featured events (newest first)
+ * 2. Novela del mes (if room)
+ * 3. Latest non-featured posts
+ * 4. Static fallbacks
+ */
 export function buildHeroSlides(
   posts: PostEntry[],
+  events: EventEntry[] = [],
   novel?: NovelEntry | null,
 ): HeroSlide[] {
   const slides: HeroSlide[] = [];
+  const usedIds = new Set<string>();
+
+  const push = (slide: HeroSlide) => {
+    if (slides.length >= MAX_SLIDES || usedIds.has(slide.id)) {
+      return;
+    }
+    usedIds.add(slide.id);
+    slides.push(slide);
+  };
+
+  const featured: DatedCandidate[] = [
+    ...posts
+      .filter((post) => post.featured)
+      .map((post) => ({ date: post.date, slide: postToSlide(post) })),
+    ...events
+      .filter((event) => event.featured)
+      .map((event) => ({ date: event.date, slide: eventToSlide(event) })),
+  ].sort((a, b) => b.date.localeCompare(a.date));
+
+  for (const item of featured) {
+    push(item.slide);
+  }
 
   if (novel?.title) {
-    slides.push({
-      id: `novel-${novel.slug}`,
-      title: novel.title,
-      subtitle: "Novela del mes",
-      description: excerpt(
-        novel.description.split("\n\n")[0] ?? novel.description,
-      ),
-      image: novel.coverImage || "/club-lectura-las-indignas.webp",
-      link: "/club-lectura",
-    });
+    push(novelToSlide(novel));
   }
 
-  for (const post of posts.slice(0, 2)) {
-    slides.push({
-      id: post.slug,
-      title: post.title,
-      subtitle: `${post.author} · Espacio Cultural`,
-      description: excerpt(post.excerpt),
-      image: post.image || "/foto-1.jpg",
-      link: `/espacio-cultural/${post.slug}`,
-    });
+  for (const post of posts.filter((p) => !p.featured)) {
+    push(postToSlide(post));
   }
 
-  if (slides.length >= 3) {
-    return slides.slice(0, 3);
-  }
-
-  const padded = [...slides];
   for (const fallback of FALLBACK_SLIDES) {
-    if (padded.length >= 3) {
-      break;
-    }
-    if (!padded.some((slide) => slide.id === fallback.id)) {
-      padded.push(fallback);
-    }
+    push(fallback);
   }
 
-  return padded.slice(0, 3);
+  return slides.slice(0, MAX_SLIDES);
 }
 
 export function resolvePublicAssetSrc(value: string, basePath = ""): string {

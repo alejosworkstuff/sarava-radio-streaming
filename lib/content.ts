@@ -1,47 +1,11 @@
 import "server-only";
 
 import type { PostEntry } from "./post-types";
+import type { AboutContent, EventEntry, NovelEntry } from "./content-types";
 import { prisma } from "./db";
 
 export type { PostEntry } from "./post-types";
-
-export type NovelEntry = {
-  slug: string;
-  title: string;
-  coverImage: string;
-  description: string;
-  pdfUrl: string | null;
-  active: boolean;
-};
-
-export type EventEntry = {
-  slug: string;
-  title: string;
-  date: string;
-  displayDate: string;
-  summary: string;
-  schedule: string;
-  ctaLabel: string;
-  ctaHref: string;
-  category: string;
-  featured: boolean;
-};
-
-export type AboutContent = {
-  highlights: {
-    title: string;
-    description: string;
-    href: string;
-    cta: string;
-  }[];
-  paragraphs: string[];
-  team: {
-    name: string;
-    image: string;
-    alt: string;
-    bio: string;
-  }[];
-};
+export type { AboutContent, EventEntry, NovelEntry } from "./content-types";
 
 function toIsoDate(value: Date): string {
   return value.toISOString().slice(0, 10);
@@ -62,6 +26,7 @@ export async function getPosts(): Promise<PostEntry[]> {
     excerpt: post.excerpt,
     tags: post.tags,
     image: post.image,
+    featured: post.featured,
   }));
 }
 
@@ -81,6 +46,7 @@ export async function getPostBySlug(slug: string) {
     excerpt: post.excerpt,
     tags: post.tags,
     image: post.image,
+    featured: post.featured,
   } satisfies PostEntry;
 }
 

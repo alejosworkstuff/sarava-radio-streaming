@@ -20,6 +20,7 @@ export const postSchema = z.object({
   excerpt: z.string().min(1, "excerpt is required"),
   tags: z.array(z.string().min(1)).min(1, "tags must have at least one entry"),
   image: z.string().min(1, "image is required"),
+  featured: z.boolean().default(false),
 });
 
 export const novelSchema = z.object({

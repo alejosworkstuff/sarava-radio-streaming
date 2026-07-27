@@ -230,6 +230,9 @@ export default function HeroBanner({ slides }: HeroBannerProps) {
                         href={item.link}
                         className="hero-promo__cta cta"
                         tabIndex={active ? undefined : -1}
+                        {...(item.link.startsWith("http")
+                          ? { target: "_blank", rel: "noreferrer" }
+                          : {})}
                       >
                         Llevame ahí
                       </Link>

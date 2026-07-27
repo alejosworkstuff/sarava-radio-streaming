@@ -7,13 +7,23 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
+/** Keep current pg TLS behavior without the sslmode=require deprecation warning. */
+export function normalizeDatabaseUrl(connectionString: string): string {
+  return connectionString.replace(
+    /([?&]sslmode=)(require|prefer|verify-ca)\b/i,
+    "$1verify-full",
+  );
+}
+
 function createPrismaClient() {
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
     throw new Error("DATABASE_URL is not set");
   }
 
-  const adapter = new PrismaPg({ connectionString });
+  const adapter = new PrismaPg({
+    connectionString: normalizeDatabaseUrl(connectionString),
+  });
   return new PrismaClient({ adapter });
 }
 

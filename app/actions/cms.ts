@@ -64,6 +64,7 @@ export async function createPostAction(formData: FormData): Promise<ActionResult
     .filter(Boolean);
   const displayDate =
     formString(formData, "displayDate") || displayDateFromIso(date);
+  const featured = formBool(formData, "featured");
   const published = formBool(formData, "published");
 
   const parsed = postSchema.safeParse({
@@ -74,6 +75,7 @@ export async function createPostAction(formData: FormData): Promise<ActionResult
     excerpt,
     tags,
     image: "pending",
+    featured,
   });
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Datos inválidos" };
@@ -103,6 +105,7 @@ export async function createPostAction(formData: FormData): Promise<ActionResult
       excerpt,
       tags,
       image: upload.url,
+      featured,
       published,
     },
   });
@@ -132,6 +135,7 @@ export async function updatePostAction(formData: FormData): Promise<ActionResult
     .filter(Boolean);
   const displayDate =
     formString(formData, "displayDate") || displayDateFromIso(date);
+  const featured = formBool(formData, "featured");
   const published = formBool(formData, "published");
 
   const upload = await uploadPublicImage(
@@ -149,6 +153,7 @@ export async function updatePostAction(formData: FormData): Promise<ActionResult
     excerpt,
     tags,
     image,
+    featured,
   });
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Datos inválidos" };
@@ -164,6 +169,7 @@ export async function updatePostAction(formData: FormData): Promise<ActionResult
       excerpt,
       tags,
       image,
+      featured,
       published,
     },
   });

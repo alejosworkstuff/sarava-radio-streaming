@@ -42,7 +42,7 @@ export default async function CulturalPostPage({ params }: PageProps) {
 
   return (
     <div className="page">
-      <SiteHeader title="Espacio Cultural Sarava" />
+      <SiteHeader title="Saravá Espacio Cultural" />
 
       <main>
         <section className="section">

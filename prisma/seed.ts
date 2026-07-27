@@ -16,7 +16,12 @@ if (!connectionString) {
 }
 
 const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString }),
+  adapter: new PrismaPg({
+    connectionString: connectionString.replace(
+      /([?&]sslmode=)(require|prefer|verify-ca)\b/i,
+      "$1verify-full",
+    ),
+  }),
 });
 
 const contentRoot = path.join(process.cwd(), "content");
@@ -51,6 +56,7 @@ async function main() {
         excerpt: data.excerpt,
         tags: data.tags,
         image: data.image,
+        featured: data.featured,
         published: true,
       },
       update: {
@@ -61,6 +67,7 @@ async function main() {
         excerpt: data.excerpt,
         tags: data.tags,
         image: data.image,
+        featured: data.featured,
         published: true,
       },
     });

@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navItems = [
-  { href: "/radio-streaming", label: "Saravá radio streaming" },
-  { href: "/podcast", label: "Saravá Podcast" },
+  { href: "/radio-streaming", label: "radio streaming" },
+  { href: "/podcast", label: "Podcast" },
   { href: "/sobre-nosotras", label: "Sobre nosotrxs" },
-  { href: "/club-lectura", label: "Club de lectura Saravá" },
+  { href: "/club-lectura", label: "Club de lectura" },
   { href: "/espacio-cultural", label: "Saravá Espacio Cultural" },
 ] as const;
 

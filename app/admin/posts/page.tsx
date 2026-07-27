@@ -57,6 +57,10 @@ export default async function AdminPostsPage() {
             <input name="image" type="file" accept="image/*" required />
           </label>
           <label className="admin-check">
+            <input name="featured" type="checkbox" />
+            Destacado (hero inicio)
+          </label>
+          <label className="admin-check">
             <input name="published" type="checkbox" defaultChecked />
             Publicado
           </label>
@@ -111,6 +115,14 @@ export default async function AdminPostsPage() {
                 <label>
                   Reemplazar imagen
                   <input name="image" type="file" accept="image/*" />
+                </label>
+                <label className="admin-check">
+                  <input
+                    name="featured"
+                    type="checkbox"
+                    defaultChecked={post.featured}
+                  />
+                  Destacado (hero inicio)
                 </label>
                 <label className="admin-check">
                   <input

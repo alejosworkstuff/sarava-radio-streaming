@@ -18,7 +18,7 @@ export default async function EspacioCulturalPage() {
 
   return (
     <div className="page">
-      <SiteHeader title="Espacio Cultural Sarava" />
+      <SiteHeader title="Saravá Espacio Cultural" />
 
       <main>
         <section className="section">

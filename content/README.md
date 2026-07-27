@@ -45,6 +45,7 @@ Content is:
 | `excerpt` | string | Short summary |
 | `tags` | string[] | Tags |
 | `image` | string | Image path or URL |
+| `featured` | boolean | Optional; hero banner when true (default false) |
 
 Slug = filename without `.json`.
 
@@ -69,7 +70,7 @@ Slug = filename without `.json`.
 | `ctaLabel` | string | Button label |
 | `ctaHref` | string | Button URL |
 | `category` | string | e.g. streaming category filter |
-| `featured` | boolean | Show in featured slots when true |
+| `featured` | boolean | Hero banner + radio featured slot when true |
 
 ---
 

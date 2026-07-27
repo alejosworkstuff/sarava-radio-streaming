@@ -7,4 +7,5 @@ export type PostEntry = {
   excerpt: string;
   tags: string[];
   image: string;
+  featured: boolean;
 };

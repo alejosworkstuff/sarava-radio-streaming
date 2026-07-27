@@ -62,7 +62,7 @@ export default async function AdminEventsPage() {
           </label>
           <label className="admin-check">
             <input name="featured" type="checkbox" />
-            Destacado
+            Destacado (hero + radio)
           </label>
           <label className="admin-check">
             <input name="published" type="checkbox" defaultChecked />
@@ -132,7 +132,7 @@ export default async function AdminEventsPage() {
                     type="checkbox"
                     defaultChecked={event.featured}
                   />
-                  Destacado
+                  Destacado (hero + radio)
                 </label>
                 <label className="admin-check">
                   <input

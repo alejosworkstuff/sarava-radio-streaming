@@ -19,11 +19,13 @@ model Post {
   excerpt     String
   tags        String[]
   image       String
+  featured    Boolean  @default(false)
   published   Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([published, date])
+  @@index([published, featured])
 }
 
 model Event {
