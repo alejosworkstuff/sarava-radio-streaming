@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navItems = [
-  { href: "/radio-streaming", label: "radio streaming" },
+  { href: "/radio-streaming", label: "Radio streaming" },
   { href: "/podcast", label: "Podcast" },
   { href: "/sobre-nosotras", label: "Sobre nosotrxs" },
   { href: "/club-lectura", label: "Club de lectura" },
