@@ -1,38 +1,13 @@
-name: Deploy Pages
+# Disabled: Saravá now deploys on Vercel (no GitHub Pages / docs/ export).
+# Kept as a no-op so old workflow references do not surprise anyone.
+name: Deploy Pages (retired)
 
 on:
-  push:
-    branches:
-      - main
-
-permissions:
-  contents: write
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  retired:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build and export to docs/
-        run: npm run build:pages
-
-      - name: Commit updated docs/
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/
-          git diff --staged --quiet || git commit -m "chore: update docs/ from build"
-
-      - name: Push changes
-        run: git push
+      - name: Notice
+        run: echo "GitHub Pages deploy is retired. Use Vercel."

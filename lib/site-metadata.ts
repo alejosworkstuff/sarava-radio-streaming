@@ -1,17 +1,27 @@
 import type { Metadata } from "next";
 
 export const SITE_NAME = "Espacio Cultural Saravá";
-export const SITE_URL = "https://alejosworkstuff.github.io/sarava-radio-streaming";
+
+function resolveSiteUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return "http://localhost:3000";
+}
+
+export const SITE_URL = resolveSiteUrl();
+
 export const DEFAULT_DESCRIPTION =
   "Noticias, radio, podcast y actividades del Centro Cultural Saravá. Un espacio comunitario para compartir voces y encuentros en Bolívar, Buenos Aires.";
 
-const metadataBase =
-  process.env.NODE_ENV === "production"
-    ? new URL(SITE_URL)
-    : new URL("http://localhost:3000");
-
 export const rootMetadata: Metadata = {
-  metadataBase,
+  metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_NAME,
     template: `%s | ${SITE_NAME}`,

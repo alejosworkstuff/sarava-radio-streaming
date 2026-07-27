@@ -1,25 +1,20 @@
 import "server-only";
 
-import { promises as fs } from "node:fs";
-import path from "node:path";
 import type { PostEntry } from "./post-types";
+import { prisma } from "./db";
 
 export type { PostEntry } from "./post-types";
 
-const contentRoot = path.join(process.cwd(), "content");
-
-type BaseEntry = {
+export type NovelEntry = {
   slug: string;
-};
-
-export type NovelEntry = BaseEntry & {
   title: string;
   coverImage: string;
   description: string;
   active: boolean;
 };
 
-export type EventEntry = BaseEntry & {
+export type EventEntry = {
+  slug: string;
   title: string;
   date: string;
   displayDate: string;
@@ -47,58 +42,137 @@ export type AboutContent = {
   }[];
 };
 
-async function readCollection<T>(collection: string): Promise<(T & BaseEntry)[]> {
-  const folder = path.join(contentRoot, collection);
-  const files = (await fs.readdir(folder)).filter((file) => file.endsWith(".json"));
-
-  const entries = await Promise.all(
-    files.map(async (file) => {
-      const filePath = path.join(folder, file);
-      const raw = await fs.readFile(filePath, "utf-8");
-
-      return {
-        slug: file.replace(/\.json$/, ""),
-        ...(JSON.parse(raw) as T),
-      };
-    }),
-  );
-
-  return entries;
+function toIsoDate(value: Date): string {
+  return value.toISOString().slice(0, 10);
 }
 
-export async function getPosts() {
-  const posts = await readCollection<Omit<PostEntry, "slug">>("posts");
-  return posts.sort((a, b) => b.date.localeCompare(a.date));
+export async function getPosts(): Promise<PostEntry[]> {
+  const posts = await prisma.post.findMany({
+    where: { published: true },
+    orderBy: { date: "desc" },
+  });
+
+  return posts.map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    author: post.author,
+    date: toIsoDate(post.date),
+    displayDate: post.displayDate,
+    excerpt: post.excerpt,
+    tags: post.tags,
+    image: post.image,
+  }));
 }
 
 export async function getPostBySlug(slug: string) {
-  const posts = await getPosts();
-  return posts.find((post) => post.slug === slug);
+  const post = await prisma.post.findFirst({
+    where: { slug, published: true },
+  });
+
+  if (!post) return undefined;
+
+  return {
+    slug: post.slug,
+    title: post.title,
+    author: post.author,
+    date: toIsoDate(post.date),
+    displayDate: post.displayDate,
+    excerpt: post.excerpt,
+    tags: post.tags,
+    image: post.image,
+  } satisfies PostEntry;
 }
 
-export async function getEvents() {
-  const events = await readCollection<Omit<EventEntry, "slug">>("events");
-  return events.sort((a, b) => a.date.localeCompare(b.date));
+export async function getEvents(): Promise<EventEntry[]> {
+  const events = await prisma.event.findMany({
+    where: { published: true },
+    orderBy: { date: "asc" },
+  });
+
+  return events.map((event) => ({
+    slug: event.slug,
+    title: event.title,
+    date: toIsoDate(event.date),
+    displayDate: event.displayDate,
+    summary: event.summary,
+    schedule: event.schedule,
+    ctaLabel: event.ctaLabel,
+    ctaHref: event.ctaHref,
+    category: event.category,
+    featured: event.featured,
+  }));
 }
 
 export async function getFeaturedEvent(category?: string) {
-  const events = await getEvents();
-  return events.find(
-    (event) => event.featured && (!category || event.category === category),
-  );
+  const event = await prisma.event.findFirst({
+    where: {
+      published: true,
+      featured: true,
+      ...(category ? { category } : {}),
+    },
+    orderBy: { date: "asc" },
+  });
+
+  if (!event) return undefined;
+
+  return {
+    slug: event.slug,
+    title: event.title,
+    date: toIsoDate(event.date),
+    displayDate: event.displayDate,
+    summary: event.summary,
+    schedule: event.schedule,
+    ctaLabel: event.ctaLabel,
+    ctaHref: event.ctaHref,
+    category: event.category,
+    featured: event.featured,
+  } satisfies EventEntry;
 }
 
-export async function getNovels() {
-  return readCollection<Omit<NovelEntry, "slug">>("novels");
+export async function getNovels(): Promise<NovelEntry[]> {
+  const novels = await prisma.novel.findMany({
+    where: { published: true },
+    orderBy: { title: "asc" },
+  });
+
+  return novels.map((novel) => ({
+    slug: novel.slug,
+    title: novel.title,
+    coverImage: novel.coverImage,
+    description: novel.description,
+    active: novel.active,
+  }));
 }
 
 export async function getNovelOfTheMonth() {
+  const active = await prisma.novel.findFirst({
+    where: { published: true, active: true },
+  });
+
+  if (active) {
+    return {
+      slug: active.slug,
+      title: active.title,
+      coverImage: active.coverImage,
+      description: active.description,
+      active: active.active,
+    } satisfies NovelEntry;
+  }
+
   const novels = await getNovels();
-  return novels.find((novel) => novel.active) ?? novels[0];
+  return novels[0];
 }
 
 export async function getAbout(): Promise<AboutContent> {
-  const filePath = path.join(contentRoot, "about.json");
-  const raw = await fs.readFile(filePath, "utf-8");
-  return JSON.parse(raw) as AboutContent;
+  const about = await prisma.about.findUnique({ where: { id: "about" } });
+
+  if (!about) {
+    throw new Error("About content is missing. Run npm run db:seed.");
+  }
+
+  return {
+    highlights: about.highlights as AboutContent["highlights"],
+    paragraphs: about.paragraphs,
+    team: about.team as AboutContent["team"],
+  };
 }

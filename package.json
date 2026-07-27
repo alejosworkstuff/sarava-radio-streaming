@@ -2,38 +2,52 @@
   "name": "sarava-project",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://alejosworkstuff.github.io/sarava-radio-streaming/",
+  "homepage": "https://sarava-radio-streaming.vercel.app",
   "keywords": [
     "portfolio",
     "javascript",
     "typescript",
     "nextjs",
     "react",
-    "github-pages"
+    "vercel"
   ],
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:pages": "next build && node scripts/copy-out-to-docs.mjs",
-    "export": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "validate:content": "tsx scripts/validate-content.ts",
-    "ci": "npm run lint && npm run validate:content && npm run build"
+    "ci": "npm run lint && npm run validate:content && npm run build",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.6.1",
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "@vercel/blob": "^2.6.1",
+    "dotenv": "^17.4.2",
     "motion": "^12.42.2",
     "next": "16.2.10",
-    "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "pg": "^8.22.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "prisma": "^7.9.1",
     "tailwindcss": "^4",
     "tsx": "^4.22.4",
     "typescript": "^5",

@@ -1,0 +1,71 @@
+// Prisma schema for Espacio Cultural Saravá CMS
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  author      String
+  date        DateTime @db.Date
+  displayDate String
+  excerpt     String
+  tags        String[]
+  image       String
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, date])
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  date        DateTime @db.Date
+  displayDate String
+  summary     String
+  schedule    String
+  ctaLabel    String
+  ctaHref     String
+  category    String
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, featured])
+  @@index([category])
+}
+
+model Novel {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  coverImage  String
+  description String
+  active      Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([active, published])
+}
+
+/// Singleton row for "Sobre nosotras" content.
+model About {
+  id         String   @id @default("about")
+  highlights Json
+  paragraphs String[]
+  team       Json
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+}
