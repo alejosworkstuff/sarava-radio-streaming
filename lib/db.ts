@@ -5,7 +5,11 @@ import { PrismaPg } from "@prisma/adapter-pg";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
+  prismaSchemaStamp: string | undefined;
 };
+
+/** Bump when Comment/schema fields change so hot reload drops a stale client. */
+const PRISMA_SCHEMA_STAMP = "comment-pageKey-v1";
 
 /** Keep current pg TLS behavior without the sslmode=require deprecation warning. */
 export function normalizeDatabaseUrl(connectionString: string): string {
@@ -28,8 +32,12 @@ function createPrismaClient() {
 }
 
 function getPrismaClient() {
-  if (!globalForPrisma.prisma) {
+  if (
+    !globalForPrisma.prisma ||
+    globalForPrisma.prismaSchemaStamp !== PRISMA_SCHEMA_STAMP
+  ) {
     globalForPrisma.prisma = createPrismaClient();
+    globalForPrisma.prismaSchemaStamp = PRISMA_SCHEMA_STAMP;
   }
   return globalForPrisma.prisma;
 }

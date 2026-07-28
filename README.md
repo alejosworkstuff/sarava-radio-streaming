@@ -47,7 +47,7 @@ The project needed a clear, maintainable web presence for a cultural community: 
 |-------|------|
 | `/` | Home with hero carousel (book club, podcast, streaming highlights) |
 | `/radio-streaming` | Live streaming schedule and links |
-| `/podcast` | Podcast / YouTube channel |
+| `/podcast` | Podcast / Spotify show |
 | `/club-lectura` | Novel of the month and reading club |
 | `/espacio-cultural` | Cultural posts (workshops, events, articles) |
 | `/sobre-nosotras` | About the space and team |

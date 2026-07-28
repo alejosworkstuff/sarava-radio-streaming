@@ -40,6 +40,17 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+/** Next.js recommended inline boot script (avoids React 19 script warning). */
+function InlineScript({ html }: { html: string }) {
+  return (
+    <script
+      type={typeof window === "undefined" ? "text/javascript" : "text/plain"}
+      suppressHydrationWarning
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -49,7 +60,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="es" suppressHydrationWarning>
         <head>
-          <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+          <InlineScript html={themeBootScript} />
         </head>
         <body className="antialiased">{children}</body>
       </html>

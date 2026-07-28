@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter, SiteHeader } from "../components/site-shell";
 import { getAbout } from "@/lib/content";
+import { resolvePublicAssetSrc } from "@/lib/hero-slides";
 import { buildPageMetadata } from "@/lib/site-metadata";
 
 export function generateMetadata(): Metadata {
@@ -60,7 +61,7 @@ export default async function SobreNosotrasPage() {
             {teamMembers.map((member) => (
               <article className="team-card" key={member.name}>
                 <Image
-                  src={`${basePath}${member.image}`}
+                  src={resolvePublicAssetSrc(member.image, basePath)}
                   alt={member.alt}
                   width={180}
                   height={180}

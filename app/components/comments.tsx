@@ -2,19 +2,32 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { CommentSection } from "./comment-section";
 import {
   listCommentsForNovel,
+  listCommentsForPage,
   listCommentsForPost,
 } from "@/app/actions/comments";
 import { isAllowedAdminEmail } from "@/lib/admin-auth";
+import {
+  isCommentPageKey,
+  type CommentPageKey,
+} from "@/lib/comment-pages";
 
 export async function Comments({
   postId,
   novelId,
+  pageKey,
 }: {
   postId?: string;
   novelId?: string;
+  pageKey?: CommentPageKey;
 }) {
-  if ((!postId && !novelId) || (postId && novelId)) {
-    throw new Error("Comments requiere postId o novelId (uno solo).");
+  const targets = [postId, novelId, pageKey].filter(Boolean);
+  if (targets.length !== 1) {
+    throw new Error(
+      "Comments requiere postId, novelId o pageKey (uno solo).",
+    );
+  }
+  if (pageKey && !isCommentPageKey(pageKey)) {
+    throw new Error(`pageKey inválido: ${pageKey}`);
   }
 
   const { userId } = await auth();
@@ -24,12 +37,15 @@ export async function Comments({
 
   const initialComments = postId
     ? await listCommentsForPost(postId)
-    : await listCommentsForNovel(novelId!);
+    : novelId
+      ? await listCommentsForNovel(novelId)
+      : await listCommentsForPage(pageKey!);
 
   return (
     <CommentSection
       postId={postId}
       novelId={novelId}
+      pageKey={pageKey}
       initialComments={initialComments}
       currentUserId={userId}
       canModerate={canModerate}

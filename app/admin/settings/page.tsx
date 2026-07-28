@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { updateSiteLogoAction } from "@/app/actions/cms";
 import { AdminForm } from "../components/admin-form";
+import { ImageField } from "../components/image-field";
 import { ResetLogoButton } from "../components/reset-logo-button";
 import { getLogoUrl } from "@/lib/content";
 import { resolvePublicAssetSrc } from "@/lib/hero-slides";
@@ -23,26 +23,19 @@ export default async function AdminSettingsPage() {
       </header>
 
       <section className="admin-panel">
-        <div className="admin-logo-preview">
-          <Image
-            src={logoSrc}
-            alt="Logo actual del sitio"
-            width={96}
-            height={96}
-            className="brand-logo"
-          />
-          <p className="admin-item-meta">
-            {isCustom
-              ? "Logo personalizado (Blob)"
-              : "Logo predeterminado (/logo.jpg)"}
-          </p>
-        </div>
-
         <AdminForm action={updateSiteLogoAction} submitLabel="Subir logo nuevo">
-          <label>
-            Nueva imagen
-            <input name="logo" type="file" accept="image/*" required />
-          </label>
+          <ImageField
+            name="logo"
+            label="Nueva imagen"
+            required
+            existingSrc={logoSrc}
+            existingCaption={
+              isCustom
+                ? "Logo personalizado (Blob)"
+                : "Logo predeterminado (/logo.jpg)"
+            }
+            variant="logo"
+          />
         </AdminForm>
 
         {isCustom ? <ResetLogoButton /> : null}

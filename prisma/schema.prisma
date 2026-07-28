@@ -91,6 +91,8 @@ model Comment {
   authorImage   String?
   postId        String?
   novelId       String?
+  /// Static page key for comments outside posts/novels (e.g. "radio-streaming", "podcast").
+  pageKey       String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   post          Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
@@ -98,5 +100,6 @@ model Comment {
 
   @@index([postId, createdAt])
   @@index([novelId, createdAt])
+  @@index([pageKey, createdAt])
   @@index([authorClerkId])
 }

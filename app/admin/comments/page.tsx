@@ -27,7 +27,9 @@ export default async function AdminCommentsPage() {
                       ? `Post: ${comment.postTitle}`
                       : comment.novelTitle
                         ? `Novela: ${comment.novelTitle}`
-                        : "Sin destino"}
+                        : comment.pageLabel
+                          ? `Página: ${comment.pageLabel}`
+                          : "Sin destino"}
                     {" · "}
                     {new Date(comment.createdAt).toLocaleString("es-AR")}
                   </p>

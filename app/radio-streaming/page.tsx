@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { Comments } from "../components/comments";
 import { SiteFooter, SiteHeader } from "../components/site-shell";
 import { getFeaturedEvent } from "../../lib/content";
 import { buildPageMetadata } from "@/lib/site-metadata";
@@ -72,6 +73,8 @@ export default async function RadioStreamingPage() {
               </div>
             </article>
           </div>
+
+          <Comments pageKey="radio-streaming" />
         </section>
       </main>
 

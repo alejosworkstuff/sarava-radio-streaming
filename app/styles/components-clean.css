@@ -818,6 +818,10 @@ button.nav-auth-trigger:focus-visible {
   background: #000;
 }
 
+.live-card-mark-spotify {
+  background: #191414;
+}
+
 .live-card-mark-img {
   width: 100%;
   height: 100%;

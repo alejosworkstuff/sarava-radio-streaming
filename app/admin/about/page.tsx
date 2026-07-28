@@ -1,10 +1,12 @@
 import { updateAboutAction } from "@/app/actions/cms";
 import { AdminForm } from "../components/admin-form";
-import { prisma } from "@/lib/db";
+import { TeamEditor } from "../components/team-editor";
 import type { AboutContent } from "@/lib/content";
+import { prisma } from "@/lib/db";
 
 export default async function AdminAboutPage() {
   const about = await prisma.about.findUnique({ where: { id: "about" } });
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   if (!about) {
     return (
@@ -17,7 +19,6 @@ export default async function AdminAboutPage() {
     );
   }
 
-  const highlights = about.highlights as AboutContent["highlights"];
   const team = about.team as AboutContent["team"];
 
   return (
@@ -26,8 +27,8 @@ export default async function AdminAboutPage() {
         <p className="pill">Contenido</p>
         <h1>Sobre nosotras</h1>
         <p>
-          Editá los párrafos (separados por una línea en blanco). Highlights y
-          equipo van en JSON por ahora; podés subir fotos nuevas del equipo.
+          Editá los párrafos (separados por una línea en blanco) y gestioná el
+          equipo: nombres, descripciones y fotos.
         </p>
       </header>
 
@@ -42,39 +43,11 @@ export default async function AdminAboutPage() {
               required
             />
           </label>
-          <label>
-            Highlights (JSON)
-            <textarea
-              name="highlightsJson"
-              rows={12}
-              defaultValue={JSON.stringify(highlights, null, 2)}
-              required
-            />
-          </label>
-          <label>
-            Equipo (JSON)
-            <textarea
-              name="teamJson"
-              rows={16}
-              defaultValue={JSON.stringify(team, null, 2)}
-              required
-            />
-          </label>
-          <div className="admin-team-uploads">
-            <p className="admin-item-meta">
-              Opcional: reemplazar foto por integrante (mismo orden del JSON)
-            </p>
-            {team.map((member, index) => (
-              <label key={`${member.name}-${index}`}>
-                Foto — {member.name}
-                <input
-                  name={`teamImage-${index}`}
-                  type="file"
-                  accept="image/*"
-                />
-              </label>
-            ))}
-          </div>
+          <TeamEditor
+            key={about.updatedAt.toISOString()}
+            initial={team}
+            basePath={basePath}
+          />
         </AdminForm>
       </section>
     </div>

@@ -3,6 +3,11 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/admin-auth";
+import {
+  COMMENT_PAGE_KEYS,
+  isCommentPageKey,
+  type CommentPageKey,
+} from "@/lib/comment-pages";
 import { prisma } from "@/lib/db";
 import type { ActionResult } from "@/app/actions/cms";
 
@@ -17,8 +22,10 @@ export type CommentView = {
   createdAt: string;
   postId: string | null;
   novelId: string | null;
+  pageKey: string | null;
   postTitle?: string | null;
   novelTitle?: string | null;
+  pageLabel?: string | null;
 };
 
 function mapComment(comment: {
@@ -30,9 +37,15 @@ function mapComment(comment: {
   createdAt: Date;
   postId: string | null;
   novelId: string | null;
+  pageKey: string | null;
   post?: { title: string } | null;
   novel?: { title: string } | null;
 }): CommentView {
+  const pageLabel =
+    comment.pageKey && isCommentPageKey(comment.pageKey)
+      ? COMMENT_PAGE_KEYS[comment.pageKey].label
+      : comment.pageKey;
+
   return {
     id: comment.id,
     body: comment.body,
@@ -42,8 +55,10 @@ function mapComment(comment: {
     createdAt: comment.createdAt.toISOString(),
     postId: comment.postId,
     novelId: comment.novelId,
+    pageKey: comment.pageKey,
     postTitle: comment.post?.title ?? null,
     novelTitle: comment.novel?.title ?? null,
+    pageLabel: pageLabel ?? null,
   };
 }
 
@@ -67,6 +82,16 @@ export async function listCommentsForNovel(
   return comments.map(mapComment);
 }
 
+export async function listCommentsForPage(
+  pageKey: CommentPageKey,
+): Promise<CommentView[]> {
+  const comments = await prisma.comment.findMany({
+    where: { pageKey },
+    orderBy: { createdAt: "asc" },
+  });
+  return comments.map(mapComment);
+}
+
 export async function listAllComments(): Promise<CommentView[]> {
   const comments = await prisma.comment.findMany({
     orderBy: { createdAt: "desc" },
@@ -77,6 +102,14 @@ export async function listAllComments(): Promise<CommentView[]> {
     take: 200,
   });
   return comments.map(mapComment);
+}
+
+function targetCount(
+  postId: string | null,
+  novelId: string | null,
+  pageKey: string | null,
+) {
+  return [postId, novelId, pageKey].filter(Boolean).length;
 }
 
 export async function createCommentAction(
@@ -95,6 +128,7 @@ export async function createCommentAction(
   const body = String(formData.get("body") ?? "").trim();
   const postId = String(formData.get("postId") ?? "").trim() || null;
   const novelId = String(formData.get("novelId") ?? "").trim() || null;
+  const pageKeyRaw = String(formData.get("pageKey") ?? "").trim() || null;
 
   if (!body) {
     return { ok: false, error: "El comentario no puede estar vacío." };
@@ -106,12 +140,18 @@ export async function createCommentAction(
     };
   }
 
-  if ((postId && novelId) || (!postId && !novelId)) {
+  if (targetCount(postId, novelId, pageKeyRaw) !== 1) {
     return {
       ok: false,
-      error: "El comentario debe pertenecer a una publicación o a una novela.",
+      error:
+        "El comentario debe pertenecer a una publicación, novela o página.",
     };
   }
+
+  if (pageKeyRaw && !isCommentPageKey(pageKeyRaw)) {
+    return { ok: false, error: "Página de comentarios no válida." };
+  }
+  const pageKey = pageKeyRaw as CommentPageKey | null;
 
   if (postId) {
     const post = await prisma.post.findFirst({
@@ -148,6 +188,7 @@ export async function createCommentAction(
       authorImage: user.imageUrl ?? null,
       postId,
       novelId,
+      pageKey,
     },
   });
 
@@ -163,6 +204,9 @@ export async function createCommentAction(
   }
   if (novelId) {
     revalidatePath("/club-lectura");
+  }
+  if (pageKey) {
+    revalidatePath(COMMENT_PAGE_KEYS[pageKey].path);
   }
   revalidatePath("/admin/comments");
 
@@ -208,6 +252,9 @@ export async function deleteCommentAction(
   }
   if (comment.novelId) {
     revalidatePath("/club-lectura");
+  }
+  if (comment.pageKey && isCommentPageKey(comment.pageKey)) {
+    revalidatePath(COMMENT_PAGE_KEYS[comment.pageKey].path);
   }
   revalidatePath("/admin/comments");
 

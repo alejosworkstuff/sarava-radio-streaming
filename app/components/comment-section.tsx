@@ -14,6 +14,7 @@ import {
 type CommentSectionProps = {
   postId?: string;
   novelId?: string;
+  pageKey?: string;
   initialComments: CommentView[];
   currentUserId: string | null;
   canModerate: boolean;
@@ -33,6 +34,7 @@ function formatDate(iso: string) {
 export function CommentSection({
   postId,
   novelId,
+  pageKey,
   initialComments,
   currentUserId,
   canModerate,
@@ -136,6 +138,9 @@ export function CommentSection({
           {novelId ? (
             <input type="hidden" name="novelId" value={novelId} />
           ) : null}
+          {pageKey ? (
+            <input type="hidden" name="pageKey" value={pageKey} />
+          ) : null}
           <label>
             Tu comentario
             <textarea
@@ -143,7 +148,7 @@ export function CommentSection({
               rows={4}
               maxLength={2000}
               required
-              placeholder="Compartí tu lectura, una duda o un saludo…"
+              placeholder="Compartí una idea, una duda o un saludo…"
             />
           </label>
           {error ? (

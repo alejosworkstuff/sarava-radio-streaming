@@ -47,7 +47,7 @@ export const podcastEpisodeSchema = z.object({
   description: z.string().min(1, "description is required"),
   date: isoDate,
   displayDate: z.string().min(1, "displayDate is required"),
-  youtubeUrl: z.string().url("youtubeUrl must be a valid URL"),
+  spotifyUrl: z.string().url("spotifyUrl must be a valid URL"),
 });
 
 export const aboutSchema = z.object({

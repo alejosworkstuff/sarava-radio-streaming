@@ -4,6 +4,8 @@ import {
   updatePostAction,
 } from "@/app/actions/cms";
 import { AdminForm, DeleteButton } from "../components/admin-form";
+import { ImageField } from "../components/image-field";
+import { resolvePublicAssetSrc } from "@/lib/hero-slides";
 import { prisma } from "@/lib/db";
 
 function toIsoDate(value: Date) {
@@ -12,6 +14,7 @@ function toIsoDate(value: Date) {
 
 export default async function AdminPostsPage() {
   const posts = await prisma.post.findMany({ orderBy: { date: "desc" } });
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   return (
     <div className="admin-page">
@@ -52,10 +55,11 @@ export default async function AdminPostsPage() {
             Tags (separados por coma)
             <input name="tags" placeholder="Cultura, Historias" required />
           </label>
-          <label>
-            Imagen (opcional — sin imagen el hero usa layout de texto)
-            <input name="image" type="file" accept="image/*" />
-          </label>
+          <ImageField
+            name="image"
+            label="Imagen (opcional — sin imagen el hero usa layout de texto)"
+            emptyHint="Sin imagen seleccionada"
+          />
           <label className="admin-check">
             <input name="featured" type="checkbox" />
             Destacado (hero inicio)
@@ -111,13 +115,17 @@ export default async function AdminPostsPage() {
                   Tags
                   <input name="tags" defaultValue={post.tags.join(", ")} required />
                 </label>
-                <p className="admin-item-meta">
-                  Imagen actual: {post.image ? post.image : "sin imagen (layout texto)"}
-                </p>
-                <label>
-                  Reemplazar imagen
-                  <input name="image" type="file" accept="image/*" />
-                </label>
+                <ImageField
+                  name="image"
+                  label="Reemplazar imagen"
+                  existingSrc={
+                    post.image
+                      ? resolvePublicAssetSrc(post.image, basePath)
+                      : null
+                  }
+                  existingCaption="Imagen actual"
+                  emptyHint="Sin imagen (layout texto)"
+                />
                 <label className="admin-check">
                   <input
                     name="featured"

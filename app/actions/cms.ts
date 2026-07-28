@@ -451,16 +451,14 @@ const aboutUpdateSchema = z.object({
       }),
     )
     .min(1),
-  team: z
-    .array(
-      z.object({
-        name: z.string().min(1),
-        image: z.string().min(1),
-        alt: z.string().min(1),
-        bio: z.string().min(1),
-      }),
-    )
-    .min(1),
+  team: z.array(
+    z.object({
+      name: z.string().min(1, "Cada integrante necesita un nombre"),
+      image: z.string().min(1, "Cada integrante necesita una foto"),
+      alt: z.string().min(1),
+      bio: z.string().min(1, "Cada integrante necesita una descripción"),
+    }),
+  ),
 });
 
 export async function updateAboutAction(formData: FormData): Promise<ActionResult> {
@@ -472,50 +470,56 @@ export async function updateAboutAction(formData: FormData): Promise<ActionResul
     .map((p) => p.trim())
     .filter(Boolean);
 
-  let highlights: unknown;
-  let team: unknown;
-  try {
-    highlights = JSON.parse(formString(formData, "highlightsJson") || "[]");
-    team = JSON.parse(formString(formData, "teamJson") || "[]");
-  } catch {
-    return { ok: false, error: "JSON inválido en highlights o team" };
+  const existing = await prisma.about.findUnique({ where: { id: "about" } });
+  if (!existing) {
+    return { ok: false, error: "Falta el contenido de Sobre nosotras. Corré el seed." };
   }
 
-  const teamRows = Array.isArray(team) ? [...team] : [];
-  for (let i = 0; i < teamRows.length; i += 1) {
+  const teamCount = Number(formString(formData, "teamCount") || "0");
+  if (!Number.isFinite(teamCount) || teamCount < 0 || teamCount > 40) {
+    return { ok: false, error: "Lista de equipo inválida." };
+  }
+
+  const teamRows: {
+    name: string;
+    image: string;
+    alt: string;
+    bio: string;
+  }[] = [];
+
+  for (let i = 0; i < teamCount; i += 1) {
+    const name = formString(formData, `teamName-${i}`);
+    const bio = formString(formData, `teamBio-${i}`);
+    const existingImage = formString(formData, `teamExistingImage-${i}`);
+
     const upload = await uploadPublicImage(
       formData.get(`teamImage-${i}`) as File | null,
       "about",
     );
     if (!upload.ok) return upload;
-    if (upload.url) {
-      teamRows[i] = {
-        ...(teamRows[i] as object),
-        image: upload.url,
-      };
-    }
+
+    const image = upload.url || existingImage;
+    teamRows.push({
+      name,
+      bio,
+      image,
+      alt: name ? `Foto de ${name}` : "Foto del equipo",
+    });
   }
 
   const parsed = aboutUpdateSchema.safeParse({
     paragraphs,
-    highlights,
+    highlights: existing.highlights,
     team: teamRows,
   });
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Datos inválidos" };
   }
 
-  await prisma.about.upsert({
+  await prisma.about.update({
     where: { id: "about" },
-    create: {
-      id: "about",
+    data: {
       paragraphs: parsed.data.paragraphs,
-      highlights: parsed.data.highlights,
-      team: parsed.data.team,
-    },
-    update: {
-      paragraphs: parsed.data.paragraphs,
-      highlights: parsed.data.highlights,
       team: parsed.data.team,
     },
   });

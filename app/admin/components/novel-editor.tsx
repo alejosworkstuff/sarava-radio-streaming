@@ -6,7 +6,9 @@ import {
   deleteNovelAction,
   updateNovelAction,
 } from "@/app/actions/cms";
+import { resolvePublicAssetSrc } from "@/lib/hero-slides";
 import { AdminForm, DeleteButton } from "./admin-form";
+import { ImageField } from "./image-field";
 
 type NovelDraft = {
   title: string;
@@ -150,18 +152,22 @@ export function NovelEditor({ mode, initial }: NovelEditorProps) {
             onChange={(event) => setDescription(event.target.value)}
           />
         </label>
-        {mode === "edit" && initial.coverImage ? (
-          <p className="admin-item-meta">Tapa actual: {initial.coverImage}</p>
-        ) : null}
-        <label>
-          {mode === "create" ? "Tapa" : "Reemplazar tapa"}
-          <input
-            name="coverImage"
-            type="file"
-            accept="image/*"
-            required={mode === "create"}
-          />
-        </label>
+        <ImageField
+          name="coverImage"
+          label={mode === "create" ? "Tapa" : "Reemplazar tapa"}
+          required={mode === "create"}
+          existingSrc={
+            initial.coverImage
+              ? resolvePublicAssetSrc(
+                  initial.coverImage,
+                  process.env.NEXT_PUBLIC_BASE_PATH || "",
+                )
+              : null
+          }
+          existingCaption="Tapa actual"
+          emptyHint="Sin tapa seleccionada"
+          variant="cover"
+        />
         {mode === "edit" && initial.pdfUrl ? (
           <p className="admin-item-meta">
             PDF actual:{" "}
