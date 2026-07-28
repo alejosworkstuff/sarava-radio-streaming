@@ -24,31 +24,6 @@ export default async function SobreNosotrasPage() {
       <SiteHeader title="Espacio Cultural Saravá" />
 
       <main>
-        <section className="hero">
-          <div>
-            <h2 className="hero-title">
-              Tu espacio comunitario para estar al día y acompañadx.
-            </h2>
-            <p className="hero-subtitle">
-              Somos un colectivo de personas que comparte noticias, encuentros y
-              un programa de radio con historias reales y cercanas.
-            </p>
-            <Link href="/radio-streaming" className="cta">
-              Escuchar streaming
-            </Link>
-          </div>
-          <div className="hero-card">
-            <p className="pill">Novedades</p>
-            <h3>Esta semana</h3>
-            <p className="hero-subtitle">
-              Taller abierto de expresión oral - Jueves 18:00 - Cupos limitados.
-            </p>
-            <p className="hero-subtitle">
-              Episodio nuevo: &quot;Historias que nos sostienen&quot;.
-            </p>
-          </div>
-        </section>
-
         <section className="section" aria-labelledby="secciones">
           <h2 className="section-title" id="secciones">
             Lo que vas a encontrar

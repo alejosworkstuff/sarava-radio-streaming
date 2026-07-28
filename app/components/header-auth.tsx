@@ -1,8 +1,13 @@
 "use client";
 
-import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
+import { SignInButton, useAuth } from "@clerk/nextjs";
+import { SaravaUserButton } from "./sarava-user-button";
 
-export function HeaderAuth() {
+type HeaderAuthProps = {
+  showAdminLink?: boolean;
+};
+
+export function HeaderAuth({ showAdminLink = false }: HeaderAuthProps) {
   const { isSignedIn } = useAuth();
 
   return (
@@ -26,13 +31,7 @@ export function HeaderAuth() {
           </button>
         </SignInButton>
       ) : (
-        <UserButton
-          appearance={{
-            elements: {
-              avatarBox: { width: 40, height: 40 },
-            },
-          }}
-        />
+        <SaravaUserButton showAdminLink={showAdminLink} />
       )}
     </span>
   );

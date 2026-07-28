@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { SaravaUserButton } from "@/app/components/sarava-user-button";
 import { isAllowedAdminEmail } from "@/lib/admin-auth";
 
 const nav = [
@@ -63,7 +63,7 @@ export default async function AdminLayout({
             <Link href="/" className="admin-site-link">
               Ver sitio
             </Link>
-            <UserButton />
+            <SaravaUserButton />
           </div>
         </div>
       </header>

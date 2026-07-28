@@ -64,6 +64,36 @@ html[data-theme="logo-pastel"] {
   --logo-green: #b7e0c6;
 }
 
+/**
+ * Third palette: soft lilac / violet + leafy green from the Saravá logo.
+ */
+html[data-theme="lilac-green"] {
+  --bg: #f3f0f8;
+  --bg-strong: #e3dceb;
+  --text: #2a2438;
+  --muted: #5f566e;
+  --accent: #9b7bb8;
+  --accent-strong: #6b9e4a;
+  --card: #fbf8fd;
+  --border: #d5cce0;
+  --shadow: 0 24px 60px rgba(80, 60, 110, 0.13);
+  --glow-a: rgba(155, 123, 184, 0.24);
+  --glow-b: rgba(107, 158, 74, 0.2);
+  --wash-mid: #f6f3fb;
+  --wash-end: #eef5ea;
+  --nav-pill-bg: rgba(155, 123, 184, 0.12);
+  --nav-pill-border: rgba(155, 123, 184, 0.26);
+  --nav-pill-hover-bg: rgba(107, 158, 74, 0.16);
+  --nav-pill-hover-border: rgba(107, 158, 74, 0.34);
+  --nav-pill-shadow: rgba(155, 123, 184, 0.12);
+  --nav-pill-shadow-hover: rgba(107, 158, 74, 0.18);
+  --logo-orange: #f0c39a;
+  --logo-magenta: #c4a8e0;
+  --logo-turquoise: #8fd4c8;
+  --logo-blue: #9bb8e8;
+  --logo-green: #8fbf6a;
+}
+
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--text);

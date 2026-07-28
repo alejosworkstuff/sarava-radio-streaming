@@ -26,7 +26,7 @@ export async function SiteHeader({ title, home = false }: SiteHeaderProps) {
   const logoSrc = resolvePublicAssetSrc(logoUrl, basePath);
   const user = await currentUser();
   const email = user?.emailAddresses[0]?.emailAddress;
-  const canTogglePalette = isAllowedAdminEmail(email);
+  const isAdmin = isAllowedAdminEmail(email);
 
   return (
     <header
@@ -55,7 +55,7 @@ export async function SiteHeader({ title, home = false }: SiteHeaderProps) {
               item.href === "/espacio-cultural" ? (
                 <span key={item.href} className="nav-item-with-toggle">
                   <Link href={item.href}>{item.label}</Link>
-                  <PaletteToggle enabled={canTogglePalette} />
+                  <PaletteToggle enabled={isAdmin} />
                 </span>
               ) : (
                 <Link href={item.href} key={item.href}>
@@ -65,7 +65,7 @@ export async function SiteHeader({ title, home = false }: SiteHeaderProps) {
             )}
           </nav>
         </div>
-        <HeaderAuth />
+        <HeaderAuth showAdminLink={isAdmin} />
       </div>
       <h1 className="brand-name">{title}</h1>
     </header>
