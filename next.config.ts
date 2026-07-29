@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "8mb",
     },
   },
+  async redirects() {
+    return [
+      {
+        source: "/sobre-nosotras",
+        destination: "/sobre-nosotrxs",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

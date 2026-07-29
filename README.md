@@ -50,7 +50,7 @@ The project needed a clear, maintainable web presence for a cultural community: 
 | `/podcast` | Podcast / Spotify show |
 | `/club-lectura` | Novel of the month and reading club |
 | `/espacio-cultural` | Cultural posts (workshops, events, articles) |
-| `/sobre-nosotras` | About the space and team |
+| `/sobre-nosotrxs` | About the space and team |
 
 Navigation and branding live in `app/components/site-shell.tsx` (`SiteHeader`, `SiteFooter`).
 

@@ -818,8 +818,36 @@ button.nav-auth-trigger:focus-visible {
   background: #000;
 }
 
-.live-card-mark-spotify {
-  background: #191414;
+.live-card-podcast {
+  min-height: 0;
+  padding: var(--space-6) var(--space-5);
+  align-items: center;
+  justify-content: center;
+}
+
+.live-card-podcast .cta-stack {
+  flex: 0 1 auto;
+  gap: var(--space-4);
+  justify-content: center;
+  justify-items: stretch;
+  width: min(100%, 22rem);
+}
+
+.live-card-podcast .cta-with-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 3.35rem;
+  padding-inline: 1.5rem;
+}
+
+.live-card-podcast .cta-platform-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: 0 0 1.5rem;
+  display: block;
 }
 
 .live-card-mark-img {
@@ -841,6 +869,14 @@ button.nav-auth-trigger:focus-visible {
   .live-card {
     --live-space: 1rem;
     --live-logo-size: 4.5rem;
+  }
+
+  .live-card-podcast {
+    padding: var(--space-5) var(--space-3);
+  }
+
+  .live-card-podcast .cta-stack {
+    width: 100%;
   }
 }
 

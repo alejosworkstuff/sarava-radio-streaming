@@ -11,7 +11,7 @@ export function generateMetadata(): Metadata {
     title: "Sobre nosotrxs",
     description:
       "Conocé al colectivo Saravá: un espacio cultural de Bolívar con mirada de género, derechos humanos y enfoque decolonial. Radio, podcast y actividades comunitarias.",
-    path: "/sobre-nosotras",
+    path: "/sobre-nosotrxs",
   });
 }
 

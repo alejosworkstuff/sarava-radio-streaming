@@ -8,11 +8,11 @@ import { getLogoUrl } from "@/lib/content";
 import { resolvePublicAssetSrc } from "@/lib/hero-slides";
 
 const navItems = [
-  { href: "/radio-streaming", label: "Radio streaming" },
   { href: "/podcast", label: "Podcast" },
-  { href: "/sobre-nosotras", label: "Sobre nosotrxs" },
+  { href: "/radio-streaming", label: "Radio streaming" },
   { href: "/club-lectura", label: "Club de lectura" },
   { href: "/espacio-cultural", label: "Saravá Espacio Cultural" },
+  { href: "/sobre-nosotrxs", label: "Sobre nosotrxs" },
 ] as const;
 
 type SiteHeaderProps = {
@@ -51,18 +51,12 @@ export async function SiteHeader({ title, home = false }: SiteHeaderProps) {
           </Link>
           <nav className="nav-links compact-nav" aria-label="Navegación principal">
             {!home && <Link href="/">Inicio</Link>}
-            {navItems.map((item) =>
-              item.href === "/espacio-cultural" ? (
-                <span key={item.href} className="nav-item-with-toggle">
-                  <Link href={item.href}>{item.label}</Link>
-                  <PaletteToggle enabled={isAdmin} />
-                </span>
-              ) : (
-                <Link href={item.href} key={item.href}>
-                  {item.label}
-                </Link>
-              ),
-            )}
+            {navItems.map((item) => (
+              <Link href={item.href} key={item.href}>
+                {item.label}
+              </Link>
+            ))}
+            <PaletteToggle enabled={isAdmin} />
           </nav>
         </div>
         <HeaderAuth showAdminLink={isAdmin} />

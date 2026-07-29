@@ -13,7 +13,7 @@ export function HeaderAuth({ showAdminLink = false }: HeaderAuthProps) {
   return (
     <span className="header-auth">
       {!isSignedIn ? (
-        <SignInButton mode="modal" forceRedirectUrl="/">
+        <SignInButton mode="modal" forceRedirectUrl="/after-sign-in">
           <button
             type="button"
             className="nav-auth-trigger"

@@ -21,7 +21,7 @@ function revalidatePublic() {
   revalidatePath("/espacio-cultural");
   revalidatePath("/radio-streaming");
   revalidatePath("/club-lectura");
-  revalidatePath("/sobre-nosotras");
+  revalidatePath("/sobre-nosotrxs");
   revalidatePath("/admin");
   revalidatePath("/admin/posts");
   revalidatePath("/admin/events");

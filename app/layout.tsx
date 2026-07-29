@@ -1,6 +1,7 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import "./globals.css";
+import { DotGridBackground } from "./components/dot-grid-background";
 import { themeBootScript } from "@/lib/theme";
 import { getLogoUrl } from "@/lib/content";
 import {
@@ -62,7 +63,10 @@ export default function RootLayout({
         <head>
           <InlineScript html={themeBootScript} />
         </head>
-        <body className="antialiased">{children}</body>
+        <body className="antialiased">
+          <DotGridBackground />
+          <div className="site-root">{children}</div>
+        </body>
       </html>
     </ClerkProvider>
   );
