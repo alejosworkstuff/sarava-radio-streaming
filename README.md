@@ -2,11 +2,10 @@
 
 [![local CI](https://img.shields.io/badge/local%20CI-passing-brightgreen?logo=github-actions&logoColor=white)](.github/workflows/ci.yml) [![Vercel](https://img.shields.io/badge/live-Vercel-000000?logo=vercel&logoColor=white)](https://sarava-radio-streaming.vercel.app)
 
-A Next.js site for **Espacio Cultural Saravá**, a community cultural space in San Carlos de Bolívar, Buenos Aires, Argentina. The site covers radio streaming, podcast, book club, cultural posts, and team information.
+A Next.js site for **Espacio Cultural Saravá**, a community cultural space in San Carlos de Bolívar, Buenos Aires, Argentina. Radio streaming, podcast, book club, cultural posts, team info — plus a **Clerk-gated admin CMS** backed by **Neon Postgres** and **Vercel Blob**.
 
+**Live:** [sarava-radio-streaming.vercel.app](https://sarava-radio-streaming.vercel.app)  
 **Repo:** [github.com/alejosworkstuff/sarava-radio-streaming](https://github.com/alejosworkstuff/sarava-radio-streaming)
-
-> **Hosting note (Jul 2026):** production moved from GitHub Pages (`docs/` static export) to **Vercel**. Content is still JSON under `content/` until the admin CMS (Clerk + Neon + Blob) ships.
 
 ## Screenshots
 
@@ -18,26 +17,27 @@ A Next.js site for **Espacio Cultural Saravá**, a community cultural space in S
 
 ## Problem and Context
 
-The project needed a clear, maintainable web presence for a cultural community: multiple sections (radio, podcast, reading club, events), editable content, and reliable hosting. The next step is a web admin so the collective can publish without touching Git.
+The collective needed a maintainable public site (radio, podcast, reading club, events) and a way to publish without touching Git. The site runs on Vercel with a shared-admin CMS so editors can manage content, images, and branding from `/admin`.
 
 ## My Role
 
-- Built the Next.js App Router site (originally static export for GitHub Pages)
-- Migrated production to Vercel (server-ready for Clerk + Postgres + Blob)
-- Implemented file-based content loading with TypeScript types
-- Designed layout, hero carousel, and section pages
-- Documented JSON content schemas in `content/README.md`
-- Set up CI for lint, content validation, and production build
+- Built the Next.js App Router public site (originally static export for GitHub Pages)
+- Migrated production to **Vercel** (server-ready)
+- Shipped admin CMS: **Clerk** auth, **Neon + Prisma**, **Vercel Blob** uploads, CRUD for posts / events / novels / about
+- Reader comments (posts, active novel, radio + podcast pages)
+- Site logo from admin, featured-only adaptive hero, admin pastel palette toggle
+- CI for lint, content validation, and production build
 
 ---
 
 ## Tech Stack
 
-- **Next.js 16** (App Router)
-- **React 19**, **TypeScript 5**
+- **Next.js 16** (App Router), **React 19**, **TypeScript 5**
 - **Tailwind CSS 4** (+ custom CSS in `app/styles/`)
+- **Clerk** — reader sign-in/up; `/admin` gated by `ADMIN_EMAIL` allowlist
+- **PostgreSQL (Neon)** + **Prisma** — Post, Event, Novel, About, SiteSettings, Comment
+- **Vercel Blob** — image uploads from admin
 - **Vercel** — production host
-- **Planned:** Clerk (1 shared admin account), Neon Postgres, Vercel Blob
 
 ---
 
@@ -45,14 +45,14 @@ The project needed a clear, maintainable web presence for a cultural community: 
 
 | Route | Page |
 |-------|------|
-| `/` | Home with hero carousel (book club, podcast, streaming highlights) |
-| `/radio-streaming` | Live streaming schedule and links |
-| `/podcast` | Podcast / Spotify show |
-| `/club-lectura` | Novel of the month and reading club |
-| `/espacio-cultural` | Cultural posts (workshops, events, articles) |
-| `/sobre-nosotrxs` | About the space and team |
-
-Navigation and branding live in `app/components/site-shell.tsx` (`SiteHeader`, `SiteFooter`).
+| `/` | Home — featured hero + highlights |
+| `/radio-streaming` | Live streaming schedule + comments |
+| `/podcast` | Spotify show + comments |
+| `/club-lectura` | Novel of the month + comments |
+| `/espacio-cultural` | Cultural posts |
+| `/sobre-nosotrxs` | About + team |
+| `/sign-in`, `/sign-up` | Clerk auth |
+| `/admin/*` | CMS (allowlisted admins) |
 
 ---
 
@@ -61,38 +61,32 @@ Navigation and branding live in `app/components/site-shell.tsx` (`SiteHeader`, `
 ```text
 sarava-project/
 ├── app/                    # App Router pages and components
-│   ├── components/         # site-shell, hero-banner, cultural-posts
+│   ├── admin/              # CMS CRUD + settings + comments moderation
+│   ├── components/         # site-shell, hero-banner, cultural-posts, …
 │   ├── styles/             # tokens, layout, components CSS
-│   └── */page.tsx          # Section pages
-├── content/                # JSON content (posts, novels, events, about)
-│   └── README.md           # Content editor guide (pre-CMS)
-├── lib/content.ts          # Type-safe loaders (server-only)
-├── public/
-│   ├── uploads/            # Site media (migrating to Blob)
-│   └── logo.jpg
-├── docs/                   # Legacy GH Pages export (retired, not the live host)
-├── next.config.ts
+│   └── */page.tsx          # Public section pages
+├── lib/
+│   ├── content.ts          # Prisma-backed loaders for the public site
+│   └── generated/prisma/   # Prisma client output
+├── prisma/                 # schema + migrations + seed
+├── content/                # JSON seed / CI validation snapshot (not live source)
+├── public/uploads/         # Legacy local media (new uploads → Blob)
+├── docs/                   # Retired GH Pages export (not the live host)
 └── .github/workflows/ci.yml
 ```
 
-### Content loading (`lib/content.ts`)
-
-- `getPosts()` — Espacio Cultural posts (`content/posts/`)
-- `getEvents()` / `getFeaturedEvent()` — events and transmisiones (`content/events/`)
-- `getNovels()` / `getNovelOfTheMonth()` — club de lectura (`content/novels/`)
-- `getAbout()` — sobre nosotras (`content/about.json`)
-
-Content types: `PostEntry`, `EventEntry`, `NovelEntry`, `AboutContent`.
+Public pages load from Neon via `lib/content.ts` (`getPosts`, `getEvents`, `getNovels`, `getAbout`, site settings). The `content/` JSON tree remains for **seed** and `npm run validate:content` — editors use `/admin`, not Git.
 
 ---
 
 ## Key Features
 
-- Server-ready Next.js deploy on Vercel (no `output: "export"`)
-- Hero banner carousel on the home page
-- File-based JSON content (bridge until admin CMS)
-- Responsive layout and custom design tokens
-- Spanish UI copy throughout
+- Live community hub on Vercel (no static export)
+- Admin CMS: posts, events, novels, about/team, site logo
+- Image uploads to Vercel Blob with admin previews
+- Reader comments on posts, active novel, radio, and podcast
+- Featured-only adaptive home hero
+- Responsive layout and Spanish UI copy throughout
 
 ---
 
@@ -100,7 +94,9 @@ Content types: `PostEntry`, `EventEntry`, `NovelEntry`, `AboutContent`.
 
 ```bash
 npm install
-cp .env.example .env.local
+cp .env.example .env.local   # Clerk, DATABASE_URL, BLOB_READ_WRITE_TOKEN, ADMIN_EMAIL
+npx prisma migrate dev
+npm run db:seed              # optional — load demo content from content/
 npm run dev
 ```
 
@@ -110,28 +106,30 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Script | Purpose |
 |--------|---------|
-| `npm run dev` | Next.js dev server (Turbopack) |
-| `npm run build` | Production build |
-| `npm run start` | Serve production build locally |
+| `npm run dev` | Next.js dev server |
+| `npm run build` | `prisma generate` + production build |
 | `npm run lint` | ESLint |
-| `npm run validate:content` | Zod validation for JSON content |
+| `npm run validate:content` | Zod validation for `content/` JSON snapshot |
 | `npm run ci` | lint + validate + build |
+| `npm run db:seed` | Seed Neon from `content/` |
+
+### Environment
+
+See [`.env.example`](./.env.example). Minimum:
+
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY`
+- `ADMIN_EMAIL` — comma-separated allowlist for `/admin`
+- `DATABASE_URL` — Neon Postgres
+- `BLOB_READ_WRITE_TOKEN` — Vercel Blob (uploads)
+- `NEXT_PUBLIC_SITE_URL` — canonical URL
 
 ---
 
 ## Deploy (Vercel)
 
-Production deploys from the GitHub repo on **Vercel**. Set `NEXT_PUBLIC_SITE_URL` to the production URL (or custom domain when ready).
+Production deploys from this GitHub repo on **Vercel**. Set the env vars above for Preview + Production. Custom domain (e.g. espacioculturalsarava) is **aplazado** — no purchase yet.
 
-The old GitHub Pages workflow (`docs/` commit on every push) is **retired**.
-
----
-
-## Content editing (temporary)
-
-Until the `/admin` panel ships, content lives in `content/posts/`, `content/novels/`, `content/events/`, and `content/about.json`. Edit in Git, push to `main`, and Vercel rebuilds.
-
-See **`content/README.md`** for schemas.
+The old GitHub Pages / Decap workflow is **retired**.
 
 ---
 
@@ -150,28 +148,18 @@ npm run ci
 
 ---
 
-## Current Content (repository snapshot)
+## Roadmap
 
-| Collection | Files |
-|------------|--------|
-| `content/posts/` | 2 posts |
-| `content/novels/` | 1 novel (`las-indignas.json`, active) |
-| `content/events/` | 1 event (`streaming-jueves.json`) |
-| `content/about.json` | About + team |
-
----
-
-## Roadmap: admin CMS
-
-1. ~~Vercel hosting (no static export)~~ — Fase 0
-2. ~~Clerk — 1 shared admin account + `/admin` shell~~ — Fase 1
-3. ~~Neon + Prisma — Post, Event, Novel, About + seed from JSON~~ — Fase 2
-4. ~~Vercel Blob — image uploads~~ — Fase 3
-5. ~~CRUD panel for Posts / Events / Novels / About~~ — Fase 4
-6. Custom domain (e.g. espacioculturalsarava) — **aplazado** (sin compra aún)
+1. ~~Vercel hosting (no static export)~~
+2. ~~Clerk + `/admin` shell~~
+3. ~~Neon + Prisma + seed~~
+4. ~~Vercel Blob uploads~~
+5. ~~CRUD panel (posts / events / novels / about)~~
+6. ~~Deepen: comments, logo, adaptive hero, team editor, Spotify podcast~~
+7. Custom domain — **aplazado**
 
 ## Case Study Highlights (Portfolio Use)
 
-- **Challenge:** Multi-section cultural site with editor-friendly content.
-- **Approach:** Next.js App Router + typed content loaders; migrating to Vercel + CMS so non-developers can publish.
-- **Result:** Live community hub moving toward self-serve admin.
+- **Challenge:** Multi-section cultural site that non-developers can update.
+- **Approach:** Next.js App Router public site + Clerk allowlist admin + Neon/Prisma + Blob.
+- **Result:** Live community hub with self-serve publishing on Vercel.
