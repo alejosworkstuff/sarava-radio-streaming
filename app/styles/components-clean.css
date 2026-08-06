@@ -928,7 +928,7 @@ button.nav-auth-trigger:focus-visible {
   padding: var(--space-3);
 }
 
-/* Home hero carousel — fixed crop, centered block, tap for full image */
+/* Home hero carousel, fixed crop, centered block, tap for full image */
 .hero-promo {
   width: 100%;
   --hero-promo-media-width: min(100%, 20rem);
@@ -1527,7 +1527,7 @@ button.nav-auth-trigger:focus-visible {
   opacity: 0.95;
 }
 
-/* Novelas anteriores — cover gallery */
+/* Novelas anteriores, cover gallery */
 .novel-archive {
   display: flex;
   flex-direction: column;

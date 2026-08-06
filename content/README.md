@@ -1,4 +1,4 @@
-# Content directory — seed + CI snapshot
+# Content directory, seed + CI snapshot
 
 JSON files in this folder are the **seed / validation snapshot** for Espacio Cultural Saravá. The **live site reads from Neon Postgres** via Prisma (`lib/content.ts`). Editors publish from `/admin`, not by editing these files.
 
@@ -31,7 +31,7 @@ CI still runs `npm run validate:content` against these JSON files (Zod schemas +
 |------------|------|--------|
 | **posts** | `posts/encuentro-cultural-fin-de-semana.json` | Espacio Cultural |
 | **posts** | `posts/taller-abierto-expresion-oral.json` | Espacio Cultural |
-| **novels** | `novels/las-indignas.json` | `active: true` — novel of the month |
+| **novels** | `novels/las-indignas.json` | `active: true`, novel of the month |
 | **events** | `events/streaming-jueves.json` | Radio streaming |
 | **about** | `about.json` | Highlights, paragraphs, team |
 

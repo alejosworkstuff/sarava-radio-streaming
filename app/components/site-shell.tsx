@@ -38,7 +38,7 @@ export async function SiteHeader({ title, home = false }: SiteHeaderProps) {
           <Link
             href="/"
             className="brand"
-            aria-label="Inicio — Espacio Cultural Saravá"
+            aria-label="Inicio: Espacio Cultural Saravá"
           >
             <Image
               src={logoSrc}

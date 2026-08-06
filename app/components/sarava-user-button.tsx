@@ -56,7 +56,7 @@ function AdminIcon() {
 }
 
 type SaravaUserButtonProps = {
-  /** Show "Admin" menu item — only pass true after server-side allowlist check. */
+  /** Show "Admin" menu item, only pass true after server-side allowlist check. */
   showAdminLink?: boolean;
 };
 

@@ -60,7 +60,7 @@ export function ImageField({
     <div className={`admin-image-field admin-image-field--${variant}`}>
       {displaySrc ? (
         <div className="admin-image-preview" aria-live="polite">
-          {/* Local blob URLs + mixed remote/public paths — native img is simplest. */}
+          {/* Local blob URLs + mixed remote/public paths, native img is simplest. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={displaySrc}

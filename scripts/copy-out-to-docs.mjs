@@ -6,7 +6,7 @@ const outDir = join(root, "out");
 const docsDir = join(root, "docs");
 
 if (!existsSync(outDir)) {
-  console.error("out/ not found — run `next build` first.");
+  console.error("out/ not found, run `next build` first.");
   process.exit(1);
 }
 

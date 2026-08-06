@@ -57,7 +57,7 @@ export default async function AdminPostsPage() {
           </label>
           <ImageField
             name="image"
-            label="Imagen (opcional — sin imagen el hero usa layout de texto)"
+            label="Imagen (opcional: sin imagen el hero usa layout de texto)"
             emptyHint="Sin imagen seleccionada"
           />
           <label className="admin-check">
