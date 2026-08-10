@@ -42,7 +42,6 @@ function getPrismaClient() {
   return globalForPrisma.prisma;
 }
 
-/** Lazy proxy so importing this module during `next build` does not require DB. */
 export const prisma = new Proxy({} as PrismaClient, {
   get(_target, prop, receiver) {
     const client = getPrismaClient();

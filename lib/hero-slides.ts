@@ -106,14 +106,6 @@ type DatedCandidate = {
   slide: HeroSlide;
 };
 
-/**
- * Hero shows ONLY admin-spotlighted content (no fillers, no auto novel):
- * - Posts with `featured`
- * - Events with `featured`
- * - Novel only when marked active (novela del mes = su “destacada”)
- *
- * Dot count follows this list dynamically.
- */
 export function buildHeroSlides(
   posts: PostEntry[],
   events: EventEntry[] = [],

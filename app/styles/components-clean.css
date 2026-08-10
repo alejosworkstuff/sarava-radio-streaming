@@ -1278,7 +1278,6 @@ button.nav-auth-trigger:focus-visible {
   border-radius: var(--radius-sm);
 }
 
-/* Hero carousel pager: explicit sizing so empty <button> UA styles cannot stretch dots into pills */
 .hero-slider-dot {
   appearance: none;
   box-sizing: border-box;
@@ -1321,7 +1320,6 @@ button.nav-auth-trigger:focus-visible {
     0 4px 14px rgba(182, 107, 78, 0.35);
 }
 
-/* Prev / pager / Next: full flex + gap here so spacing survives Tailwind ordering & static exports */
 .slider-controls {
   display: flex;
   flex-wrap: wrap;

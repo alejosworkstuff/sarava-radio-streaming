@@ -41,7 +41,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-/** Next.js recommended inline boot script (avoids React 19 script warning). */
 function InlineScript({ html }: { html: string }) {
   return (
     <script
