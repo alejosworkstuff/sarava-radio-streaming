@@ -43,5 +43,5 @@ yarn-error.log*
 # prisma generated client
 /lib/generated
 
-# static export debug artifacts
-docs/**/*.txt
+# Retired GitHub Pages export. Vercel deploys directly from the source tree.
+/docs/
