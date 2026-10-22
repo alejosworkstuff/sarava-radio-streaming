@@ -8,10 +8,8 @@ const globalForPrisma = globalThis as unknown as {
   prismaSchemaStamp: string | undefined;
 };
 
-/** Bump when Comment/schema fields change so hot reload drops a stale client. */
 const PRISMA_SCHEMA_STAMP = "comment-pageKey-v1";
 
-/** Keep current pg TLS behavior without the sslmode=require deprecation warning. */
 export function normalizeDatabaseUrl(connectionString: string): string {
   return connectionString.replace(
     /([?&]sslmode=)(require|prefer|verify-ca)\b/i,

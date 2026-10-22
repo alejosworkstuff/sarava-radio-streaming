@@ -783,7 +783,6 @@ button.nav-auth-trigger:focus-visible {
   object-fit: cover;
 }
 
-/* Silvana Alcaraz - focus on face with zoom */
 .team-card:nth-child(3) .team-photo {
   object-position: center 35%;
 }
@@ -928,7 +927,6 @@ button.nav-auth-trigger:focus-visible {
   padding: var(--space-3);
 }
 
-/* Home hero carousel, fixed crop, centered block, tap for full image */
 .hero-promo {
   width: 100%;
   --hero-promo-media-width: min(100%, 20rem);
@@ -1193,7 +1191,6 @@ button.nav-auth-trigger:focus-visible {
   }
 }
 
-/* Full cover lightbox */
 .hero-promo-lightbox {
   position: fixed;
   inset: 0;
@@ -1325,7 +1322,6 @@ button.nav-auth-trigger:focus-visible {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  /* row-gap when wrapped; generous column-gap between buttons and dot cluster */
   gap: var(--space-3) clamp(2.25rem, 7vw, 4rem);
 }
 
@@ -1414,7 +1410,6 @@ button.nav-auth-trigger:focus-visible {
   }
 }
 
-/* Espacio Cultural + Club de lectura */
 .live-post-avatar {
   width: 56px;
   height: 56px;
@@ -1525,7 +1520,6 @@ button.nav-auth-trigger:focus-visible {
   opacity: 0.95;
 }
 
-/* Novelas anteriores, cover gallery */
 .novel-archive {
   display: flex;
   flex-direction: column;

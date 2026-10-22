@@ -1,7 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import "./globals.css";
-import { DotGridBackground } from "./components/dot-grid-background";
 import { themeBootScript } from "@/lib/theme";
 import { getLogoUrl } from "@/lib/content";
 import {
@@ -11,7 +10,6 @@ import {
   rootMetadata,
 } from "@/lib/site-metadata";
 
-/** CMS content is DB-backed; always render on demand. */
 export const dynamic = "force-dynamic";
 
 export const viewport = {
@@ -63,8 +61,7 @@ export default function RootLayout({
           <InlineScript html={themeBootScript} />
         </head>
         <body className="antialiased">
-          <DotGridBackground />
-          <div className="site-root">{children}</div>
+          {children}
         </body>
       </html>
     </ClerkProvider>

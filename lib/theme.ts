@@ -39,5 +39,4 @@ export function isSaravaTheme(value: string | null): value is SaravaTheme {
   );
 }
 
-/** Inline boot script to avoid theme flash on reload. */
 export const themeBootScript = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');if(t==='${THEME_LOGO_PASTEL}'||t==='${THEME_LILAC_GREEN}'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`;

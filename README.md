@@ -25,6 +25,22 @@ The collective needed a public site they could keep updating without a developer
 - Featured-only adaptive home hero
 - Spanish UI throughout; CI for lint, content validation, and production build
 
+## CMS and publishing model
+
+- The public site reads CMS content from Postgres and renders it on demand, so
+	editors can update posts, events, novels, team information and site settings
+	without changing Git-tracked files.
+- Clerk authentication routes allowlisted admin emails to `/admin`; all other
+	signed-in users return to the public home. Admin controls are also gated by
+	the server-side allowlist rather than only hidden in the UI.
+- Novel drafts are restored only for new or unpublished content. Published edits
+	discard stale drafts so an old local draft cannot overwrite published data.
+- Upload previews support both local blob URLs and stored remote/public paths.
+	Uploads are capped at 4.5 MB to stay below typical serverless request limits.
+- The hero ignores legacy stock placeholders and uses only explicitly active
+	featured novels. An inline theme boot script prevents a flash of the wrong
+	palette during reloads.
+
 ## Stack
 
 - Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4

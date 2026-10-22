@@ -167,6 +167,309 @@
   font-size: 1.35rem;
 }
 
+.admin-archive-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.admin-archive-chevron {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--bg-strong);
+  color: var(--accent);
+}
+
+.admin-archive-chevron svg,
+.admin-archive-date-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.admin-archive-hint {
+  margin-left: auto;
+  color: var(--muted);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 400;
+}
+
+.admin-archive-content {
+  overflow-anchor: none;
+}
+
+.admin-archive-content {
+  overflow: hidden;
+  margin-top: var(--space-3);
+}
+
+.admin-archive-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.admin-archive-date-button,
+.admin-archive-clear-date {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.admin-archive-date-button:hover,
+.admin-archive-clear-date:hover {
+  border-color: var(--accent);
+}
+
+.admin-archive-date-button:focus-within {
+  outline: 3px solid color-mix(in srgb, var(--accent) 70%, white);
+  outline-offset: 3px;
+}
+
+.admin-archive-date-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.admin-archive-date-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.admin-archive-result-count {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.admin-archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 9rem), 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-anchor: none;
+}
+
+.admin-archive-card {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 1;
+}
+
+.admin-archive-card.is-expanded {
+  grid-column: 1 / -1;
+  aspect-ratio: auto;
+}
+
+.admin-archive-thumbnail {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-strong);
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.admin-archive-card.is-expanded .admin-archive-thumbnail {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: var(--admin-archive-thumbnail-width);
+  height: var(--admin-archive-thumbnail-height);
+}
+
+.admin-archive-thumbnail img {
+  object-fit: cover;
+  transition: transform 220ms ease;
+}
+
+.admin-archive-thumbnail:hover img,
+.admin-archive-thumbnail:focus-visible img {
+  transform: scale(1.05);
+}
+
+.admin-archive-thumbnail:focus-visible,
+.admin-archive-toggle:focus-visible,
+.admin-archive-clear-date:focus-visible,
+.admin-archive-close:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 70%, white);
+  outline-offset: 3px;
+}
+
+.admin-archive-thumbnail-overlay {
+  position: absolute;
+  inset: 35% 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  background: linear-gradient(transparent, rgba(20, 15, 12, 0.84));
+}
+
+.admin-archive-thumbnail-overlay strong {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 0.9rem;
+  line-height: 1.25;
+}
+
+.admin-archive-thumbnail-overlay span {
+  font-size: 0.75rem;
+}
+
+.admin-archive-editor {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--card) 92%, white);
+  box-shadow: var(--shadow);
+}
+
+.admin-archive-editor-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+}
+
+.admin-archive-editor-image img {
+  object-fit: cover;
+}
+
+.admin-archive-editor-content {
+  position: relative;
+}
+
+.admin-archive-editor .admin-form {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.admin-archive-editor .admin-form textarea {
+  height: 110px;
+  min-height: 110px;
+  max-height: 110px;
+  resize: none;
+}
+
+.admin-archive-actions {
+  display: grid;
+  justify-items: start;
+  gap: 3px;
+}
+
+.admin-archive-actions > form {
+  margin: 0;
+}
+
+.admin-archive-editor-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.admin-archive-editor-heading h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+
+.admin-archive-close {
+  flex: 0 0 auto;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.admin-archive-empty {
+  margin: 0;
+  color: var(--muted);
+}
+
+@media (max-width: 520px) {
+  .admin-archive-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-archive-editor {
+    padding: var(--space-3);
+  }
+
+  .admin-archive-editor-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-archive-thumbnail img {
+    transition: none;
+  }
+}
+
 .admin-form,
 .admin-item {
   display: grid;

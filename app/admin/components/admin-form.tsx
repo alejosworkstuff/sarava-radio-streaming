@@ -66,12 +66,14 @@ type DeleteButtonProps = {
   action: (formData: FormData) => Promise<ActionResult>;
   id: string;
   label?: string;
+  className?: string;
 };
 
 export function DeleteButton({
   action,
   id,
   label = "Eliminar",
+  className,
 }: DeleteButtonProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -79,6 +81,7 @@ export function DeleteButton({
 
   return (
     <form
+      className={className}
       onSubmit={(event) => {
         event.preventDefault();
         if (!window.confirm("¿Seguro que querés eliminar esto?")) return;

@@ -6,12 +6,10 @@ type ImageFieldProps = {
   name: string;
   label: string;
   required?: boolean;
-  /** Resolved URL of the image already saved (shown until a new file is chosen). */
   existingSrc?: string | null;
   existingCaption?: string;
   emptyHint?: string;
   accept?: string;
-  /** Visual variant for preview framing. */
   variant?: "default" | "logo" | "portrait" | "cover";
 };
 
@@ -60,7 +58,6 @@ export function ImageField({
     <div className={`admin-image-field admin-image-field--${variant}`}>
       {displaySrc ? (
         <div className="admin-image-preview" aria-live="polite">
-          {/* Local blob URLs + mixed remote/public paths, native img is simplest. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={displaySrc}

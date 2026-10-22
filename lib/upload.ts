@@ -2,7 +2,7 @@ import "server-only";
 
 import { put } from "@vercel/blob";
 
-const MAX_BYTES = 4.5 * 1024 * 1024; // keep under typical serverless body limits
+const MAX_BYTES = 4.5 * 1024 * 1024;
 const ALLOWED = new Set([
   "image/jpeg",
   "image/png",

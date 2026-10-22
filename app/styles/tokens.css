@@ -33,10 +33,6 @@
   --font-body: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
-/**
- * Preview palette: pastel versions of the Saravá logo colors
- * (naranja, magenta, turquesa, azul, verde sobre crema suave).
- */
 html[data-theme="logo-pastel"] {
   --bg: #eef7f4;
   --bg-strong: #d9eee6;
@@ -64,9 +60,6 @@ html[data-theme="logo-pastel"] {
   --logo-green: #b7e0c6;
 }
 
-/**
- * Third palette: soft lilac / violet + leafy green from the Saravá logo.
- */
 html[data-theme="lilac-green"] {
   --bg: #f3f0f8;
   --bg-strong: #e3dceb;

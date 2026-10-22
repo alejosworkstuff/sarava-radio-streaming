@@ -4,7 +4,6 @@ import type { PostEntry } from "./post-types";
 export type HeroSlide = {
   id: string;
   title: string;
-  /** Publisher / byline shown especially on text-only slides. */
   author: string;
   subtitle: string;
   description: string;
@@ -13,7 +12,6 @@ export type HeroSlide = {
   link: string;
 };
 
-/** Soft cap so the carousel stays usable if many items are featured. */
 const MAX_SLIDES = 8;
 
 const PREVIEW_THRESHOLD = 100;
@@ -22,15 +20,10 @@ const PREVIEW_MAX = 180;
 function hasRealImage(value: string | null | undefined): boolean {
   const trimmed = value?.trim() ?? "";
   if (!trimmed) return false;
-  // Ignore legacy stock fillers sometimes used as placeholders.
   if (trimmed === "/foto-1.jpg" || trimmed === "/foto-2.jpg") return false;
   return true;
 }
 
-/**
- * < 100 chars → show full text.
- * ≥ 100 chars → truncated preview.
- */
 export function heroBodyText(text: string): string {
   const trimmed = text.trim();
   if (trimmed.length < PREVIEW_THRESHOLD) {
@@ -139,7 +132,6 @@ export function buildHeroSlides(
     push(item.slide);
   }
 
-  // Novel only if explicitly marked active (destacada / novela del mes).
   if (novel?.active && novel.title) {
     push(novelToSlide(novel));
   }

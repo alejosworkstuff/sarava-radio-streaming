@@ -65,7 +65,6 @@ export function NovelEditor({ mode, initial }: NovelEditorProps) {
   useEffect(() => {
     const id = window.setTimeout(() => {
       const draft = readDraft(key);
-      // Restore draft only when working on unpublished content (or new form).
       if (draft && (!initial.published || mode === "create")) {
         setTitle(draft.title);
         setDescription(draft.description);
@@ -80,7 +79,6 @@ export function NovelEditor({ mode, initial }: NovelEditorProps) {
   useEffect(() => {
     if (!ready) return;
     if (published && mode === "edit" && initial.published) {
-      // Published edit: don't keep a stale draft.
       clearDraft(key);
       return;
     }

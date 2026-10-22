@@ -8,10 +8,8 @@ type ArchiveRevealProps<T> = {
   emptyMessage: string;
   ariaLabel: string;
   items: T[];
-  /** Per-item list (default). Ignored when `renderContent` is set. */
   renderItem?: (item: T) => React.ReactNode;
   getKey?: (item: T) => string;
-  /** Custom body when open (e.g. cover gallery). */
   renderContent?: (items: T[]) => React.ReactNode;
 };
 

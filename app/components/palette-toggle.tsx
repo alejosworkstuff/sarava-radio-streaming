@@ -12,7 +12,6 @@ import {
 } from "@/lib/theme";
 
 type PaletteToggleProps = {
-  /** Only render interactive control when true (admin allowlist). */
   enabled: boolean;
 };
 
